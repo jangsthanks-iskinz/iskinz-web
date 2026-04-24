@@ -11,7 +11,7 @@ export default async function AdminUsersPage({ searchParams }: { searchParams: {
     .select('*')
     .order('created_at', { ascending: false })
 
-  if (statusFilter === 'pending') query = query.eq('approved', false)
+  if (statusFilter === 'pending') query = query.or('approved.eq.false,approved.is.null')
   else if (statusFilter === 'approved') query = query.eq('approved', true)
 
   const { data: users } = await query
