@@ -121,12 +121,12 @@ function GuestPage({ isPending }: { isPending: boolean }) {
           ) : (
             <>
               <div className="mb-7">
-                <Label>Hospital Login</Label>
-                <h2 style={{ fontFamily: SERIF, fontSize: '1.4rem', fontWeight: 400, color: C.silverLight, marginBottom: '0.25rem' }}>
-                  안녕하세요, 원장님
+                <div style={{ fontFamily: 'Pretendard, sans-serif', fontSize: '1.5rem', fontWeight: 700, color: '#e8ebee', marginBottom: '0.5rem' }}>환영합니다</div>
+                <h2 style={{ fontFamily: CONDENSED, fontSize: '1.4rem', fontWeight: 700, color: C.silverLight, marginBottom: '0.25rem' }}>
+                  PARTNER LOGIN
                 </h2>
                 <p className="text-xs" style={{ color: C.muted }}>
-                  승인된 의료기관만 이용 가능합니다
+                  승인된 의료기관 및 파트너 전용 서비스입니다.
                 </p>
               </div>
               <HomeLoginForm />
