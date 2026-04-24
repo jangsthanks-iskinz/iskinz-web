@@ -125,7 +125,7 @@ export default function SignupPage() {
 
   if (done) {
     return (
-      <div className="min-h-screen flex items-center justify-center px-6" style={{ background: C.offWhite }}>
+      <div className="min-h-screen flex items-start justify-center px-6 pt-32" style={{ background: C.offWhite }}>
         <div className="text-center max-w-md">
           <div style={{ width: 48, height: 48, border: `1px solid rgba(74,111,165,0.3)`, display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 24px', borderRadius: 8 }}>
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke={C.accent} strokeWidth="1.5"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
