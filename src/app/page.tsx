@@ -121,8 +121,8 @@ function GuestPage({ isPending }: { isPending: boolean }) {
           ) : (
             <>
               <div className="mb-7">
-                <div style={{ fontFamily: 'Pretendard, sans-serif', fontSize: '1.5rem', fontWeight: 700, color: '#e8ebee', marginBottom: '0.5rem' }}>환영합니다</div>
-                <h2 style={{ fontFamily: CONDENSED, fontSize: '1.4rem', fontWeight: 700, color: C.silverLight, marginBottom: '0.25rem' }}>
+                <div style={{ fontFamily: 'Pretendard, sans-serif', fontSize: '1rem', fontWeight: 400, color: '#e8ebee', marginBottom: '0.5rem' }}>환영합니다</div>
+                <h2 style={{ fontFamily: 'Pretendard, sans-serif', fontSize: '1.4rem', fontWeight: 700, color: '#2563EB', marginBottom: '0.25rem' }}>
                   PARTNER LOGIN
                 </h2>
                 <p className="text-xs" style={{ color: C.muted }}>

@@ -138,7 +138,7 @@ export function HomeLoginForm() {
         className="w-full py-3.5 text-sm font-bold rounded-lg text-center no-underline transition-all hover:opacity-90 block"
         style={{ background: '#2563EB', color: '#ffffff', letterSpacing: 0.5 }}
       >
-        병원 회원가입하기
+        간편 회원가입
       </Link>
 
       {/* 비밀번호 찾기 */}
