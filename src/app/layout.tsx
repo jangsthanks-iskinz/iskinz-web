@@ -9,7 +9,7 @@ import { createClient } from '@/lib/supabase/server'
 export const metadata: Metadata = {
   title: { default: `ISKINZ — ${SITE.tagline}`, template: '%s | ISKINZ' },
   description: SITE.description,
-  keywords: ['스킨케어', '메디컬 스킨케어', '아이스킨즈', 'ISKINZ', '피부과 화장품', '세럼', '앰플'],
+  keywords: ['아이스킨즈', 'ISKINZ', '메디컬 에스테틱', '의료기기', '병원용품', 'B2B', '스킨부스터', '필러', '미용성형', '엑소좀'],
   openGraph: {
     type: 'website',
     locale: 'ko_KR',
