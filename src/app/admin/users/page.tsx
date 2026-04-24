@@ -64,7 +64,7 @@ export default async function AdminUsersPage({ searchParams }: { searchParams: {
                 <tr><td colSpan={8} className="px-6 py-12 text-center text-sm" style={{ color: 'var(--text-3)' }}>해당하는 회원이 없습니다</td></tr>
               ) : users.map((u: any) => (
                 <tr key={u.id} className="border-t hover:bg-[#FAFAF7] transition-colors" style={{ borderColor: '#F0EDE8' }}>
-                  <td className="px-5 py-4 font-semibold" style={{ color: 'var(--navy)' }}>{u.name ?? '-'}</td>
+                  <td className="px-5 py-4 font-semibold"><a href={`/admin/users/${u.id}`} className="no-underline hover:underline" style={{ color: "var(--navy)" }}>{u.name ?? "-"}</a></td>
                   <td className="px-5 py-4 text-xs" style={{ color: 'var(--text-2)' }}>{u.email ?? '-'}</td>
                   <td className="px-5 py-4 text-xs" style={{ color: 'var(--text-2)' }}>{u.hospital_name ?? '-'}</td>
                   <td className="px-5 py-4 text-xs" style={{ color: 'var(--text-2)' }}>{u.phone ?? '-'}</td>
