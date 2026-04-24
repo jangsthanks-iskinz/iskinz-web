@@ -1,0 +1,22 @@
+export const SITE = {
+  name: 'ISKINZ',
+  tagline: 'B2B 병원 전용 프리미엄 메디컬 에스테틱 공급 플랫폼',
+  taglineKo: '정품 보증 · 임상 근거 · 교육 지원 · 당일 배송',
+  description: '아이스킨즈는 피부과·성형외과 전문 B2B 의료기기·화장품 공급 업체입니다. NCTF 135HA(Fillmed), Art Filler, HYCOOX 등 프리미엄 메디컬 제품을 공급합니다.',
+  url: process.env.NEXT_PUBLIC_SITE_URL ?? 'https://iskinz.com',
+  email: 'ceo@iskinz.com',
+  phone: '010-2580-4489',
+  address: '인천광역시 서구 중봉대로 588, 청라센트럴프라자 11층 1103-M24호 (청라동)',
+  businessHours: '평일 09:00 – 18:00 (주말·공휴일 휴무)',
+  businessNumber: '668-17-02118',
+  ceoName: '장영철',
+  companyNameKo: '아이스킨즈',
+  companyNameEn: 'ISKINZ',
+  businessLicense: '의료기기판매업 신고번호 제 2026-3560021-00038호',
+  mailOrderLicense: '통신판매업 신고번호 제 인천서구-0000-0000호',
+  cosmeticLicense: '화장품책임판매업 등록번호 제 경인-가-000호',
+  sns: {
+    instagram: 'https://instagram.com/iskinz_official',
+    kakao: 'https://pf.kakao.com/iskinz',
+  },
+} as const

@@ -1,0 +1,23 @@
+{
+  "framework": "nextjs",
+  "redirects": [
+    {
+      "source": "/(.*)",
+      "has": [{ "type": "host", "value": "iskinz.co.kr" }],
+      "destination": "https://iskinz.com/$1",
+      "permanent": true
+    },
+    {
+      "source": "/(.*)",
+      "has": [{ "type": "host", "value": "www.iskinz.co.kr" }],
+      "destination": "https://iskinz.com/$1",
+      "permanent": true
+    },
+    {
+      "source": "/(.*)",
+      "has": [{ "type": "host", "value": "www.iskinz.com" }],
+      "destination": "https://iskinz.com/$1",
+      "permanent": true
+    }
+  ]
+}

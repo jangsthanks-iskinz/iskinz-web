@@ -1,0 +1,107 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@200;300;400;500;600;700&family=Barlow:wght@200;300;400;500;600&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=Noto+Sans+KR:wght@300;400;500;600;700&display=swap');
+
+:root {
+  /* ── FILLMED Silver-Dark Palette ── */
+  --charcoal:       #1e2025;
+  --charcoal-mid:   #2d3038;
+  --charcoal-light: #363a44;
+  --silver:         #c8cdd4;
+  --silver-light:   #e8ebee;
+  --silver-dark:    #8a9099;
+  --off-white:      #f5f4f1;
+  --white:          #ffffff;
+  --accent:         #4a6fa5;
+  --warm:           #b5a99a;
+  --text:           #3a3d44;
+
+  /* ── Compat aliases (기존 컴포넌트 참조 유지) ── */
+  --navy:       #1e2025;
+  --navy-dark:  #1a1d22;
+  --gold:       #b5a99a;
+  --gold-light: #c8bdb4;
+  --off-white:  #f5f4f1;
+  --warm-beige: #f0ede8;
+  --text-2:     #8a9099;
+  --text-3:     #a0a5af;
+  --border:     #d8dce2;
+  --success:    #4a7c59;
+  --error:      #b84a4a;
+  --radius:     2px;
+
+  /* ── Fonts ── */
+  --serif:     'Cormorant Garamond', Georgia, serif;
+  --sans:      'Barlow', system-ui, sans-serif;
+  --condensed: 'Barlow Condensed', sans-serif;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: var(--sans), 'Noto Sans KR', sans-serif;
+  background: var(--off-white);
+  color: var(--text);
+}
+
+.font-display   { font-family: var(--serif); }
+.font-sans-en   { font-family: var(--sans); }
+.font-condensed { font-family: var(--condensed); }
+
+/* ── Scrollbar ── */
+::-webkit-scrollbar       { width: 5px; }
+::-webkit-scrollbar-track { background: var(--off-white); }
+::-webkit-scrollbar-thumb { background: var(--silver); border-radius: 0; }
+
+/* ── Section Label — FILLMED style: leading horizontal line ── */
+.section-label {
+  font-family: var(--condensed);
+  font-size: 10px;
+  font-weight: 400;
+  letter-spacing: 0.4em;
+  text-transform: uppercase;
+  color: var(--accent);
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 14px;
+}
+.section-label::before {
+  content: '';
+  display: block;
+  width: 28px;
+  height: 1px;
+  background: var(--accent);
+  flex-shrink: 0;
+}
+
+/* Dark background variant */
+.section-label-light {
+  color: var(--silver-dark);
+}
+.section-label-light::before {
+  background: var(--silver-dark);
+}
+
+/* ── Accent line divider ── */
+.accent-line {
+  width: 40px;
+  height: 1px;
+  background: var(--accent);
+  margin-bottom: 24px;
+}
+
+/* ── Feature card hover ── */
+.feature-card:hover { border-color: var(--accent) !important; }
+
+/* ── Smooth scroll offset for fixed nav ── */
+[id] { scroll-margin-top: 80px; }
+
+/* ── Hero Pulse ── */
+@keyframes heroPulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50%       { opacity: .45; transform: scale(1.5); }
+}
+.hero-badge-dot { animation: heroPulse 2.2s infinite; }
