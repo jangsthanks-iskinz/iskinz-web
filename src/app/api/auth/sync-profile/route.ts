@@ -1,33 +1,35 @@
 import { NextResponse } from 'next/server'
-import { createServiceClient } from '@/lib/supabase/server'
+import { createServiceClient } from '@/lib/supabase/service'
 
-// 회원가입 후 profile에 email 저장 (trigger가 email을 안 채우는 경우 보완)
 export async function POST(req: Request) {
   try {
-    const { email, name } = await req.json()
+    const body = await req.json()
+    const { email, name, phone, hospital_name, member_type, birth_date, license_number, business_number, postcode, address, address_detail, tax_email, marketing_agreed } = body
     if (!email) return NextResponse.json({ ok: false }, { status: 400 })
-
     const supabase = createServiceClient()
-
-    // auth.users에서 해당 이메일의 user id 찾기
     const { data: { users } } = await supabase.auth.admin.listUsers()
     const authUser = users.find((u: any) => u.email === email)
     if (!authUser) return NextResponse.json({ ok: false, message: 'user not found' }, { status: 404 })
-
-    // profile에 email, name 업데이트
     const { error } = await supabase
       .from('profiles')
-      .update({ email, name: name || authUser.user_metadata?.name })
+      .update({
+        email, name,
+        phone: phone || null,
+        hospital_name: hospital_name || null,
+        member_type: member_type || null,
+        birth_date: birth_date || null,
+        license_number: license_number || null,
+        business_number: business_number || null,
+        postcode: postcode || null,
+        address: address || null,
+        address_detail: address_detail || null,
+        tax_email: tax_email || null,
+        marketing_agreed: marketing_agreed || false,
+      })
       .eq('id', authUser.id)
-
-    if (error) {
-      console.error('[sync-profile error]', error)
-      return NextResponse.json({ ok: false }, { status: 500 })
-    }
-
+    if (error) return NextResponse.json({ ok: false }, { status: 500 })
     return NextResponse.json({ ok: true })
   } catch (err) {
-    console.error('[sync-profile error]', err)
     return NextResponse.json({ ok: false }, { status: 500 })
   }
 }
