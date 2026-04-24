@@ -1,5 +1,5 @@
 'use client'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
@@ -10,6 +10,12 @@ const SERIF = 'Cormorant Garamond, Georgia, serif'
 const PRETENDARD = "'Pretendard', 'Apple SD Gothic Neo', sans-serif"
 
 export default function SignupPage() {
+  const supabase = createClient()
+  useEffect(() => {
+    supabase.auth.getUser().then(({ data: { user } }) => {
+      if (user) router.replace('/my')
+    })
+  }, [])
   const router = useRouter()
   const supabase = createClient()
 

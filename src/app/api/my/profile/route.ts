@@ -1,23 +1,28 @@
-import { NextResponse } from 'next/server'
+import { createServiceClient } from '@/lib/supabase/service'
 import { createClient } from '@/lib/supabase/server'
+import { NextResponse } from 'next/server'
 
 export async function PUT(req: Request) {
-  try {
-    const supabase = createClient()
-    const { data: { user } } = await supabase.auth.getUser()
-    if (!user) return NextResponse.json({ message: '인증이 필요합니다.' }, { status: 401 })
+  const supabase = createClient()
+  const { data: { user } } = await supabase.auth.getUser()
+  if (!user) return NextResponse.json({ message: '로그인이 필요합니다.' }, { status: 401 })
 
-    const { name, hospitalName, phone } = await req.json()
-    if (!name) return NextResponse.json({ message: '이름은 필수입니다.' }, { status: 400 })
+  const body = await req.json()
+  const service = createServiceClient()
+  const { error } = await service.from('profiles').update({
+    name: body.name,
+    hospital_name: body.hospitalName,
+    phone: body.phone,
+    birth_date: body.birthDate,
+    license_number: body.licenseNumber,
+    business_number: body.businessNumber,
+    postcode: body.postcode,
+    address: body.address,
+    address_detail: body.addressDetail,
+    tax_email: body.taxEmail,
+    member_type: body.memberType,
+  }).eq('id', user.id)
 
-    const { error } = await supabase
-      .from('profiles')
-      .update({ name, hospital_name: hospitalName, phone })
-      .eq('id', user.id)
-
-    if (error) return NextResponse.json({ message: error.message }, { status: 500 })
-    return NextResponse.json({ ok: true })
-  } catch (err) {
-    return NextResponse.json({ message: '서버 오류가 발생했습니다.' }, { status: 500 })
-  }
+  if (error) return NextResponse.json({ message: error.message }, { status: 500 })
+  return NextResponse.json({ ok: true })
 }
