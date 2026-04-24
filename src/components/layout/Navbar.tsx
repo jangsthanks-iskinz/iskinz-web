@@ -9,9 +9,6 @@ interface NavbarProps {
   isApproved?: boolean
 }
 
-const CONDENSED = 'Barlow Condensed, sans-serif'
-const SERIF     = 'Cormorant Garamond, Georgia, serif'
-
 export function Navbar({ isApproved = false }: NavbarProps) {
   const [scrolled, setScrolled]   = useState(false)
   const [menuOpen, setMenuOpen]   = useState(false)
@@ -47,28 +44,27 @@ export function Navbar({ isApproved = false }: NavbarProps) {
         { href: '/#contact', label: 'CONTACT' },
       ]
 
-  const bgColor = scrolled ? 'rgba(26,29,34,0.98)' : 'rgba(26,29,34,0.92)'
-  const borderColor = scrolled ? 'rgba(200,205,212,0.1)' : 'rgba(200,205,212,0.06)'
+  const bg = scrolled ? 'rgba(23,87,194,0.98)' : '#1757C2'
 
   return (
     <>
       <nav
         className="fixed top-0 left-0 right-0 z-50 transition-all duration-300"
         style={{
-          padding:       scrolled ? '12px 0' : '18px 0',
-          background:    bgColor,
-          backdropFilter:'blur(20px)',
-          borderBottom:  `1px solid ${borderColor}`,
+          padding: scrolled ? '10px 0' : '16px 0',
+          background: bg,
+          backdropFilter: 'blur(20px)',
+          borderBottom: '1px solid rgba(255,255,255,0.08)',
         }}
       >
         <div className="container mx-auto px-6 flex items-center justify-between">
 
           {/* Logo */}
           <Link href="/" className="no-underline flex-shrink-0">
-            <span style={{ fontFamily: SERIF, fontSize: '1.5rem', fontWeight: 400, letterSpacing: '0.14em', color: '#e8ebee' }}>
+            <span style={{ fontFamily: "'Montserrat', sans-serif", fontSize: '1.25rem', fontWeight: 600, letterSpacing: '0.12em', color: '#ffffff' }}>
               ISKINZ
             </span>
-            <span className="block mt-0.5" style={{ fontFamily: CONDENSED, fontSize: 8, letterSpacing: '0.32em', textTransform: 'uppercase', color: 'rgba(200,205,212,0.35)' }}>
+            <span className="block mt-0.5" style={{ fontFamily: "'Pretendard', sans-serif", fontSize: 9, letterSpacing: '0.28em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.4)' }}>
               Medical Aesthetic Supply
             </span>
           </Link>
@@ -79,8 +75,8 @@ export function Navbar({ isApproved = false }: NavbarProps) {
               <li key={link.href}>
                 <Link
                   href={link.href}
-                  className="text-[11px] no-underline transition-opacity hover:opacity-100"
-                  style={{ fontFamily: CONDENSED, letterSpacing: '0.2em', textTransform: 'uppercase', color: 'rgba(200,205,212,0.6)' }}
+                  className="text-[12px] no-underline transition-opacity hover:opacity-100"
+                  style={{ fontFamily: "'Pretendard', sans-serif", letterSpacing: '0.15em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.75)' }}
                 >
                   {link.label}
                 </Link>
@@ -90,11 +86,10 @@ export function Navbar({ isApproved = false }: NavbarProps) {
 
           {/* Actions */}
           <div className="flex items-center gap-3">
-            {/* Cart */}
             <button
               onClick={toggleCart}
               className="relative p-2 transition-opacity hover:opacity-70"
-              style={{ color: 'rgba(200,205,212,0.6)' }}
+              style={{ color: 'rgba(255,255,255,0.75)' }}
             >
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
                 <path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/>
@@ -102,46 +97,34 @@ export function Navbar({ isApproved = false }: NavbarProps) {
                 <path d="M16 10a4 4 0 01-8 0"/>
               </svg>
               {count > 0 && (
-                <span className="absolute top-0 right-0 w-4 h-4 text-[9px] font-bold flex items-center justify-center"
-                  style={{ background: '#4a6fa5', color: '#e8ebee', borderRadius: 0 }}>
+                <span className="absolute top-0 right-0 w-4 h-4 text-[9px] font-bold flex items-center justify-center rounded-full"
+                  style={{ background: '#fff', color: '#1757C2' }}>
                   {count}
                 </span>
               )}
             </button>
 
             {user ? (
-              <Link
-                href="/my"
-                className="hidden md:block text-[11px] no-underline transition-opacity hover:opacity-70"
-                style={{ fontFamily: CONDENSED, letterSpacing: '0.2em', textTransform: 'uppercase', color: 'rgba(200,205,212,0.6)' }}
-              >
+              <Link href="/my" className="hidden md:block text-[12px] no-underline transition-opacity hover:opacity-70"
+                style={{ fontFamily: "'Pretendard', sans-serif", letterSpacing: '0.15em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.75)' }}>
                 MY
               </Link>
             ) : (
-              <Link
-                href="/login"
-                className="hidden md:block text-[11px] no-underline transition-opacity hover:opacity-70"
-                style={{ fontFamily: CONDENSED, letterSpacing: '0.2em', textTransform: 'uppercase', color: 'rgba(200,205,212,0.6)' }}
-              >
+              <Link href="/login" className="hidden md:block text-[12px] no-underline transition-opacity hover:opacity-70"
+                style={{ fontFamily: "'Pretendard', sans-serif", letterSpacing: '0.15em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.75)' }}>
                 LOGIN
               </Link>
             )}
 
-            {/* CTA — rectangular, silver-light */}
-            <Link
-              href="/#contact"
-              className="hidden md:inline-flex items-center px-5 py-2.5 text-[11px] no-underline transition-all hover:-translate-y-0.5"
-              style={{ fontFamily: CONDENSED, letterSpacing: '0.22em', textTransform: 'uppercase', background: '#e8ebee', color: '#1e2025', borderRadius: 0 }}
-            >
+            <Link href="/#contact"
+              className="hidden md:inline-flex items-center px-5 py-2.5 text-[12px] no-underline transition-all hover:opacity-90"
+              style={{ fontFamily: "'Pretendard', sans-serif", letterSpacing: '0.08em', background: '#fff', color: '#1757C2', fontWeight: 700, borderRadius: 6 }}>
               견적 문의
             </Link>
 
-            {/* Mobile Menu Toggle */}
-            <button
-              className="lg:hidden p-2 transition-opacity hover:opacity-70"
-              style={{ fontFamily: CONDENSED, color: 'rgba(200,205,212,0.7)' }}
-              onClick={() => setMenuOpen(v => !v)}
-            >
+            <button className="lg:hidden p-2 transition-opacity hover:opacity-70"
+              style={{ color: 'rgba(255,255,255,0.75)' }}
+              onClick={() => setMenuOpen(v => !v)}>
               {menuOpen ? '✕' : '☰'}
             </button>
           </div>
@@ -149,22 +132,18 @@ export function Navbar({ isApproved = false }: NavbarProps) {
 
         {/* Mobile Dropdown */}
         {menuOpen && (
-          <div className="lg:hidden border-t" style={{ background: 'rgba(26,29,34,0.99)', borderColor: 'rgba(200,205,212,0.08)' }}>
+          <div className="lg:hidden border-t" style={{ background: '#1757C2', borderColor: 'rgba(255,255,255,0.1)' }}>
             <div className="container mx-auto px-6 py-5 flex flex-col gap-4">
               {navLinks.map(link => (
-                <Link
-                  key={link.href}
-                  href={link.href}
-                  onClick={() => setMenuOpen(false)}
-                  className="text-[11px] no-underline transition-opacity hover:opacity-60"
-                  style={{ fontFamily: CONDENSED, letterSpacing: '0.2em', textTransform: 'uppercase', color: 'rgba(200,205,212,0.65)' }}
-                >
+                <Link key={link.href} href={link.href} onClick={() => setMenuOpen(false)}
+                  className="text-[12px] no-underline"
+                  style={{ fontFamily: "'Pretendard', sans-serif", letterSpacing: '0.15em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.75)' }}>
                   {link.label}
                 </Link>
               ))}
               {user
-                ? <Link href="/my" onClick={() => setMenuOpen(false)} className="text-[11px] no-underline" style={{ fontFamily: CONDENSED, letterSpacing: '0.2em', textTransform: 'uppercase', color: 'rgba(200,205,212,0.65)' }}>MY PAGE</Link>
-                : <Link href="/login" onClick={() => setMenuOpen(false)} className="text-[11px] no-underline" style={{ fontFamily: CONDENSED, letterSpacing: '0.2em', textTransform: 'uppercase', color: 'rgba(200,205,212,0.65)' }}>LOGIN</Link>
+                ? <Link href="/my" onClick={() => setMenuOpen(false)} className="text-[12px] no-underline" style={{ fontFamily: "'Pretendard', sans-serif", letterSpacing: '0.15em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.75)' }}>MY PAGE</Link>
+                : <Link href="/login" onClick={() => setMenuOpen(false)} className="text-[12px] no-underline" style={{ fontFamily: "'Pretendard', sans-serif", letterSpacing: '0.15em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.75)' }}>LOGIN</Link>
               }
             </div>
           </div>
