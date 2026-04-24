@@ -10,14 +10,13 @@ const SERIF = 'Cormorant Garamond, Georgia, serif'
 const PRETENDARD = "'Pretendard', 'Apple SD Gothic Neo', sans-serif"
 
 export default function SignupPage() {
+  const router = useRouter()
   const supabase = createClient()
   useEffect(() => {
     supabase.auth.getUser().then(({ data: { user } }) => {
       if (user) router.replace('/my')
     })
   }, [])
-  const router = useRouter()
-  const supabase = createClient()
 
   const [form, setForm] = useState({
     email: '', password: '', confirm: '',
