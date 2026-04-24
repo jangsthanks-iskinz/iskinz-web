@@ -65,6 +65,7 @@ export default function SignupPage() {
 
   async function handleSignup(e: React.FormEvent) {
     e.preventDefault()
+    if (!form.address) { setError("주소를 입력해주세요."); return }
     if (!form.agreeTerms || !form.agreePrivacy) { setError('필수 약관에 동의해주세요.'); return }
     if (form.password !== form.confirm) { setError('비밀번호가 일치하지 않습니다.'); return }
     if (form.password.length < 6) { setError('비밀번호는 최소 6자 이상이어야 합니다.'); return }
@@ -129,9 +130,9 @@ export default function SignupPage() {
           <div style={{ width: 48, height: 48, border: `1px solid rgba(74,111,165,0.3)`, display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 24px', borderRadius: 8 }}>
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke={C.accent} strokeWidth="1.5"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
           </div>
-          <h2 style={{ fontFamily: PRETENDARD, fontSize: '1.4rem', fontWeight: 700, color: C.charcoal, marginBottom: 12 }}>이메일을 확인해주세요</h2>
+          <h2 style={{ fontFamily: PRETENDARD, fontSize: '1.4rem', fontWeight: 700, color: C.charcoal, marginBottom: 12 }}>회원가입이 완료되었습니다</h2>
           <p style={{ fontFamily: PRETENDARD, fontSize: 14, color: C.silverDark, lineHeight: 1.7, marginBottom: 24 }}>
-            {form.email}로 인증 메일을 발송했습니다.<br />메일의 링크를 클릭하면 가입이 완료됩니다.
+            담당자 검토 후 24시간 이내에 가입이 승인됩니다.
           </p>
           <Link href="/login" style={{ fontFamily: PRETENDARD, fontSize: 13, color: C.accent, textDecoration: 'none' }}>
             로그인 페이지로 →

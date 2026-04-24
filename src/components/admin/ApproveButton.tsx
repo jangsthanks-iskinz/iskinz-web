@@ -10,17 +10,17 @@ export function ApproveButton({ userId, approved, userEmail, userName }: {
 
   async function toggle() {
     setLoading(true)
+    const newApproved = !approved
     await fetch('/api/admin/users/approve', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ userId, approved: !approved }),
+      body: JSON.stringify({ userId, approved: newApproved }),
     })
-    // 회원에게 승인/취소 이메일 발송
-    if (userEmail) {
+    if (userEmail && newApproved) {
       await fetch('/api/admin/users/notify', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email: userEmail, name: userName ?? '원장님', approved: !approved }),
+        body: JSON.stringify({ email: userEmail, name: userName ?? '원장님', approved: true }),
       }).catch(() => null)
     }
     router.refresh()
