@@ -1,4 +1,4 @@
-import { createServiceClient } from '@/lib/supabase/server'
+import { createServiceClient } from '@/lib/supabase/service'
 import { ApproveButton } from '@/components/admin/ApproveButton'
 import { RoleSelector } from '@/components/admin/RoleSelector'
 
