@@ -1,7 +1,5 @@
 import { createServiceClient } from '@/lib/supabase/service'
-import { ApproveButton } from '@/components/admin/ApproveButton'
-import { DeleteUserButton } from '@/components/admin/DeleteUserButton'
-import { EditUserForm } from '@/components/admin/EditUserForm'
+import { UserDetailClient } from '@/components/admin/UserDetailClient'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
 
@@ -16,28 +14,7 @@ export default async function AdminUserDetailPage({ params }: { params: { id: st
         <Link href="/admin/users" className="text-sm no-underline" style={{ color: 'var(--text-2)' }}>← 회원 목록</Link>
         <h1 className="text-2xl font-bold" style={{ color: 'var(--navy)', fontFamily: 'Montserrat, sans-serif' }}>회원 상세 정보</h1>
       </div>
-      <div className="bg-white border mb-6" style={{ borderColor: 'var(--border)' }}>
-        {/* 헤더: 이름+상태 왼쪽 / 버튼들 오른쪽 세로 배치 */}
-        <div className="px-6 py-4 border-b flex items-start justify-between" style={{ borderColor: 'var(--border)', background: '#F8F6F2' }}>
-          <div className="flex items-center gap-3 mt-1">
-            <span className="font-bold text-base" style={{ color: 'var(--navy)' }}>{u.name ?? '-'}</span>
-            <span className="inline-block text-[10px] font-bold px-2.5 py-1"
-              style={{
-                background: u.approved ? 'rgba(74,124,89,0.12)' : 'rgba(198,160,82,0.12)',
-                color: u.approved ? '#4A7C59' : '#8B6914',
-                fontFamily: 'Montserrat, sans-serif',
-              }}>
-              {u.approved ? '완료' : '대기'}
-            </span>
-          </div>
-          {/* 오른쪽: 승인버튼 위, 삭제버튼 아래 */}
-          <div className="flex flex-col gap-2 items-end">
-            <ApproveButton userId={u.id} approved={u.approved ?? false} userEmail={u.email} userName={u.name} />
-            <DeleteUserButton userId={u.id} userName={u.name} />
-          </div>
-        </div>
-        <EditUserForm user={u} />
-      </div>
+      <UserDetailClient user={u} />
     </div>
   )
 }
