@@ -19,6 +19,12 @@ export default async function AdminUsersPage({ searchParams }: { searchParams: {
     { key: 'approved', label: '승인 완료' },
   ]
 
+  function approvalStyle(approved: boolean | null) {
+    if (approved === true) return { bg: 'rgba(74,124,89,0.12)', color: '#4A7C59', label: '승인 완료' }
+    if (approved === false) return { bg: 'rgba(198,160,82,0.12)', color: '#8B6914', label: '승인 대기' }
+    return { bg: 'rgba(198,160,82,0.12)', color: '#8B6914', label: '승인 대기' }
+  }
+
   return (
     <div className="p-8">
       <div className="mb-8">
@@ -43,57 +49,51 @@ export default async function AdminUsersPage({ searchParams }: { searchParams: {
 
       <div className="bg-white border" style={{ borderColor: 'var(--border)' }}>
         <div className="overflow-x-auto">
-          <table className="w-full text-sm">
+          <table className="w-full text-sm" style={{ minWidth: 800 }}>
             <thead>
               <tr style={{ background: '#F8F6F2' }}>
-                {['이름', '이메일', '병원명', '연락처', '등급', '승인 상태', '가입일', '관리'].map(h => (
-                  <th key={h} className="px-5 py-3 text-left text-[11px] font-bold tracking-[1px] uppercase whitespace-nowrap"
+                {['이름', '병원명', '이메일', '연락처', '등급', '승인 상태', '관리'].map(h => (
+                  <th key={h} className="px-4 py-3 text-left text-[11px] font-bold tracking-[1px] uppercase whitespace-nowrap"
                     style={{ color: 'var(--text-3)', fontFamily: 'Montserrat, sans-serif' }}>{h}</th>
                 ))}
               </tr>
             </thead>
             <tbody>
               {!users || users.length === 0 ? (
-                <tr><td colSpan={8} className="px-6 py-12 text-center text-sm" style={{ color: 'var(--text-3)' }}>해당하는 회원이 없습니다</td></tr>
-              ) : users.map((u: any) => (
-                <tr key={u.id} className="border-t hover:bg-[#FAFAF7] transition-colors" style={{ borderColor: '#F0EDE8' }}>
-                  <td className="px-5 py-4 font-semibold">
-                    <Link href={`/admin/users/${u.id}`} className="no-underline hover:underline" style={{ color: 'var(--navy)' }}>{u.name ?? '-'}</Link>
-                  </td>
-                  <td className="px-5 py-4 text-xs">
-                    <Link href={`/admin/users/${u.id}`} className="no-underline block" style={{ color: 'var(--text-2)' }}>{u.email ?? '-'}</Link>
-                  </td>
-                  <td className="px-5 py-4 text-xs">
-                    <Link href={`/admin/users/${u.id}`} className="no-underline block" style={{ color: 'var(--text-2)' }}>{u.hospital_name ?? '-'}</Link>
-                  </td>
-                  <td className="px-5 py-4 text-xs">
-                    <Link href={`/admin/users/${u.id}`} className="no-underline block" style={{ color: 'var(--text-2)' }}>{u.phone ?? '-'}</Link>
-                  </td>
-                  <td className="px-5 py-4">
-                    <RoleSelector userId={u.id} currentRole={u.role ?? 'user'} />
-                  </td>
-                  <td className="px-5 py-4">
-                    <Link href={`/admin/users/${u.id}`} className="no-underline block">
-                      <span className="inline-block text-[10px] font-bold px-2.5 py-1"
-                        style={{
-                          background: u.approved ? 'rgba(74,124,89,0.12)' : 'rgba(198,160,82,0.12)',
-                          color: u.approved ? '#4A7C59' : '#8B6914',
-                          fontFamily: 'Montserrat, sans-serif',
-                        }}>
-                        {u.approved ? '승인 완료' : '대기 중'}
-                      </span>
-                    </Link>
-                  </td>
-                  <td className="px-5 py-4 text-xs">
-                    <Link href={`/admin/users/${u.id}`} className="no-underline block" style={{ color: 'var(--text-3)' }}>
-                      {u.created_at ? new Date(u.created_at).toLocaleDateString('ko-KR') : '-'}
-                    </Link>
-                  </td>
-                  <td className="px-5 py-4">
-                    <ApproveButton userId={u.id} approved={u.approved ?? false} userEmail={u.email} userName={u.name} />
-                  </td>
-                </tr>
-              ))}
+                <tr><td colSpan={7} className="px-6 py-12 text-center text-sm" style={{ color: 'var(--text-3)' }}>해당하는 회원이 없습니다</td></tr>
+              ) : users.map((u: any) => {
+                const approval = approvalStyle(u.approved)
+                return (
+                  <tr key={u.id} className="border-t hover:bg-[#FAFAF7] transition-colors" style={{ borderColor: '#F0EDE8' }}>
+                    <td className="px-4 py-3 font-semibold whitespace-nowrap">
+                      <Link href={`/admin/users/${u.id}`} className="no-underline hover:underline" style={{ color: 'var(--navy)' }}>{u.name ?? '-'}</Link>
+                    </td>
+                    <td className="px-4 py-3 whitespace-nowrap">
+                      <Link href={`/admin/users/${u.id}`} className="no-underline block text-xs" style={{ color: 'var(--text-2)' }}>{u.hospital_name ?? '-'}</Link>
+                    </td>
+                    <td className="px-4 py-3 whitespace-nowrap">
+                      <Link href={`/admin/users/${u.id}`} className="no-underline block text-xs" style={{ color: 'var(--text-2)' }}>{u.email ?? '-'}</Link>
+                    </td>
+                    <td className="px-4 py-3 whitespace-nowrap">
+                      <Link href={`/admin/users/${u.id}`} className="no-underline block text-xs" style={{ color: 'var(--text-2)' }}>{u.phone ?? '-'}</Link>
+                    </td>
+                    <td className="px-4 py-3 whitespace-nowrap">
+                      <RoleSelector userId={u.id} currentRole={u.role ?? 'user'} />
+                    </td>
+                    <td className="px-4 py-3 whitespace-nowrap">
+                      <Link href={`/admin/users/${u.id}`} className="no-underline block">
+                        <span className="inline-block text-[10px] font-bold px-2.5 py-1 whitespace-nowrap"
+                          style={{ background: approval.bg, color: approval.color, fontFamily: 'Montserrat, sans-serif' }}>
+                          {approval.label}
+                        </span>
+                      </Link>
+                    </td>
+                    <td className="px-4 py-3 whitespace-nowrap">
+                      <ApproveButton userId={u.id} approved={u.approved ?? false} userEmail={u.email} userName={u.name} />
+                    </td>
+                  </tr>
+                )
+              })}
             </tbody>
           </table>
         </div>

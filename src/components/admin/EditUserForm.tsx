@@ -7,7 +7,9 @@ export function EditUserForm({ user }: { user: any }) {
   const [editing, setEditing] = useState(false)
   const [loading, setLoading] = useState(false)
   const [form, setForm] = useState({
+    member_type: user.member_type ?? '',
     name: user.name ?? '',
+    birth_date: user.birth_date ?? '',
     phone: user.phone ?? '',
     hospital_name: user.hospital_name ?? '',
     license_number: user.license_number ?? '',
@@ -16,25 +18,26 @@ export function EditUserForm({ user }: { user: any }) {
     address: user.address ?? '',
     address_detail: user.address_detail ?? '',
     tax_email: user.tax_email ?? '',
+    marketing_agreed: user.marketing_agreed ?? false,
   })
 
   const editableFields = [
-    { label: '성명', key: 'name' },
-    { label: '휴대폰번호', key: 'phone' },
-    { label: '병원명', key: 'hospital_name' },
-    { label: '의사면허번호', key: 'license_number' },
-    { label: '사업자번호', key: 'business_number' },
-    { label: '우편번호', key: 'postcode' },
-    { label: '주소', key: 'address' },
-    { label: '상세주소', key: 'address_detail' },
-    { label: '세금계산서 이메일', key: 'tax_email' },
+    { label: '회원 구분', key: 'member_type', type: 'select', options: ['대표원장', '개원예정의', '봉직의', '의료기관 직원'] },
+    { label: '성명', key: 'name', type: 'text' },
+    { label: '생년월일', key: 'birth_date', type: 'text', placeholder: 'YYYY/MM/DD' },
+    { label: '휴대폰번호', key: 'phone', type: 'text' },
+    { label: '병원명', key: 'hospital_name', type: 'text' },
+    { label: '의사면허번호', key: 'license_number', type: 'text' },
+    { label: '사업자번호', key: 'business_number', type: 'text' },
+    { label: '우편번호', key: 'postcode', type: 'text' },
+    { label: '주소', key: 'address', type: 'text' },
+    { label: '상세주소', key: 'address_detail', type: 'text' },
+    { label: '세금계산서 이메일', key: 'tax_email', type: 'text' },
+    { label: '마케팅 수신 동의', key: 'marketing_agreed', type: 'checkbox' },
   ]
 
   const readOnlyFields = [
-    { label: '회원 구분', value: user.member_type },
     { label: '이메일', value: user.email },
-    { label: '생년월일', value: user.birth_date },
-    { label: '마케팅 수신 동의', value: user.marketing_agreed ? '동의' : '미동의' },
     { label: '가입일', value: user.created_at ? new Date(user.created_at).toLocaleDateString('ko-KR') : '-' },
   ]
 
@@ -54,22 +57,49 @@ export function EditUserForm({ user }: { user: any }) {
     setLoading(false)
   }
 
+  function renderField(f: any) {
+    if (!editing) {
+      const val = f.type === 'checkbox'
+        ? ((form as any)[f.key] ? '동의' : '미동의')
+        : ((form as any)[f.key] || '-')
+      return <span className="text-sm" style={{ color: 'var(--text-1)' }}>{val}</span>
+    }
+    if (f.type === 'select') {
+      return (
+        <select className="text-sm border px-3 py-1.5 flex-1 outline-none"
+          style={{ borderColor: 'var(--border)', color: 'var(--text-1)' }}
+          value={(form as any)[f.key]}
+          onChange={e => setForm({ ...form, [f.key]: e.target.value })}>
+          <option value="">선택</option>
+          {f.options.map((o: string) => <option key={o} value={o}>{o}</option>)}
+        </select>
+      )
+    }
+    if (f.type === 'checkbox') {
+      return (
+        <label className="flex items-center gap-2 text-sm cursor-pointer" style={{ color: 'var(--text-1)' }}>
+          <input type="checkbox" checked={(form as any)[f.key]}
+            onChange={e => setForm({ ...form, [f.key]: e.target.checked })} />
+          {(form as any)[f.key] ? '동의' : '미동의'}
+        </label>
+      )
+    }
+    return (
+      <input className="text-sm border px-3 py-1.5 flex-1 outline-none"
+        style={{ borderColor: 'var(--border)', color: 'var(--text-1)' }}
+        placeholder={f.placeholder ?? ''}
+        value={(form as any)[f.key]}
+        onChange={e => setForm({ ...form, [f.key]: e.target.value })} />
+    )
+  }
+
   return (
     <>
       <div className="divide-y" style={{ borderColor: '#F0EDE8' }}>
         {editableFields.map(f => (
           <div key={f.key} className="flex items-center px-6 py-3.5">
             <span className="w-40 text-xs font-semibold flex-shrink-0" style={{ color: 'var(--text-3)', fontFamily: 'Montserrat, sans-serif' }}>{f.label}</span>
-            {editing ? (
-              <input
-                className="text-sm border px-3 py-1.5 flex-1 outline-none"
-                style={{ borderColor: 'var(--border)', color: 'var(--text-1)' }}
-                value={(form as any)[f.key]}
-                onChange={e => setForm({ ...form, [f.key]: e.target.value })}
-              />
-            ) : (
-              <span className="text-sm" style={{ color: 'var(--text-1)' }}>{(form as any)[f.key] || '-'}</span>
-            )}
+            {renderField(f)}
           </div>
         ))}
         {readOnlyFields.map(f => (

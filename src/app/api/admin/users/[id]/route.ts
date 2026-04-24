@@ -5,7 +5,9 @@ export async function PATCH(req: Request, { params }: { params: { id: string } }
   const supabase = createServiceClient()
   const body = await req.json()
   const { error } = await supabase.from('profiles').update({
+    member_type: body.member_type,
     name: body.name,
+    birth_date: body.birth_date,
     phone: body.phone,
     hospital_name: body.hospital_name,
     license_number: body.license_number,
@@ -14,6 +16,7 @@ export async function PATCH(req: Request, { params }: { params: { id: string } }
     address: body.address,
     address_detail: body.address_detail,
     tax_email: body.tax_email,
+    marketing_agreed: body.marketing_agreed,
   }).eq('id', params.id)
 
   if (error) return NextResponse.json({ error }, { status: 500 })

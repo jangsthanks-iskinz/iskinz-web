@@ -22,10 +22,11 @@ export async function sendSignupNotifyEmail(data: {
   name: string; email: string; hospitalName?: string; phone?: string;
   memberType?: string; birthDate?: string; licenseNumber?: string;
   businessNumber?: string; postcode?: string; address?: string; addressDetail?: string;
-  approveToken?: string;
+  approveToken?: string; toEmail?: string;
 }) {
+  const to = data.toEmail ?? ADMIN_EMAIL
   return resend.emails.send({
-    from: FROM, to: ADMIN_EMAIL,
+    from: FROM, to,
     subject: `신규가입 승인 대기_${data.hospitalName ?? data.name}`,
     react: SignupNotifyEmail(data),
   })
