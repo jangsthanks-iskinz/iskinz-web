@@ -56,7 +56,7 @@ export default async function AdminUsersPage({ searchParams }: { searchParams: {
               {!users || users.length === 0 ? (
                 <tr><td colSpan={8} className="px-6 py-12 text-center text-sm" style={{ color: 'var(--text-3)' }}>해당하는 회원이 없습니다</td></tr>
               ) : users.map((u: any) => (
-                <tr key={u.id} className="border-t hover:bg-[#FAFAF7] transition-colors cursor-pointer" style={{ borderColor: '#F0EDE8' }}>
+                <tr key={u.id} className="border-t hover:bg-[#FAFAF7] transition-colors" style={{ borderColor: '#F0EDE8' }}>
                   <td className="px-5 py-4 font-semibold">
                     <Link href={`/admin/users/${u.id}`} className="no-underline hover:underline" style={{ color: 'var(--navy)' }}>{u.name ?? '-'}</Link>
                   </td>
@@ -69,7 +69,7 @@ export default async function AdminUsersPage({ searchParams }: { searchParams: {
                   <td className="px-5 py-4 text-xs">
                     <Link href={`/admin/users/${u.id}`} className="no-underline block" style={{ color: 'var(--text-2)' }}>{u.phone ?? '-'}</Link>
                   </td>
-                  <td className="px-5 py-4" onClick={e => e.stopPropagation()}>
+                  <td className="px-5 py-4">
                     <RoleSelector userId={u.id} currentRole={u.role ?? 'user'} />
                   </td>
                   <td className="px-5 py-4">
@@ -89,7 +89,7 @@ export default async function AdminUsersPage({ searchParams }: { searchParams: {
                       {u.created_at ? new Date(u.created_at).toLocaleDateString('ko-KR') : '-'}
                     </Link>
                   </td>
-                  <td className="px-5 py-4" onClick={e => e.stopPropagation()}>
+                  <td className="px-5 py-4">
                     <ApproveButton userId={u.id} approved={u.approved ?? false} userEmail={u.email} userName={u.name} />
                   </td>
                 </tr>
