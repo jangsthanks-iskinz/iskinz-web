@@ -1,4 +1,4 @@
-import { createServiceClient } from '@/lib/supabase/server'
+import { createServiceClient } from '@/lib/supabase/service'
 
 export default async function AdminInquiriesPage({ searchParams }: { searchParams: { type?: string } }) {
   const supabase = createServiceClient()
