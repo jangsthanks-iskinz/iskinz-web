@@ -17,8 +17,9 @@ export default async function AdminUserDetailPage({ params }: { params: { id: st
         <h1 className="text-2xl font-bold" style={{ color: 'var(--navy)', fontFamily: 'Montserrat, sans-serif' }}>회원 상세 정보</h1>
       </div>
       <div className="bg-white border mb-6" style={{ borderColor: 'var(--border)' }}>
-        <div className="px-6 py-4 border-b flex items-center justify-between" style={{ borderColor: 'var(--border)', background: '#F8F6F2' }}>
-          <div className="flex items-center gap-3">
+        {/* 헤더: 이름+상태 왼쪽 / 버튼들 오른쪽 세로 배치 */}
+        <div className="px-6 py-4 border-b flex items-start justify-between" style={{ borderColor: 'var(--border)', background: '#F8F6F2' }}>
+          <div className="flex items-center gap-3 mt-1">
             <span className="font-bold text-base" style={{ color: 'var(--navy)' }}>{u.name ?? '-'}</span>
             <span className="inline-block text-[10px] font-bold px-2.5 py-1"
               style={{
@@ -26,10 +27,11 @@ export default async function AdminUserDetailPage({ params }: { params: { id: st
                 color: u.approved ? '#4A7C59' : '#8B6914',
                 fontFamily: 'Montserrat, sans-serif',
               }}>
-              {u.approved ? '승인 완료' : '대기 중'}
+              {u.approved ? '완료' : '대기'}
             </span>
           </div>
-          <div className="flex gap-2">
+          {/* 오른쪽: 승인버튼 위, 삭제버튼 아래 */}
+          <div className="flex flex-col gap-2 items-end">
             <ApproveButton userId={u.id} approved={u.approved ?? false} userEmail={u.email} userName={u.name} />
             <DeleteUserButton userId={u.id} userName={u.name} />
           </div>

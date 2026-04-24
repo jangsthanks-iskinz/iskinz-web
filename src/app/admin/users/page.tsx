@@ -20,9 +20,9 @@ export default async function AdminUsersPage({ searchParams }: { searchParams: {
   ]
 
   function approvalStyle(approved: boolean | null) {
-    if (approved === true) return { bg: 'rgba(74,124,89,0.12)', color: '#4A7C59', label: '승인 완료' }
-    if (approved === false) return { bg: 'rgba(198,160,82,0.12)', color: '#8B6914', label: '승인 대기' }
-    return { bg: 'rgba(198,160,82,0.12)', color: '#8B6914', label: '승인 대기' }
+    if (approved === true) return { bg: 'rgba(74,124,89,0.12)', color: '#4A7C59', label: '완료' }
+    if (approved === false) return { bg: 'rgba(198,160,82,0.12)', color: '#8B6914', label: '대기' }
+    return { bg: 'rgba(198,160,82,0.12)', color: '#8B6914', label: '대기' }
   }
 
   return (
