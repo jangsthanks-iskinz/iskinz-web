@@ -143,7 +143,7 @@ export function HomeLoginForm() {
 
       {/* 비밀번호 찾기 */}
       <div className="text-center pt-1">
-        <Link href="/login" className="text-xs no-underline" style={{ color: '#9CA3AF' }}>
+        <Link href="/forgot-password" className="text-xs no-underline" style={{ color: '#9CA3AF' }}>
           비밀번호 찾기
         </Link>
       </div>
