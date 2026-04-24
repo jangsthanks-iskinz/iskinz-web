@@ -9,7 +9,7 @@ import { createClient } from '@/lib/supabase/server'
 export const metadata: Metadata = {
   title: { default: `ISKINZ — ${SITE.tagline}`, template: '%s | ISKINZ' },
   description: SITE.description,
-  keywords: ['아이스킨즈', 'ISKINZ', '메디컬 에스테틱', '스킨부스터', 'Fillmed', '의료기기', 'B2B'],
+  keywords: ['스킨케어', '메디컬 스킨케어', '아이스킨즈', 'ISKINZ', '피부과 화장품', '세럼', '앰플'],
   openGraph: {
     type: 'website',
     locale: 'ko_KR',
@@ -36,15 +36,13 @@ export default async function RootLayout({ children }: { children: React.ReactNo
       isApproved = profile?.approved === true
     }
   } catch {}
+
   return (
     <html lang="ko" suppressHydrationWarning>
       <head>
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600&display=swap" rel="stylesheet" />
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css" />
       </head>
-      <body style={{ fontFamily: "'Pretendard', 'Apple SD Gothic Neo', sans-serif" }}>
+      <body>
         <Navbar isApproved={isApproved} />
         <CartSidebar />
         <main>{children}</main>
