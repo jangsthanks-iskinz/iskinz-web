@@ -104,7 +104,7 @@ export default function SignupPage() {
     fetch('/api/auth/signup-notify', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ name: form.name, email: form.email }),
+      body: JSON.stringify({ name: form.name, email: form.email, hospitalName: form.hospitalName, phone: form.phone, memberType: form.memberType, birthDate: form.birthDate, licenseNumber: form.licenseNumber, businessNumber: form.businessNumber, postcode: form.postcode, address: form.address, addressDetail: form.addressDetail }),
     }).catch(() => null)
 
     setDone(true)

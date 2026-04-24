@@ -1,9 +1,9 @@
 import { createServiceClient } from '@/lib/supabase/server'
+import Link from 'next/link'
 
 export default async function AdminDashboard() {
   const supabase = createServiceClient()
 
-  // Stats
   const [
     { count: totalUsers },
     { count: pendingUsers },
@@ -11,7 +11,7 @@ export default async function AdminDashboard() {
     { data: recentOrders },
   ] = await Promise.all([
     supabase.from('profiles').select('*', { count: 'exact', head: true }),
-    supabase.from('profiles').select('*', { count: 'exact', head: true }).eq('approved', false),
+    supabase.from('profiles').select('*', { count: 'exact', head: true }).or('approved.eq.false,approved.is.null'),
     supabase.from('orders').select('*', { count: 'exact', head: true }),
     supabase.from('orders')
       .select('*, profiles(name, hospital_name)')
@@ -20,9 +20,9 @@ export default async function AdminDashboard() {
   ])
 
   const stats = [
-    { label: '전체 회원', value: totalUsers ?? 0, icon: '👥', color: 'var(--navy)' },
-    { label: '승인 대기 회원', value: pendingUsers ?? 0, icon: '⏳', color: '#C6A052', alert: (pendingUsers ?? 0) > 0 },
-    { label: '전체 주문', value: totalOrders ?? 0, icon: '📦', color: 'var(--navy)' },
+    { label: '전체 회원', value: totalUsers ?? 0, icon: '👥', color: 'var(--navy)', href: '/admin/users' },
+    { label: '승인 대기 회원', value: pendingUsers ?? 0, icon: '⏳', color: '#C6A052', alert: (pendingUsers ?? 0) > 0, href: '/admin/users?status=pending' },
+    { label: '전체 주문', value: totalOrders ?? 0, icon: '📦', color: 'var(--navy)', href: '/admin/orders' },
   ]
 
   return (
@@ -32,25 +32,25 @@ export default async function AdminDashboard() {
         <p className="text-sm" style={{ color: 'var(--text-2)' }}>ISKINZ 관리자 대시보드</p>
       </div>
 
-      {/* Stats */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
         {stats.map(s => (
-          <div key={s.label} className="bg-white border p-6 relative" style={{ borderColor: s.alert ? '#C6A052' : '#E8E4DD', borderLeftWidth: s.alert ? 4 : 1 }}>
-            <div className="flex items-start justify-between">
-              <div>
-                <p className="text-xs font-bold tracking-[1px] uppercase mb-2" style={{ color: 'var(--text-3)', fontFamily: 'Montserrat, sans-serif' }}>{s.label}</p>
-                <p className="text-4xl font-bold" style={{ color: s.color, fontFamily: 'Montserrat, sans-serif' }}>{s.value}</p>
+          <Link key={s.label} href={s.href} className="no-underline block">
+            <div className="bg-white border p-6 relative cursor-pointer hover:shadow-md transition-shadow" style={{ borderColor: s.alert ? '#C6A052' : '#E8E4DD', borderLeftWidth: s.alert ? 4 : 1 }}>
+              <div className="flex items-start justify-between">
+                <div>
+                  <p className="text-xs font-bold tracking-[1px] uppercase mb-2" style={{ color: 'var(--text-3)', fontFamily: 'Montserrat, sans-serif' }}>{s.label}</p>
+                  <p className="text-4xl font-bold" style={{ color: s.color, fontFamily: 'Montserrat, sans-serif' }}>{s.value}</p>
+                </div>
+                <span className="text-2xl">{s.icon}</span>
               </div>
-              <span className="text-2xl">{s.icon}</span>
+              {s.alert && (
+                <p className="text-xs mt-2 font-semibold" style={{ color: '#C6A052' }}>⚠ 승인 처리 필요</p>
+              )}
             </div>
-            {s.alert && (
-              <p className="text-xs mt-2 font-semibold" style={{ color: '#C6A052' }}>⚠ 승인 처리 필요</p>
-            )}
-          </div>
+          </Link>
         ))}
       </div>
 
-      {/* Recent Orders */}
       <div className="bg-white border" style={{ borderColor: '#E8E4DD' }}>
         <div className="px-6 py-4 border-b flex items-center justify-between" style={{ borderColor: '#E8E4DD' }}>
           <h2 className="font-bold text-sm" style={{ color: 'var(--navy)', fontFamily: 'Montserrat, sans-serif' }}>최근 주문</h2>
@@ -75,14 +75,9 @@ export default async function AdminDashboard() {
                   <td className="px-6 py-4" style={{ color: 'var(--text-2)' }}>{o.profiles?.hospital_name ?? '-'}</td>
                   <td className="px-6 py-4 font-semibold" style={{ color: 'var(--navy)' }}>₩{o.total_amount?.toLocaleString()}</td>
                   <td className="px-6 py-4">
-                    <span className="inline-block text-[10px] font-bold tracking-[1px] px-2.5 py-1"
-                      style={{ background: 'var(--navy)', color: 'white', fontFamily: 'Montserrat, sans-serif' }}>
-                      {o.status}
-                    </span>
+                    <span className="inline-block text-[10px] font-bold tracking-[1px] px-2.5 py-1" style={{ background: 'var(--navy)', color: 'white', fontFamily: 'Montserrat, sans-serif' }}>{o.status}</span>
                   </td>
-                  <td className="px-6 py-4 text-xs" style={{ color: 'var(--text-3)' }}>
-                    {new Date(o.created_at).toLocaleDateString('ko-KR')}
-                  </td>
+                  <td className="px-6 py-4 text-xs" style={{ color: 'var(--text-3)' }}>{new Date(o.created_at).toLocaleDateString('ko-KR')}</td>
                 </tr>
               ))}
             </tbody>
