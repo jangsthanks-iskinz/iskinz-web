@@ -57,14 +57,14 @@ export default function AdminProductsPage() {
                   </td>
                   <td className="px-5 py-4">
                     {p.image_url ? (
-                      <img src={p.image_url} alt={p.name} style={{ width: 48, height: 48, objectFit: 'cover', borderRadius: 6, border: '1px solid #E8E4DD' }} />
+                      <img src={p.image_url} alt={p.name_ko} style={{ width: 48, height: 48, objectFit: 'cover', borderRadius: 6, border: '1px solid #E8E4DD' }} />
                     ) : (
                       <div style={{ width: 48, height: 48, background: '#F8F6F2', borderRadius: 6, border: '1px solid #E8E4DD', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 20 }}>📦</div>
                     )}
                   </td>
                   <td className="px-5 py-4 font-semibold" style={{ color: 'var(--navy)' }}>
-                    {p.name}
-                    {p.name_en && <span className="block text-xs font-normal mt-0.5" style={{ color: 'var(--text-3)' }}>{p.name_en}</span>}
+                    {p.name_ko}
+                    {p.name_ko_en && <span className="block text-xs font-normal mt-0.5" style={{ color: 'var(--text-3)' }}>{p.name_ko_en}</span>}
                   </td>
                   <td className="px-5 py-4 text-xs" style={{ color: 'var(--text-2)' }}>{p.categories?.name ?? '-'}</td>
                   <td className="px-5 py-4 text-xs" style={{ color: 'var(--text-2)' }}>
