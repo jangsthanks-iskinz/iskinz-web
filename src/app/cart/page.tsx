@@ -1,5 +1,5 @@
 'use client'
-import { useState, useEffect } from 'react'
+import { useState, useEffect, Suspense } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import Link from 'next/link'
 
@@ -7,8 +7,9 @@ const C = { charcoal: '#1e2025', silver: '#c8cdd4', silverLight: '#e8ebee', silv
 const PRETENDARD = "'Pretendard', 'Apple SD Gothic Neo', sans-serif"
 const SERIF = 'Cormorant Garamond, Georgia, serif'
 
-export default function CartPage() {
+function CartContent() {
   const router = useRouter()
+  const searchParams = useSearchParams()
   const [items, setItems] = useState<any[]>([])
   const [selected, setSelected] = useState<Set<string>>(new Set())
   const [loading, setLoading] = useState(true)
@@ -23,8 +24,6 @@ export default function CartPage() {
     }
     setLoading(false)
   }
-
-  const searchParams = useSearchParams()
 
   useEffect(() => {
     const addId = searchParams.get('add')
@@ -79,7 +78,6 @@ export default function CartPage() {
   return (
     <div style={{ background: C.offWhite, minHeight: '100vh', paddingTop: 100 }}>
       <div className="container mx-auto px-6 py-16 max-w-4xl">
-
         <h1 style={{ fontFamily: SERIF, fontSize: '2rem', fontWeight: 400, color: C.charcoal, marginBottom: 32 }}>장바구니</h1>
 
         {items.length === 0 ? (
@@ -89,106 +87,7 @@ export default function CartPage() {
           </div>
         ) : (
           <>
-            {/* 상품 테이블 */}
             <div style={{ background: 'white', border: '1px solid #E8E4DD', borderRadius: 12, overflow: 'hidden', marginBottom: 24 }}>
-              {/* 테이블 헤더 */}
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '16px 24px', borderBottom: '1px solid #E8E4DD', background: '#F8F6F2' }}>
-                <label style={{ display: 'flex', alignItems: 'center', gap: 8, fontFamily: PRETENDARD, fontSize: 13, fontWeight: 600, color: C.char
-mkdir -p /Users/young/out/dpl_GWi79qDD8ATRYcXHi32ns32Ei8EB/source/src/app/cart && cat > /Users/young/out/dpl_GWi79qDD8ATRYcXHi32ns32Ei8EB/source/src/app/cart/page.tsx << 'ENDOFFILE'
-'use client'
-import { useState, useEffect } from 'react'
-import { useRouter, useSearchParams } from 'next/navigation'
-import Link from 'next/link'
-
-const C = { charcoal: '#1e2025', silver: '#c8cdd4', silverLight: '#e8ebee', silverDark: '#8a9099', offWhite: '#f5f4f1', accent: '#4a6fa5' }
-const PRETENDARD = "'Pretendard', 'Apple SD Gothic Neo', sans-serif"
-const SERIF = 'Cormorant Garamond, Georgia, serif'
-
-export default function CartPage() {
-  const router = useRouter()
-  const [items, setItems] = useState<any[]>([])
-  const [selected, setSelected] = useState<Set<string>>(new Set())
-  const [loading, setLoading] = useState(true)
-  const [ordering, setOrdering] = useState(false)
-
-  async function fetchCart() {
-    const res = await fetch('/api/cart')
-    const { data } = await res.json()
-    if (data) {
-      setItems(data)
-      setSelected(new Set(data.map((i: any) => i.product_id)))
-    }
-    setLoading(false)
-  }
-
-  const searchParams = useSearchParams()
-
-  useEffect(() => {
-    const addId = searchParams.get('add')
-    if (addId) {
-      fetch('/api/cart', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ product_id: addId, quantity: 1 }) })
-        .then(() => fetchCart())
-    } else {
-      fetchCart()
-    }
-  }, [])
-
-  async function handleDelete(productIds: string[]) {
-    await Promise.all(productIds.map(pid =>
-      fetch('/api/cart', { method: 'DELETE', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ product_id: pid }) })
-    ))
-    fetchCart()
-  }
-
-  async function handleQuantityChange(productId: string, quantity: number) {
-    if (quantity < 1) return
-    await fetch('/api/cart', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ product_id: productId, quantity }) })
-    fetchCart()
-  }
-
-  async function handleOrder(orderItems: any[]) {
-    if (orderItems.length === 0) return
-    setOrdering(true)
-    const total_amount = orderItems.reduce((sum, i) => sum + (i.products.sale_price || i.products.price) * i.quantity, 0)
-    const res = await fetch('/api/orders', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        items: orderItems.map(i => ({
-          product_id: i.product_id,
-          product_name: i.products.name_ko,
-          price: i.products.sale_price || i.products.price,
-          quantity: i.quantity,
-        })),
-        total_amount,
-      }),
-    })
-    const { ok, order_number } = await res.json()
-    if (ok) router.push(`/cart/complete?order=${order_number}`)
-    setOrdering(false)
-  }
-
-  const selectedItems = items.filter(i => selected.has(i.product_id))
-  const totalPrice = selectedItems.reduce((sum, i) => sum + (i.products.sale_price || i.products.price || 0) * i.quantity, 0)
-
-  if (loading) return <div style={{ paddingTop: 120, textAlign: 'center', fontFamily: PRETENDARD, color: C.silverDark }}>로딩 중...</div>
-
-  return (
-    <div style={{ background: C.offWhite, minHeight: '100vh', paddingTop: 100 }}>
-      <div className="container mx-auto px-6 py-16 max-w-4xl">
-
-        <h1 style={{ fontFamily: SERIF, fontSize: '2rem', fontWeight: 400, color: C.charcoal, marginBottom: 32 }}>장바구니</h1>
-
-        {items.length === 0 ? (
-          <div style={{ background: 'white', border: '1px solid #E8E4DD', borderRadius: 12, padding: 60, textAlign: 'center' }}>
-            <p style={{ fontFamily: PRETENDARD, fontSize: 15, color: C.silverDark, marginBottom: 20 }}>장바구니가 비어있습니다.</p>
-            <Link href="/products" style={{ fontFamily: PRETENDARD, fontSize: 14, color: C.accent, textDecoration: 'none' }}>상품 보러가기 →</Link>
-          </div>
-        ) : (
-          <>
-            {/* 상품 테이블 */}
-            <div style={{ background: 'white', border: '1px solid #E8E4DD', borderRadius: 12, overflow: 'hidden', marginBottom: 24 }}>
-              {/* 테이블 헤더 */}
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '16px 24px', borderBottom: '1px solid #E8E4DD', background: '#F8F6F2' }}>
                 <label style={{ display: 'flex', alignItems: 'center', gap: 8, fontFamily: PRETENDARD, fontSize: 13, fontWeight: 600, color: C.charcoal, cursor: 'pointer' }}>
                   <input type="checkbox"
@@ -197,15 +96,12 @@ export default function CartPage() {
                   />
                   전체 선택 ({selected.size}/{items.length})
                 </label>
-                <button
-                  onClick={() => handleDelete([...selected])}
-                  disabled={selected.size === 0}
+                <button onClick={() => handleDelete([...selected])} disabled={selected.size === 0}
                   style={{ padding: '6px 14px', background: 'rgba(184,74,74,0.1)', color: '#B84A4A', border: '1px solid rgba(184,74,74,0.3)', borderRadius: 6, fontSize: 12, fontWeight: 600, fontFamily: PRETENDARD, cursor: 'pointer', opacity: selected.size === 0 ? 0.4 : 1 }}>
                   선택 삭제
                 </button>
               </div>
 
-              {/* 상품 목록 */}
               {items.map(item => {
                 const price = item.products.sale_price || item.products.price || 0
                 const isSelected = selected.has(item.product_id)
@@ -247,22 +143,17 @@ export default function CartPage() {
               })}
             </div>
 
-            {/* 하단 요약 + 버튼 */}
             <div style={{ background: 'white', border: '1px solid #E8E4DD', borderRadius: 12, padding: 24 }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 20 }}>
                 <span style={{ fontFamily: PRETENDARD, fontSize: 15, color: C.silverDark }}>선택 상품 합계</span>
                 <span style={{ fontFamily: PRETENDARD, fontSize: 22, fontWeight: 700, color: C.charcoal }}>{totalPrice.toLocaleString()}원</span>
               </div>
               <div style={{ display: 'flex', gap: 12 }}>
-                <button
-                  onClick={() => handleOrder(selectedItems)}
-                  disabled={ordering || selectedItems.length === 0}
-                  style={{ flex: 1, padding: '14px', background: 'white', color: C.charcoal, border: `1px solid #E8E4DD`, borderRadius: 6, fontFamily: PRETENDARD, fontSize: 14, fontWeight: 700, cursor: 'pointer', opacity: selectedItems.length === 0 ? 0.4 : 1 }}>
+                <button onClick={() => handleOrder(selectedItems)} disabled={ordering || selectedItems.length === 0}
+                  style={{ flex: 1, padding: '14px', background: 'white', color: C.charcoal, border: '1px solid #E8E4DD', borderRadius: 6, fontFamily: PRETENDARD, fontSize: 14, fontWeight: 700, cursor: 'pointer', opacity: selectedItems.length === 0 ? 0.4 : 1 }}>
                   {ordering ? '처리 중...' : `선택 상품 주문하기 (${selectedItems.length})`}
                 </button>
-                <button
-                  onClick={() => handleOrder(items)}
-                  disabled={ordering || items.length === 0}
+                <button onClick={() => handleOrder(items)} disabled={ordering || items.length === 0}
                   style={{ flex: 1, padding: '14px', background: C.accent, color: 'white', border: 'none', borderRadius: 6, fontFamily: PRETENDARD, fontSize: 14, fontWeight: 700, cursor: 'pointer' }}>
                   {ordering ? '처리 중...' : `전체 상품 주문하기 (${items.length})`}
                 </button>
@@ -273,4 +164,8 @@ export default function CartPage() {
       </div>
     </div>
   )
+}
+
+export default function CartPage() {
+  return <Suspense fallback={<div style={{ paddingTop: 120, textAlign: 'center' }}>로딩 중...</div>}><CartContent /></Suspense>
 }
