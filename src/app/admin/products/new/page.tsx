@@ -2,6 +2,7 @@
 import { useState, useEffect, useRef } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
+import { RichEditor } from '@/components/admin/RichEditor'
 import { createClient } from '@/lib/supabase/client'
 
 const PRETENDARD = "'Pretendard', 'Apple SD Gothic Neo', sans-serif"

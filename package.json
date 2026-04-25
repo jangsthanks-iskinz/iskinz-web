@@ -10,27 +10,35 @@
     "email": "email dev --dir src/emails --port 3001"
   },
   "dependencies": {
+    "@react-email/components": "^0.0.22",
+    "@supabase/ssr": "^0.4",
+    "@supabase/supabase-js": "^2",
+    "@tiptap/extension-color": "^3.22.4",
+    "@tiptap/extension-font-family": "^3.22.4",
+    "@tiptap/extension-image": "^3.22.4",
+    "@tiptap/extension-text-align": "^3.22.4",
+    "@tiptap/extension-text-style": "^3.22.4",
+    "@tiptap/pm": "^3.22.4",
+    "@tiptap/react": "^3.22.4",
+    "@tiptap/starter-kit": "^3.22.4",
+    "@tosspayments/payment-widget-sdk": "^0.11",
+    "nanoid": "^5",
     "next": "14.2.29",
     "react": "^18",
     "react-dom": "^18",
-    "@supabase/supabase-js": "^2",
-    "@supabase/ssr": "^0.4",
-    "@tosspayments/payment-widget-sdk": "^0.11",
-    "resend": "^3",
-    "@react-email/components": "^0.0.22",
     "react-email": "^3",
-    "zustand": "^4",
-    "nanoid": "^5"
+    "resend": "^3",
+    "zustand": "^4"
   },
   "devDependencies": {
-    "typescript": "^5",
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",
-    "tailwindcss": "^3",
-    "postcss": "^8",
     "autoprefixer": "^10",
     "eslint": "^8",
-    "eslint-config-next": "14.2.29"
+    "eslint-config-next": "14.2.29",
+    "postcss": "^8",
+    "tailwindcss": "^3",
+    "typescript": "^5"
   }
 }

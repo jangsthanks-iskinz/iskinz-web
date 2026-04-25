@@ -2,6 +2,7 @@
 import { useState, useEffect, useRef } from 'react'
 import { useRouter, useParams } from 'next/navigation'
 import Link from 'next/link'
+import { RichEditor } from '@/components/admin/RichEditor'
 import { createClient } from '@/lib/supabase/client'
 
 const PRETENDARD = "'Pretendard', 'Apple SD Gothic Neo', sans-serif"
@@ -283,9 +284,7 @@ export default function EditProductPage() {
 
           <div className="bg-white border p-6" style={{ borderColor: '#E8E4DD', borderRadius: 8 }}>
             <h2 style={{ fontFamily: 'Montserrat, sans-serif', fontSize: 13, fontWeight: 700, color: 'var(--navy)', marginBottom: 20, letterSpacing: 1 }}>상품 상세 설명</h2>
-            <textarea placeholder="상품 상세 설명을 입력해주세요."
-              value={form.content} onChange={e => handleChange('content', e.target.value)}
-              rows={10} style={{ ...inputStyle, resize: 'vertical' }} />
+            <RichEditor value={form.content} onChange={v => handleChange('content', v)} />
           </div>
 
           <div className="bg-white border" style={{ borderColor: '#E8E4DD', borderRadius: 8, overflow: 'hidden' }}>
