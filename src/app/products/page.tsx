@@ -41,7 +41,7 @@ export default async function ProductsPage({ searchParams }: { searchParams: { c
     .from('products')
     .select('*, categories(name, name_en)')
     .eq('is_active', true)
-    .order('product_code', { ascending: true })
+    .order('sort_order', { ascending: false }).order('created_at', { ascending: false })
 
   if (categoryIds.length > 0) {
     productQuery = productQuery.in('category_id', categoryIds)
