@@ -99,10 +99,10 @@ export default async function ProductDetailPage({ params }: { params: { id: stri
                 style={{ flex: 1, padding: '14px 16px', background: 'white', color: C.charcoal, border: 'none', borderRadius: 6, fontFamily: PRETENDARD, fontSize: 14, fontWeight: 600, textDecoration: 'none', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                 문의하기
               </Link>
-              <button
-                style={{ flex: 1, padding: '14px 16px', background: C.accent, color: 'white', border: 'none', borderRadius: 6, fontFamily: PRETENDARD, fontSize: 14, fontWeight: 700, cursor: 'pointer' }}>
+              <Link href={`/cart?add=${p.id}`}
+                style={{ flex: 1, padding: '14px 16px', background: C.accent, color: 'white', border: 'none', borderRadius: 6, fontFamily: PRETENDARD, fontSize: 14, fontWeight: 700, textDecoration: 'none', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                 장바구니
-              </button>
+              </Link>
             </div>
           </div>
         </div>
