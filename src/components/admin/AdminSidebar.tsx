@@ -6,6 +6,7 @@ import { createClient } from '@/lib/supabase/client'
 const navItems = [
   { href: '/admin',              icon: '📊', label: 'Dashboard' },
   { href: '/admin/users',        icon: '👥', label: '회원 관리' },
+  { href: '/admin/products',     icon: '🛍️', label: '상품 관리' },
   { href: '/admin/orders',       icon: '📦', label: '주문 관리' },
   { href: '/admin/inquiries',    icon: '💬', label: '문의 관리' },
 ]
