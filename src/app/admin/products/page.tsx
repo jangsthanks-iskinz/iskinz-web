@@ -8,14 +8,16 @@ const PRETENDARD = "'Pretendard', 'Apple SD Gothic Neo', sans-serif"
 export default function AdminProductsPage() {
   const router = useRouter()
   const [products, setProducts] = useState<any[]>([])
+  const [allCategories, setAllCategories] = useState<any[]>([])
 
   async function fetchProducts() {
     const supabase = createClient()
-    const { data } = await supabase
-      .from('products')
-      .select('*, categories(name)')
-      .order('sort_order', { ascending: false }).order('created_at', { ascending: false })
-    if (data) setProducts(data)
+    const [{ data: productsData }, { data: catsData }] = await Promise.all([
+      supabase.from('products').select('*, categories(id, name, parent_id)').order('sort_order', { ascending: true }).order('created_at', { ascending: false }),
+      supabase.from('categories').select('*')
+    ])
+    if (productsData) setProducts(productsData)
+    if (catsData) setAllCategories(catsData)
   }
 
   useEffect(() => { fetchProducts() }, [])
@@ -30,7 +32,7 @@ export default function AdminProductsPage() {
   async function handleSortOrder(e: React.MouseEvent, id: string, currentOrder: number, direction: 'up' | 'down') {
     e.stopPropagation()
     const supabase = createClient()
-    const newOrder = direction === 'up' ? currentOrder + 1 : currentOrder - 1
+    const newOrder = direction === 'up' ? currentOrder - 1 : currentOrder + 1
     await supabase.from('products').update({ sort_order: newOrder }).eq('id', id)
     fetchProducts()
   }
@@ -53,7 +55,7 @@ export default function AdminProductsPage() {
           <table className="w-full text-sm">
             <thead>
               <tr style={{ background: '#F8F6F2' }}>
-                {['순서', 'No.', '썸네일', '상품명', '카테고리', '정가', '할인가', '재고', '상태', '등록일', '바로가기'].map(h => (
+                {['순서', '썸네일', '상품명', '카테고리', '정가', '할인가', '재고', '상태', '바로가기'].map(h => (
                   <th key={h} className="px-5 py-3 text-left text-[11px] font-bold tracking-[1px] uppercase whitespace-nowrap"
                     style={{ color: 'var(--text-3)', fontFamily: 'Montserrat, sans-serif' }}>{h}</th>
                 ))}
@@ -61,7 +63,7 @@ export default function AdminProductsPage() {
             </thead>
             <tbody>
               {products.length === 0 ? (
-                <tr><td colSpan={11} className="px-6 py-12 text-center text-sm" style={{ color: 'var(--text-3)' }}>등록된 상품이 없습니다</td></tr>
+                <tr><td colSpan={9} className="px-6 py-12 text-center text-sm" style={{ color: 'var(--text-3)' }}>등록된 상품이 없습니다</td></tr>
               ) : products.map((p: any) => (
                 <tr key={p.id}
                   onClick={() => router.push(`/admin/products/${p.id}`)}
@@ -70,16 +72,13 @@ export default function AdminProductsPage() {
                   onMouseEnter={e => (e.currentTarget.style.background = '#F8F6F2')}
                   onMouseLeave={e => (e.currentTarget.style.background = 'white')}>
                   <td className="px-3 py-4" onClick={e => e.stopPropagation()}>
-                    <div style={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
                       <button onClick={e => handleSortOrder(e, p.id, p.sort_order ?? 0, 'up')}
-                        style={{ padding: '2px 8px', background: '#F8F6F2', border: '1px solid #E8E4DD', borderRadius: 4, cursor: 'pointer', fontSize: 11 }}>▲</button>
-                      <span style={{ textAlign: 'center', fontSize: 11, fontWeight: 700, color: 'var(--text-3)' }}>{p.sort_order ?? 0}</span>
+                        style={{ padding: '3px 7px', background: '#F8F6F2', border: '1px solid #E8E4DD', borderRadius: 4, cursor: 'pointer', fontSize: 11 }}>▲</button>
+                      <span style={{ fontSize: 12, fontWeight: 700, color: 'var(--text-3)', minWidth: 20, textAlign: 'center' }}>{p.sort_order ?? 0}</span>
                       <button onClick={e => handleSortOrder(e, p.id, p.sort_order ?? 0, 'down')}
-                        style={{ padding: '2px 8px', background: '#F8F6F2', border: '1px solid #E8E4DD', borderRadius: 4, cursor: 'pointer', fontSize: 11 }}>▼</button>
+                        style={{ padding: '3px 7px', background: '#F8F6F2', border: '1px solid #E8E4DD', borderRadius: 4, cursor: 'pointer', fontSize: 11 }}>▼</button>
                     </div>
-                  </td>
-                  <td className="px-5 py-4 text-xs font-bold" style={{ color: 'var(--text-3)', fontFamily: 'Montserrat, sans-serif' }}>
-                    #{p.product_code}
                   </td>
                   <td className="px-5 py-4">
                     {p.image_url ? (
@@ -92,7 +91,18 @@ export default function AdminProductsPage() {
                     {p.name_ko}
                     {p.name_en && <span className="block text-xs font-normal mt-0.5" style={{ color: 'var(--text-3)' }}>{p.name_en}</span>}
                   </td>
-                  <td className="px-5 py-4 text-xs" style={{ color: 'var(--text-2)' }}>{p.categories?.name ?? '-'}</td>
+                  <td className="px-5 py-4 text-xs" style={{ color: 'var(--text-2)' }}>
+                    {p.categories ? (
+                      <>
+                        {p.categories.parent_id && (
+                          <span className="block" style={{ color: 'var(--text-3)', fontSize: 11 }}>
+                            {allCategories.find((c: any) => c.id === p.categories.parent_id)?.name ?? ''}
+                          </span>
+                        )}
+                        <span>{p.categories.name}</span>
+                      </>
+                    ) : '-'}
+                  </td>
                   <td className="px-5 py-4 text-xs" style={{ color: 'var(--text-2)' }}>
                     {p.price ? `₩${p.price.toLocaleString()}` : '-'}
                   </td>
@@ -117,9 +127,7 @@ export default function AdminProductsPage() {
                       <option value="false">숨김</option>
                     </select>
                   </td>
-                  <td className="px-5 py-4 text-xs" style={{ color: 'var(--text-3)' }}>
-                    {new Date(p.created_at).toLocaleDateString('ko-KR')}
-                  </td>
+
                   {/* 5번: 바로가기 */}
                   <td className="px-5 py-4" onClick={e => e.stopPropagation()}>
                     <button
