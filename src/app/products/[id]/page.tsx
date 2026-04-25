@@ -96,11 +96,11 @@ export default async function ProductDetailPage({ params }: { params: { id: stri
             {/* 버튼 영역 */}
             <div style={{ display: 'flex', gap: 12 }}>
               <Link href={`/contact?productName=${encodeURIComponent(p.name_ko)}`}
-                style={{ flex: 1, padding: '14px 16px', background: 'white', color: C.charcoal, border: '1px solid #E8E4DD', borderRadius: 6, fontFamily: PRETENDARD, fontSize: 14, fontWeight: 600, textDecoration: 'none', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                style={{ flex: 1, padding: '14px 16px', background: 'white', color: C.charcoal, border: 'none', borderRadius: 6, fontFamily: PRETENDARD, fontSize: 14, fontWeight: 600, textDecoration: 'none', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                 문의하기
               </Link>
               <button
-                style={{ flex: 1, padding: '14px 24px', background: C.accent, color: 'white', border: '1px solid transparent', borderRadius: 6, fontFamily: PRETENDARD, fontSize: 14, fontWeight: 700, cursor: 'pointer' }}>
+                style={{ flex: 1, padding: '14px 24px', background: C.accent, color: 'white', border: 'none', borderRadius: 6, fontFamily: PRETENDARD, fontSize: 14, fontWeight: 700, cursor: 'pointer' }}>
                 장바구니
               </button>
             </div>
