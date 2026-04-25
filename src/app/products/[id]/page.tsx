@@ -111,7 +111,23 @@ export default async function ProductDetailPage({ params }: { params: { id: stri
 
         {/* 상품 상세 설명 */}
         {p.content && (
-          <div className="bg-white border mb-6" style={{ borderColor: '#E8E4DD', borderRadius: 12, padding: 32 }}>
+          <div className="bg-white border mb-6 product-content" style={{ borderColor: '#E8E4DD', borderRadius: 12, padding: 32 }}>
+            <style>{`
+              .product-content h1 { font-size: 2em; font-weight: 700; margin: 0.5em 0; }
+              .product-content h2 { font-size: 1.5em; font-weight: 700; margin: 0.5em 0; }
+              .product-content h3 { font-size: 1.2em; font-weight: 700; margin: 0.5em 0; }
+              .product-content p { margin: 0.5em 0; line-height: 1.8; }
+              .product-content strong { font-weight: 700; }
+              .product-content em { font-style: italic; }
+              .product-content s { text-decoration: line-through; }
+              .product-content ul { padding-left: 1.5em; list-style: disc; margin: 0.5em 0; }
+              .product-content ol { padding-left: 1.5em; list-style: decimal; margin: 0.5em 0; }
+              .product-content li { margin: 0.25em 0; }
+              .product-content img { max-width: 100%; border-radius: 6px; margin: 8px 0; }
+              .product-content hr { border: none; border-top: 1px solid #E8E4DD; margin: 16px 0; }
+              .product-content [style*="text-align: center"] { text-align: center; }
+              .product-content [style*="text-align: right"] { text-align: right; }
+            `}</style>
             <div style={{ fontFamily: PRETENDARD, fontSize: 14, lineHeight: 1.8, color: C.charcoal }}
               dangerouslySetInnerHTML={{ __html: p.content }} />
           </div>
