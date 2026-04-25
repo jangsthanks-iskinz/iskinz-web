@@ -260,10 +260,10 @@ function ApprovedPage() {
 
           <FadeIn>
             <div className="text-center mt-12">
-              <a href="#contact"
+              <a href="/products"
                 className="inline-flex items-center px-8 py-3.5 text-[11px] no-underline transition-all hover:-translate-y-0.5"
                 style={{ fontFamily: CONDENSED, letterSpacing: '0.25em', textTransform: 'uppercase', background: 'transparent', color: C.charcoal, border: `1px solid rgba(30,32,37,0.35)` }}>
-                전체 제품 및 가격 문의하기
+                전체 제품 보기
               </a>
             </div>
           </FadeIn>

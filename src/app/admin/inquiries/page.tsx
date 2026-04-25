@@ -13,7 +13,7 @@ export default async function AdminInquiriesPage({ searchParams }: { searchParam
   const { count: totalCount } = await supabase.from('inquiries').select('*', { count: 'exact', head: true })
   const { count: unreadCount } = await supabase.from('inquiries').select('*', { count: 'exact', head: true }).eq('status', 'unread')
 
-  const types = ['all', 'NCTF 135HA 구매 문의', '더말필러 구매 문의', '의료기기 문의', '병원 납품 상담', '브랜드 파트너십', 'Academy 신청', '기타 문의']
+  const types = ['all', '상품 문의', 'NCTF 135HA 구매 문의', '더말필러 구매 문의', '의료기기 문의', '병원 납품 상담', '브랜드 파트너십', 'Academy 신청', '기타 문의']
 
   return (
     <div className="p-8">

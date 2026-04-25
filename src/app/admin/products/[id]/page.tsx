@@ -173,10 +173,16 @@ export default function EditProductPage() {
           <Link href="/admin/products" className="text-sm no-underline" style={{ color: 'var(--text-2)' }}>← 상품 목록</Link>
           <h1 className="text-2xl font-bold" style={{ color: 'var(--navy)', fontFamily: 'Montserrat, sans-serif' }}>상품 수정</h1>
         </div>
-        <button onClick={handleDelete}
-          style={{ padding: '8px 16px', background: 'rgba(184,74,74,0.1)', color: '#B84A4A', border: '1px solid rgba(184,74,74,0.3)', borderRadius: 6, fontSize: 13, fontWeight: 700, fontFamily: PRETENDARD, cursor: 'pointer' }}>
-          상품 삭제
-        </button>
+<div style={{ display: 'flex', gap: 8 }}>
+          <button onClick={() => window.open(`/products/${id}`, '_blank')}
+            style={{ padding: '8px 16px', background: 'rgba(74,111,165,0.1)', color: '#4a6fa5', border: '1px solid rgba(74,111,165,0.3)', borderRadius: 6, fontSize: 13, fontWeight: 700, fontFamily: PRETENDARD, cursor: 'pointer' }}>
+            미리보기 →
+          </button>
+          <button onClick={handleDelete}
+            style={{ padding: '8px 16px', background: 'rgba(184,74,74,0.1)', color: '#B84A4A', border: '1px solid rgba(184,74,74,0.3)', borderRadius: 6, fontSize: 13, fontWeight: 700, fontFamily: PRETENDARD, cursor: 'pointer' }}>
+            상품 삭제
+          </button>
+        </div>
       </div>
 
       <form onSubmit={handleSubmit}>
@@ -317,6 +323,10 @@ export default function EditProductPage() {
           )}
 
           <div style={{ display: 'flex', gap: 12, justifyContent: 'flex-end' }}>
+            <button type="button" onClick={() => window.open(`/products/${id}`, '_blank')}
+              style={{ padding: '11px 24px', background: 'rgba(74,111,165,0.1)', color: '#4a6fa5', border: '1px solid rgba(74,111,165,0.3)', borderRadius: 6, fontSize: 14, fontWeight: 700, fontFamily: PRETENDARD, cursor: 'pointer' }}>
+              미리보기 →
+            </button>
             <Link href="/admin/products"
               style={{ padding: '11px 24px', border: '1px solid #E8E4DD', borderRadius: 6, fontSize: 14, fontFamily: PRETENDARD, color: '#8a9099', textDecoration: 'none' }}>
               취소

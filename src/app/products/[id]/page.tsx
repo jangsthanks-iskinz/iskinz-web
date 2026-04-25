@@ -12,7 +12,6 @@ const SERIF = 'Cormorant Garamond, Georgia, serif'
 const PRETENDARD = "'Pretendard', 'Apple SD Gothic Neo', sans-serif"
 
 export default async function ProductDetailPage({ params }: { params: { id: string } }) {
-  // 승인 회원만 접근
   const supabase = createClient()
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) redirect('/')
@@ -40,12 +39,10 @@ export default async function ProductDetailPage({ params }: { params: { id: stri
     <div style={{ background: C.offWhite, minHeight: '100vh', paddingTop: 100 }}>
       <div className="container mx-auto px-6 py-16 max-w-5xl">
 
-        {/* 뒤로가기 */}
         <Link href="/products" style={{ fontFamily: PRETENDARD, fontSize: 13, color: C.silverDark, textDecoration: 'none', display: 'inline-block', marginBottom: 32 }}>
           ← 상품 목록으로
         </Link>
 
-        {/* 상품 상단 */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 mb-16">
           {/* 썸네일 */}
           <div style={{ background: 'white', border: '1px solid #E8E4DD', borderRadius: 12, overflow: 'hidden', aspectRatio: '1' }}>
@@ -96,25 +93,25 @@ export default async function ProductDetailPage({ params }: { params: { id: stri
               ) : null}
             </div>
 
-            {/* 재고 */}
-            <div style={{ marginBottom: 24 }}>
-              <span style={{ fontFamily: PRETENDARD, fontSize: 13, color: p.stock_qty === 0 ? '#B84A4A' : '#4A7C59', fontWeight: 600 }}>
-                {p.stock_qty === 0 ? '품절' : `재고 ${p.stock_qty}개`}
-              </span>
+            {/* 버튼 영역 */}
+            <div style={{ display: 'flex', gap: 12 }}>
+              {/* 장바구니 - 강조 */}
+              <button
+                style={{ flex: 2, padding: '14px 24px', background: C.accent, color: 'white', border: 'none', borderRadius: 6, fontFamily: PRETENDARD, fontSize: 15, fontWeight: 700, cursor: 'pointer' }}>
+                🛒 장바구니 담기
+              </button>
+              {/* 상품 문의 */}
+              <Link href={`/#contact?productName=${encodeURIComponent(p.name_ko)}`}
+                style={{ flex: 1, padding: '14px 16px', background: 'white', color: C.charcoal, border: `1px solid #E8E4DD`, borderRadius: 6, fontFamily: PRETENDARD, fontSize: 14, fontWeight: 600, textDecoration: 'none', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                상품 문의
+              </Link>
             </div>
-
-            {/* 주문 문의 버튼 */}
-            <a href="#contact"
-              style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', padding: '14px 32px', background: C.charcoal, color: C.silverLight, fontFamily: CONDENSED, fontSize: 12, letterSpacing: '0.25em', textTransform: 'uppercase', textDecoration: 'none', borderRadius: 6 }}>
-              주문 문의하기
-            </a>
           </div>
         </div>
 
         {/* 상품 상세 설명 */}
         {p.content && (
           <div className="bg-white border mb-6" style={{ borderColor: '#E8E4DD', borderRadius: 12, padding: 32 }}>
-            <h2 style={{ fontFamily: SERIF, fontSize: '1.5rem', fontWeight: 400, color: C.charcoal, marginBottom: 24 }}>상품 상세 설명</h2>
             <div style={{ fontFamily: PRETENDARD, fontSize: 14, lineHeight: 1.8, color: C.charcoal }}
               dangerouslySetInnerHTML={{ __html: p.content }} />
           </div>

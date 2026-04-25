@@ -1,5 +1,6 @@
 'use client'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
+import { useSearchParams } from 'next/navigation'
 import { FadeIn } from '@/components/ui/FadeIn'
 import { SITE } from '@/constants/site'
 
@@ -9,7 +10,15 @@ const SERIF     = 'Cormorant Garamond, Georgia, serif'
 export function ContactSection() {
   const [loading, setLoading] = useState(false)
   const [success, setSuccess] = useState(false)
-  const [form, setForm] = useState({ name: '', phone: '', email: '', inquiryType: '', message: '' })
+  const [form, setForm] = useState({ name: '', phone: '', email: '', inquiryType: '', message: '', productName: '' })
+  const searchParams = useSearchParams()
+
+  useEffect(() => {
+    const productName = searchParams.get('productName')
+    if (productName) {
+      setForm(v => ({ ...v, inquiryType: '상품 문의', productName, message: `[상품 문의] ${productName}\n\n` }))
+    }
+  }, [])
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
@@ -150,7 +159,7 @@ export function ContactSection() {
                       style={{ borderColor: '#d8dce2', background: '#f5f4f1', borderRadius: 0 }}
                     >
                       <option value="">선택해 주세요</option>
-                      {['NCTF 135HA 구매 문의', '더말필러 구매 문의', '의료기기 문의', '병원 납품 상담', '브랜드 파트너십', 'Academy 신청', '기타 문의'].map(o => (
+                      {['상품 문의', 'NCTF 135HA 구매 문의', '더말필러 구매 문의', '의료기기 문의', '병원 납품 상담', '브랜드 파트너십', 'Academy 신청', '기타 문의'].map(o => (
                         <option key={o}>{o}</option>
                       ))}
                     </select>

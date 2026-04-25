@@ -12,21 +12,30 @@ const SERIF = 'Cormorant Garamond, Georgia, serif'
 const PRETENDARD = "'Pretendard', 'Apple SD Gothic Neo', sans-serif"
 
 export default async function ProductsPage({ searchParams }: { searchParams: { category?: string } }) {
-  // 승인 회원만 접근 가능
   const supabase = createClient()
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) redirect('/')
   const { data: profile } = await supabase.from('profiles').select('approved').eq('id', user.id).single()
   if (!profile?.approved) redirect('/')
 
-  // 상품 + 카테고리 데이터
   const service = createServiceClient()
-  const { data: categories } = await service
+
+  // 상위 카테고리 + 하위 카테고리 모두 가져오기
+  const { data: allCategories } = await service
     .from('categories')
     .select('*')
     .eq('is_active', true)
-    .is('parent_id', null)
     .order('sort_order')
+
+  const parentCategories = allCategories?.filter(c => !c.parent_id) ?? []
+
+  // 선택한 카테고리의 하위 카테고리 ID들도 포함
+  let categoryIds: string[] = []
+  if (searchParams.category) {
+    categoryIds = [searchParams.category]
+    const children = allCategories?.filter(c => c.parent_id === searchParams.category) ?? []
+    categoryIds = [...categoryIds, ...children.map(c => c.id)]
+  }
 
   let productQuery = service
     .from('products')
@@ -34,8 +43,8 @@ export default async function ProductsPage({ searchParams }: { searchParams: { c
     .eq('is_active', true)
     .order('product_code', { ascending: true })
 
-  if (searchParams.category) {
-    productQuery = productQuery.eq('category_id', searchParams.category)
+  if (categoryIds.length > 0) {
+    productQuery = productQuery.in('category_id', categoryIds)
   }
 
   const { data: products } = await productQuery
@@ -44,7 +53,6 @@ export default async function ProductsPage({ searchParams }: { searchParams: { c
     <div style={{ background: C.offWhite, minHeight: '100vh', paddingTop: 100 }}>
       <div className="container mx-auto px-6 py-16">
 
-        {/* 헤더 */}
         <div className="text-center mb-12">
           <div className="flex items-center justify-center gap-4 mb-4">
             <div style={{ width: 28, height: 1, background: C.accent }} />
@@ -56,7 +64,7 @@ export default async function ProductsPage({ searchParams }: { searchParams: { c
           </h1>
         </div>
 
-        {/* 카테고리 필터 */}
+        {/* 카테고리 필터 - 상위 카테고리만 표시 */}
         <div className="flex flex-wrap gap-2 justify-center mb-12">
           <Link href="/products"
             style={{
@@ -68,7 +76,7 @@ export default async function ProductsPage({ searchParams }: { searchParams: { c
             }}>
             전체
           </Link>
-          {categories?.map(cat => (
+          {parentCategories.map(cat => (
             <Link key={cat.id} href={`/products?category=${cat.id}`}
               style={{
                 padding: '8px 20px', borderRadius: 4, fontSize: 13, fontFamily: PRETENDARD, fontWeight: 600,
@@ -95,7 +103,6 @@ export default async function ProductsPage({ searchParams }: { searchParams: { c
                 <Link key={p.id} href={`/products/${p.id}`} style={{ textDecoration: 'none' }}>
                   <div className="bg-white border transition-all duration-300 hover:-translate-y-1 hover:shadow-md"
                     style={{ borderColor: '#E8E4DD', borderRadius: 8, overflow: 'hidden' }}>
-                    {/* 썸네일 */}
                     <div style={{ width: '100%', aspectRatio: '1', background: '#F8F6F2', position: 'relative', overflow: 'hidden' }}>
                       {p.image_url ? (
                         <img src={p.image_url} alt={p.name_ko} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
@@ -108,8 +115,6 @@ export default async function ProductsPage({ searchParams }: { searchParams: { c
                         </div>
                       )}
                     </div>
-
-                    {/* 상품 정보 */}
                     <div style={{ padding: '16px' }}>
                       <p style={{ fontSize: 11, color: C.accent, fontFamily: CONDENSED, letterSpacing: '0.1em', marginBottom: 4 }}>
                         {(p.categories as any)?.name ?? ''}

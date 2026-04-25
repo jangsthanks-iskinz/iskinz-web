@@ -7,16 +7,25 @@ const PRETENDARD = "'Pretendard', 'Apple SD Gothic Neo', sans-serif"
 
 export default function AdminProductsPage() {
   const router = useRouter()
-  const supabase = createClient()
   const [products, setProducts] = useState<any[]>([])
 
-  useEffect(() => {
-    supabase
+  async function fetchProducts() {
+    const supabase = createClient()
+    const { data } = await supabase
       .from('products')
       .select('*, categories(name)')
       .order('product_code', { ascending: true })
-      .then(({ data }) => { if (data) setProducts(data) })
-  }, [])
+    if (data) setProducts(data)
+  }
+
+  useEffect(() => { fetchProducts() }, [])
+
+  async function toggleActive(e: React.MouseEvent, id: string, current: boolean) {
+    e.stopPropagation()
+    const supabase = createClient()
+    await supabase.from('products').update({ is_active: !current }).eq('id', id)
+    fetchProducts()
+  }
 
   return (
     <div className="p-8">
@@ -36,7 +45,7 @@ export default function AdminProductsPage() {
           <table className="w-full text-sm">
             <thead>
               <tr style={{ background: '#F8F6F2' }}>
-                {['No.', '썸네일', '상품명', '카테고리', '정가', '할인가', '재고', '상태', '등록일'].map(h => (
+                {['No.', '썸네일', '상품명', '카테고리', '정가', '할인가', '재고', '상태', '등록일', '바로가기'].map(h => (
                   <th key={h} className="px-5 py-3 text-left text-[11px] font-bold tracking-[1px] uppercase whitespace-nowrap"
                     style={{ color: 'var(--text-3)', fontFamily: 'Montserrat, sans-serif' }}>{h}</th>
                 ))}
@@ -44,7 +53,7 @@ export default function AdminProductsPage() {
             </thead>
             <tbody>
               {products.length === 0 ? (
-                <tr><td colSpan={9} className="px-6 py-12 text-center text-sm" style={{ color: 'var(--text-3)' }}>등록된 상품이 없습니다</td></tr>
+                <tr><td colSpan={10} className="px-6 py-12 text-center text-sm" style={{ color: 'var(--text-3)' }}>등록된 상품이 없습니다</td></tr>
               ) : products.map((p: any) => (
                 <tr key={p.id}
                   onClick={() => router.push(`/admin/products/${p.id}`)}
@@ -64,7 +73,7 @@ export default function AdminProductsPage() {
                   </td>
                   <td className="px-5 py-4 font-semibold" style={{ color: 'var(--navy)' }}>
                     {p.name_ko}
-                    {p.name_ko_en && <span className="block text-xs font-normal mt-0.5" style={{ color: 'var(--text-3)' }}>{p.name_ko_en}</span>}
+                    {p.name_en && <span className="block text-xs font-normal mt-0.5" style={{ color: 'var(--text-3)' }}>{p.name_en}</span>}
                   </td>
                   <td className="px-5 py-4 text-xs" style={{ color: 'var(--text-2)' }}>{p.categories?.name ?? '-'}</td>
                   <td className="px-5 py-4 text-xs" style={{ color: 'var(--text-2)' }}>
@@ -73,21 +82,34 @@ export default function AdminProductsPage() {
                   <td className="px-5 py-4 font-semibold" style={{ color: '#B84A4A' }}>
                     {p.sale_price ? `₩${p.sale_price.toLocaleString()}` : '-'}
                   </td>
-                  <td className="px-5 py-4 text-xs" style={{ color: p.stock === 0 ? '#B84A4A' : 'var(--text-2)' }}>
-                    {p.stock} {p.unit}
+                  <td className="px-5 py-4 text-xs" style={{ color: p.stock_qty === 0 ? '#B84A4A' : 'var(--text-2)' }}>
+                    {p.stock_qty ?? 0}
                   </td>
-                  <td className="px-5 py-4">
-                    <span className="inline-block text-[10px] font-bold px-2.5 py-1"
+                  {/* 4번: 상태 셀렉트박스 */}
+                  <td className="px-5 py-4" onClick={e => e.stopPropagation()}>
+                    <select
+                      value={p.is_active ? 'true' : 'false'}
+                      onChange={e => toggleActive(e as any, p.id, p.is_active)}
                       style={{
+                        padding: '4px 8px', borderRadius: 4, fontSize: 11, fontWeight: 700, cursor: 'pointer',
+                        border: 'none', fontFamily: 'Montserrat, sans-serif',
                         background: p.is_active ? 'rgba(74,124,89,0.12)' : 'rgba(184,74,74,0.12)',
                         color: p.is_active ? '#4A7C59' : '#B84A4A',
-                        fontFamily: 'Montserrat, sans-serif',
                       }}>
-                      {p.is_active ? '판매중' : '숨김'}
-                    </span>
+                      <option value="true">판매중</option>
+                      <option value="false">숨김</option>
+                    </select>
                   </td>
                   <td className="px-5 py-4 text-xs" style={{ color: 'var(--text-3)' }}>
                     {new Date(p.created_at).toLocaleDateString('ko-KR')}
+                  </td>
+                  {/* 5번: 바로가기 */}
+                  <td className="px-5 py-4" onClick={e => e.stopPropagation()}>
+                    <button
+                      onClick={() => window.open(`/products/${p.id}`, '_blank')}
+                      style={{ padding: '6px 12px', background: 'rgba(74,111,165,0.1)', color: '#4a6fa5', border: '1px solid rgba(74,111,165,0.3)', borderRadius: 6, fontSize: 11, fontWeight: 700, cursor: 'pointer', fontFamily: PRETENDARD, whiteSpace: 'nowrap' }}>
+                      보기 →
+                    </button>
                   </td>
                 </tr>
               ))}
