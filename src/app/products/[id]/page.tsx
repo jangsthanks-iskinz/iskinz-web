@@ -100,7 +100,7 @@ export default async function ProductDetailPage({ params }: { params: { id: stri
                 문의하기
               </Link>
               <button
-                style={{ flex: 1, padding: '14px 24px', background: C.accent, color: 'white', border: 'none', borderRadius: 6, fontFamily: PRETENDARD, fontSize: 14, fontWeight: 700, cursor: 'pointer' }}>
+                style={{ flex: 1, padding: '14px 16px', background: C.accent, color: 'white', border: 'none', borderRadius: 6, fontFamily: PRETENDARD, fontSize: 14, fontWeight: 700, cursor: 'pointer' }}>
                 장바구니
               </button>
             </div>
