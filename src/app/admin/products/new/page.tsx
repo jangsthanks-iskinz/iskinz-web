@@ -29,7 +29,7 @@ const ACCORDION_DEFAULTS = {
 
 export default function NewProductPage() {
   const router = useRouter()
-  const supabase = createClient()
+  
   const thumbnailRef = useRef<HTMLInputElement>(null)
   const contentImageRef = useRef<HTMLInputElement>(null)
 
@@ -89,35 +89,37 @@ export default function NewProductPage() {
 
     let image_url = null
     if (thumbnailFile) {
-      const ext = thumbnailFile.name.split('.').pop()
-      const path = `${Date.now()}.${ext}`
-      const { error: uploadErr } = await supabase.storage
-        .from('products')
-        .upload(path, thumbnailFile)
-      if (!uploadErr) {
-        const { data: urlData } = supabase.storage.from('products').getPublicUrl(path)
-        image_url = urlData.publicUrl
+      const formData = new FormData()
+      formData.append('file', thumbnailFile)
+      const uploadRes = await fetch('/api/admin/products/upload', { method: 'POST', body: formData })
+      if (uploadRes.ok) {
+        const { url } = await uploadRes.json()
+        image_url = url
       }
     }
 
-    const { error: err } = await supabase.from('products').insert({
-      name: form.name,
-      name_en: form.name_en || null,
-      category_id: form.category_id || null,
-      description: form.description || null,
-      price: form.price ? parseInt(form.price) : null,
-      sale_price: form.sale_price ? parseInt(form.sale_price) : null,
-      unit: form.unit,
-      stock: parseInt(form.stock) || 0,
-      is_active: form.is_active,
-      content: form.content || null,
-      image_url,
-      product_info: form.product_info,
-      shipping: form.shipping,
-      refund: form.refund,
+    const res = await fetch('/api/admin/products', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        name: form.name,
+        name_en: form.name_en || null,
+        category_id: form.category_id || null,
+        description: form.description || null,
+        price: form.price ? parseInt(form.price) : null,
+        sale_price: form.sale_price ? parseInt(form.sale_price) : null,
+        unit: form.unit,
+        stock: parseInt(form.stock) || 0,
+        is_active: form.is_active,
+        content: form.content || null,
+        image_url,
+        product_info: form.product_info,
+        shipping: form.shipping,
+        refund: form.refund,
+      }),
     })
 
-    if (err) { setError('저장 중 오류가 발생했습니다.'); setLoading(false); return }
+    if (!res.ok) { setError('저장 중 오류가 발생했습니다.'); setLoading(false); return }
     router.push('/admin/products')
   }
 
