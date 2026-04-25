@@ -31,7 +31,6 @@ export default function EditProductPage() {
   const router = useRouter()
   const params = useParams()
   const id = params.id as string
-  const supabase = createClient()
   const thumbnailRef = useRef<HTMLInputElement>(null)
 
   const [categories, setCategories] = useState<any[]>([])
@@ -44,7 +43,7 @@ export default function EditProductPage() {
 
   const [form, setForm] = useState({
     name: '', name_en: '', category_id: '', description: '',
-    price: '', sale_price: '', unit: 'vial', stock: '0',
+    price: '', sale_price: '', stock: '0',
     is_active: true, content: '',
     product_info: ACCORDION_DEFAULTS.product_info,
     shipping: ACCORDION_DEFAULTS.shipping,
@@ -52,20 +51,20 @@ export default function EditProductPage() {
   })
 
   useEffect(() => {
+    const supabase = createClient()
     supabase.from('categories').select('*').order('sort_order').then(({ data }) => {
       if (data) setCategories(data)
     })
     supabase.from('products').select('*').eq('id', id).single().then(({ data }) => {
       if (data) {
         setForm({
-          name: data.name ?? '',
+          name: data.name_ko ?? '',
           name_en: data.name_en ?? '',
           category_id: data.category_id ?? '',
           description: data.description ?? '',
           price: data.price?.toString() ?? '',
           sale_price: data.sale_price?.toString() ?? '',
-          unit: data.unit ?? 'vial',
-          stock: data.stock?.toString() ?? '0',
+          stock: data.stock_qty?.toString() ?? '0',
           is_active: data.is_active ?? true,
           content: data.content ?? '',
           product_info: data.product_info ?? ACCORDION_DEFAULTS.product_info,
@@ -104,39 +103,44 @@ export default function EditProductPage() {
 
     let image_url = thumbnailPreview
     if (thumbnailFile) {
-      const ext = thumbnailFile.name.split('.').pop()
-      const path = `${Date.now()}.${ext}`
-      const { error: uploadErr } = await supabase.storage.from('products').upload(path, thumbnailFile)
-      if (!uploadErr) {
-        const { data: urlData } = supabase.storage.from('products').getPublicUrl(path)
-        image_url = urlData.publicUrl
+      const formData = new FormData()
+      formData.append('file', thumbnailFile)
+      const uploadRes = await fetch('/api/admin/products/upload', { method: 'POST', body: formData })
+      if (uploadRes.ok) {
+        const { url } = await uploadRes.json()
+        image_url = url
       }
     }
 
-    const { error: err } = await supabase.from('products').update({
-      name: form.name,
-      name_en: form.name_en || null,
-      category_id: form.category_id || null,
-      description: form.description || null,
-      price: form.price ? parseInt(form.price) : null,
-      sale_price: form.sale_price ? parseInt(form.sale_price) : null,
-      unit: form.unit,
-      stock: parseInt(form.stock) || 0,
-      is_active: form.is_active,
-      content: form.content || null,
-      image_url,
-      product_info: form.product_info,
-      shipping: form.shipping,
-      refund: form.refund,
-    }).eq('id', id)
+    const res = await fetch('/api/admin/products', {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        id,
+        name: form.name,
+        name_en: form.name_en || null,
+        category_id: form.category_id || null,
+        description: form.description || null,
+        price: form.price ? parseInt(form.price) : null,
+        sale_price: form.sale_price ? parseInt(form.sale_price) : null,
+        stock: parseInt(form.stock) || 0,
+        is_active: form.is_active,
+        content: form.content || null,
+        image_url,
+        product_info: form.product_info,
+        shipping: form.shipping,
+        refund: form.refund,
+      }),
+    })
 
-    if (err) { setError('저장 중 오류가 발생했습니다.'); setLoading(false); return }
+    if (!res.ok) { setError('저장 중 오류가 발생했습니다.'); setLoading(false); return }
     router.push('/admin/products')
   }
 
   async function handleDelete() {
     const confirmed = window.confirm('이 상품을 삭제하시겠습니까?\n\n이 작업은 되돌릴 수 없습니다.')
     if (!confirmed) return
+    const supabase = createClient()
     await supabase.from('products').delete().eq('id', id)
     router.push('/admin/products')
   }
@@ -177,7 +181,6 @@ export default function EditProductPage() {
       <form onSubmit={handleSubmit}>
         <div style={{ display: 'flex', flexDirection: 'column', gap: 24 }}>
 
-          {/* 기본 정보 */}
           <div className="bg-white border p-6" style={{ borderColor: '#E8E4DD', borderRadius: 8 }}>
             <h2 style={{ fontFamily: 'Montserrat, sans-serif', fontSize: 13, fontWeight: 700, color: 'var(--navy)', marginBottom: 20, letterSpacing: 1 }}>기본 정보</h2>
             <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
@@ -213,7 +216,6 @@ export default function EditProductPage() {
             </div>
           </div>
 
-          {/* 가격 */}
           <div className="bg-white border p-6" style={{ borderColor: '#E8E4DD', borderRadius: 8 }}>
             <h2 style={{ fontFamily: 'Montserrat, sans-serif', fontSize: 13, fontWeight: 700, color: 'var(--navy)', marginBottom: 20, letterSpacing: 1 }}>가격 정보</h2>
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 12 }}>
@@ -235,24 +237,12 @@ export default function EditProductPage() {
             </div>
           </div>
 
-          {/* 재고 */}
           <div className="bg-white border p-6" style={{ borderColor: '#E8E4DD', borderRadius: 8 }}>
-            <h2 style={{ fontFamily: 'Montserrat, sans-serif', fontSize: 13, fontWeight: 700, color: 'var(--navy)', marginBottom: 20, letterSpacing: 1 }}>재고 및 단위</h2>
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 12 }}>
+            <h2 style={{ fontFamily: 'Montserrat, sans-serif', fontSize: 13, fontWeight: 700, color: 'var(--navy)', marginBottom: 20, letterSpacing: 1 }}>재고</h2>
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
               <div>
                 <label style={labelStyle}>재고 수량</label>
                 <input type="number" placeholder="0" value={form.stock} onChange={e => handleChange('stock', e.target.value)} style={inputStyle} />
-              </div>
-              <div>
-                <label style={labelStyle}>단위</label>
-                <select value={form.unit} onChange={e => handleChange('unit', e.target.value)} style={inputStyle}>
-                  <option value="vial">vial</option>
-                  <option value="box">box</option>
-                  <option value="ea">ea</option>
-                  <option value="set">set</option>
-                  <option value="ml">ml</option>
-                  <option value="개">개</option>
-                </select>
               </div>
               <div>
                 <label style={labelStyle}>판매 상태</label>
@@ -264,7 +254,6 @@ export default function EditProductPage() {
             </div>
           </div>
 
-          {/* 썸네일 */}
           <div className="bg-white border p-6" style={{ borderColor: '#E8E4DD', borderRadius: 8 }}>
             <h2 style={{ fontFamily: 'Montserrat, sans-serif', fontSize: 13, fontWeight: 700, color: 'var(--navy)', marginBottom: 20, letterSpacing: 1 }}>썸네일 이미지</h2>
             <div style={{ display: 'flex', gap: 20, alignItems: 'flex-start' }}>
@@ -292,7 +281,6 @@ export default function EditProductPage() {
             </div>
           </div>
 
-          {/* 상품 상세 설명 */}
           <div className="bg-white border p-6" style={{ borderColor: '#E8E4DD', borderRadius: 8 }}>
             <h2 style={{ fontFamily: 'Montserrat, sans-serif', fontSize: 13, fontWeight: 700, color: 'var(--navy)', marginBottom: 20, letterSpacing: 1 }}>상품 상세 설명</h2>
             <textarea placeholder="상품 상세 설명을 입력해주세요."
@@ -300,7 +288,6 @@ export default function EditProductPage() {
               rows={10} style={{ ...inputStyle, resize: 'vertical' }} />
           </div>
 
-          {/* 하단 고정 섹션 */}
           <div className="bg-white border" style={{ borderColor: '#E8E4DD', borderRadius: 8, overflow: 'hidden' }}>
             <div style={{ padding: '16px 24px', borderBottom: '1px solid #E8E4DD', background: '#F8F6F2' }}>
               <h2 style={{ fontFamily: 'Montserrat, sans-serif', fontSize: 13, fontWeight: 700, color: 'var(--navy)', letterSpacing: 1 }}>하단 고정 정보</h2>
