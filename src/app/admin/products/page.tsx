@@ -31,9 +31,16 @@ export default function AdminProductsPage() {
 
   async function handleSortOrder(e: React.MouseEvent, id: string, currentOrder: number, direction: 'up' | 'down') {
     e.stopPropagation()
+    if (direction === 'up' && currentOrder <= 1) return
     const supabase = createClient()
-    const newOrder = direction === 'up' ? currentOrder - 1 : currentOrder + 1
-    await supabase.from('products').update({ sort_order: newOrder }).eq('id', id)
+    const targetOrder = direction === 'up' ? currentOrder - 1 : currentOrder + 1
+    const swapTarget = products.find(p => p.sort_order === targetOrder)
+    if (swapTarget) {
+      await supabase.from('products').update({ sort_order: currentOrder }).eq('id', swapTarget.id)
+      await supabase.from('products').update({ sort_order: targetOrder }).eq('id', id)
+    } else {
+      await supabase.from('products').update({ sort_order: targetOrder }).eq('id', id)
+    }
     fetchProducts()
   }
 
