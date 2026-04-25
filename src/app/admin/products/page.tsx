@@ -1,3 +1,4 @@
+'use client'
 import { createServiceClient } from '@/lib/supabase/service'
 import Link from 'next/link'
 
