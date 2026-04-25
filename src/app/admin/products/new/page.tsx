@@ -47,7 +47,6 @@ export default function NewProductPage() {
     description: '',
     price: '',
     sale_price: '',
-    unit: 'vial',
     stock: '0',
     is_active: true,
     content: '',
@@ -109,7 +108,6 @@ export default function NewProductPage() {
         description: form.description || null,
         price: form.price ? parseInt(form.price) : null,
         sale_price: form.sale_price ? parseInt(form.sale_price) : null,
-        unit: form.unit,
         stock: parseInt(form.stock) || 0,
         is_active: form.is_active,
         content: form.content || null,
@@ -220,24 +218,13 @@ export default function NewProductPage() {
 
           {/* 재고 */}
           <div className="bg-white border p-6" style={{ borderColor: '#E8E4DD', borderRadius: 8 }}>
-            <h2 style={{ fontFamily: 'Montserrat, sans-serif', fontSize: 13, fontWeight: 700, color: 'var(--navy)', marginBottom: 20, letterSpacing: 1 }}>재고 및 단위</h2>
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 12 }}>
+            <h2 style={{ fontFamily: 'Montserrat, sans-serif', fontSize: 13, fontWeight: 700, color: 'var(--navy)', marginBottom: 20, letterSpacing: 1 }}>재고</h2>
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
               <div>
                 <label style={labelStyle}>재고 수량</label>
                 <input type="number" placeholder="0"
                   value={form.stock} onChange={e => handleChange('stock', e.target.value)}
                   style={inputStyle} />
-              </div>
-              <div>
-                <label style={labelStyle}>단위</label>
-                <select value={form.unit} onChange={e => handleChange('unit', e.target.value)} style={inputStyle}>
-                  <option value="vial">vial</option>
-                  <option value="box">box</option>
-                  <option value="ea">ea</option>
-                  <option value="set">set</option>
-                  <option value="ml">ml</option>
-                  <option value="개">개</option>
-                </select>
               </div>
               <div>
                 <label style={labelStyle}>판매 상태</label>
