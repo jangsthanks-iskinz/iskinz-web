@@ -96,13 +96,13 @@ export default async function ProductsPage({ searchParams }: { searchParams: { c
             등록된 상품이 없습니다.
           </div>
         ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 items-stretch">
             {products.map(p => {
               const discount = p.price && p.sale_price ? Math.round((1 - p.sale_price / p.price) * 100) : null
               return (
-                <Link key={p.id} href={`/products/${p.id}`} style={{ textDecoration: 'none' }}>
+                <Link key={p.id} href={`/products/${p.id}`} style={{ textDecoration: 'none', height: '100%', display: 'block' }}>
                   <div className="bg-white border transition-all duration-300 hover:-translate-y-1 hover:shadow-md"
-                    style={{ borderColor: '#E8E4DD', borderRadius: 8, overflow: 'hidden' }}>
+                    style={{ borderColor: '#E8E4DD', borderRadius: 8, overflow: 'hidden', display: 'flex', flexDirection: 'column', height: '100%' }}>
                     <div style={{ width: '100%', aspectRatio: '1', background: '#F8F6F2', position: 'relative', overflow: 'hidden' }}>
                       {p.image_url ? (
                         <img src={p.image_url} alt={p.name_ko} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
@@ -115,7 +115,7 @@ export default async function ProductsPage({ searchParams }: { searchParams: { c
                         </div>
                       )}
                     </div>
-                    <div style={{ padding: '16px' }}>
+                    <div style={{ padding: '16px', flex: 1, display: 'flex', flexDirection: 'column' }}>
                       <p style={{ fontSize: 11, color: C.accent, fontFamily: CONDENSED, letterSpacing: '0.1em', marginBottom: 4 }}>
                         {(p.categories as any)?.name ?? ''}
                       </p>
