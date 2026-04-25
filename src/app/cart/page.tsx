@@ -20,7 +20,7 @@ function CartContent() {
     const { data } = await res.json()
     if (data) {
       setItems(data)
-      setSelected(new Set(data.map((i: any) => i.product_id)))
+      setSelected(new Set<string>(data.map((i: any) => i.product_id)))
     }
     setLoading(false)
   }
@@ -92,11 +92,11 @@ function CartContent() {
                 <label style={{ display: 'flex', alignItems: 'center', gap: 8, fontFamily: PRETENDARD, fontSize: 13, fontWeight: 600, color: C.charcoal, cursor: 'pointer' }}>
                   <input type="checkbox"
                     checked={selected.size === items.length}
-                    onChange={e => setSelected(e.target.checked ? new Set(items.map(i => i.product_id)) : new Set())}
+                    onChange={e => setSelected(e.target.checked ? new Set<string>(items.map(i => i.product_id)) : new Set())}
                   />
                   전체 선택 ({selected.size}/{items.length})
                 </label>
-                <button onClick={() => handleDelete([...selected])} disabled={selected.size === 0}
+                <button onClick={() => handleDelete(Array.from(selected))} disabled={selected.size === 0}
                   style={{ padding: '6px 14px', background: 'rgba(184,74,74,0.1)', color: '#B84A4A', border: '1px solid rgba(184,74,74,0.3)', borderRadius: 6, fontSize: 12, fontWeight: 600, fontFamily: PRETENDARD, cursor: 'pointer', opacity: selected.size === 0 ? 0.4 : 1 }}>
                   선택 삭제
                 </button>
