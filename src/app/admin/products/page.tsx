@@ -1,13 +1,22 @@
 'use client'
-import { createServiceClient } from '@/lib/supabase/service'
-import Link from 'next/link'
+import { useState, useEffect } from 'react'
+import { useRouter } from 'next/navigation'
+import { createClient } from '@/lib/supabase/client'
 
-export default async function AdminProductsPage() {
-  const supabase = createServiceClient()
-  const { data: products } = await supabase
-    .from('products')
-    .select('*, categories(name)')
-    .order('product_code', { ascending: true })
+const PRETENDARD = "'Pretendard', 'Apple SD Gothic Neo', sans-serif"
+
+export default function AdminProductsPage() {
+  const router = useRouter()
+  const supabase = createClient()
+  const [products, setProducts] = useState<any[]>([])
+
+  useEffect(() => {
+    supabase
+      .from('products')
+      .select('*, categories(name)')
+      .order('product_code', { ascending: true })
+      .then(({ data }) => { if (data) setProducts(data) })
+  }, [])
 
   return (
     <div className="p-8">
@@ -16,14 +25,13 @@ export default async function AdminProductsPage() {
           <h1 className="text-2xl font-bold mb-1" style={{ color: 'var(--navy)', fontFamily: 'Montserrat, sans-serif' }}>상품 관리</h1>
           <p className="text-sm" style={{ color: 'var(--text-2)' }}>상품 등록 및 관리</p>
         </div>
-        <Link href="/admin/products/new"
-          className="px-5 py-2.5 text-sm font-bold no-underline transition-all hover:opacity-80"
-          style={{ background: 'var(--navy)', color: 'white', fontFamily: 'Montserrat, sans-serif' }}>
+        <button onClick={() => router.push('/admin/products/new')}
+          style={{ padding: '10px 20px', background: 'var(--navy)', color: 'white', border: 'none', borderRadius: 6, fontSize: 13, fontWeight: 700, cursor: 'pointer', fontFamily: PRETENDARD }}>
           + 상품 등록
-        </Link>
+        </button>
       </div>
 
-      <div className="bg-white border" style={{ borderColor: '#E8E4DD' }}>
+      <div className="bg-white border" style={{ borderColor: '#E8E4DD', borderRadius: 8, overflow: 'hidden' }}>
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
             <thead>
@@ -35,13 +43,15 @@ export default async function AdminProductsPage() {
               </tr>
             </thead>
             <tbody>
-              {!products || products.length === 0 ? (
+              {products.length === 0 ? (
                 <tr><td colSpan={9} className="px-6 py-12 text-center text-sm" style={{ color: 'var(--text-3)' }}>등록된 상품이 없습니다</td></tr>
               ) : products.map((p: any) => (
                 <tr key={p.id}
-                  onClick={() => window.location.href = `/admin/products/${p.id}`}
-                  className="border-t transition-colors cursor-pointer hover:bg-[#F0EDE8]"
-                  style={{ borderColor: '#F0EDE8' }}>
+                  onClick={() => router.push(`/admin/products/${p.id}`)}
+                  className="border-t transition-colors cursor-pointer"
+                  style={{ borderColor: '#F0EDE8' }}
+                  onMouseEnter={e => (e.currentTarget.style.background = '#F8F6F2')}
+                  onMouseLeave={e => (e.currentTarget.style.background = 'white')}>
                   <td className="px-5 py-4 text-xs font-bold" style={{ color: 'var(--text-3)', fontFamily: 'Montserrat, sans-serif' }}>
                     #{p.product_code}
                   </td>
