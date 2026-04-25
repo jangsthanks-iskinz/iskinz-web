@@ -95,16 +95,14 @@ export default async function ProductDetailPage({ params }: { params: { id: stri
 
             {/* 버튼 영역 */}
             <div style={{ display: 'flex', gap: 12 }}>
-              {/* 장바구니 - 강조 */}
-              <button
-                style={{ flex: 2, padding: '14px 24px', background: C.accent, color: 'white', border: 'none', borderRadius: 6, fontFamily: PRETENDARD, fontSize: 15, fontWeight: 700, cursor: 'pointer' }}>
-                🛒 장바구니 담기
-              </button>
-              {/* 상품 문의 */}
               <Link href={`/#contact?productName=${encodeURIComponent(p.name_ko)}`}
-                style={{ flex: 1, padding: '14px 16px', background: 'white', color: C.charcoal, border: `1px solid #E8E4DD`, borderRadius: 6, fontFamily: PRETENDARD, fontSize: 14, fontWeight: 600, textDecoration: 'none', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                상품 문의
+                style={{ flex: 1, padding: '14px 16px', background: 'white', color: C.charcoal, border: '1px solid #E8E4DD', borderRadius: 6, fontFamily: PRETENDARD, fontSize: 14, fontWeight: 600, textDecoration: 'none', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                문의하기
               </Link>
+              <button
+                style={{ flex: 1, padding: '14px 24px', background: C.accent, color: 'white', border: 'none', borderRadius: 6, fontFamily: PRETENDARD, fontSize: 15, fontWeight: 700, cursor: 'pointer' }}>
+                장바구니
+              </button>
             </div>
           </div>
         </div>
@@ -125,8 +123,6 @@ export default async function ProductDetailPage({ params }: { params: { id: stri
               .product-content li { margin: 0.25em 0; }
               .product-content img { max-width: 100%; border-radius: 6px; margin: 8px 0; }
               .product-content hr { border: none; border-top: 1px solid #E8E4DD; margin: 16px 0; }
-              .product-content [style*="text-align: center"] { text-align: center; }
-              .product-content [style*="text-align: right"] { text-align: right; }
             `}</style>
             <div style={{ fontFamily: PRETENDARD, fontSize: 14, lineHeight: 1.8, color: C.charcoal }}
               dangerouslySetInnerHTML={{ __html: p.content }} />
