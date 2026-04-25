@@ -57,6 +57,7 @@ export default function NewProductPage() {
   })
 
   useEffect(() => {
+    const supabase = createClient()
     supabase.from('categories').select('*').order('sort_order').then(({ data }) => {
       if (data) setCategories(data)
     })
