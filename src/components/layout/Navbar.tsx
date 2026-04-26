@@ -18,6 +18,7 @@ export function Navbar({ isApproved = false }: NavbarProps) {
   const [user, setUser] = useState<User | null>(null)
   const [cartOpen, setCartOpen] = useState(false)
   const [cartCount, setCartCount] = useState(0)
+  const [cartItems, setCartItems] = useState<any[]>([])
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 60)
@@ -39,7 +40,10 @@ export function Navbar({ isApproved = false }: NavbarProps) {
     const res = await fetch('/api/cart')
     if (!res.ok) return
     const { data } = await res.json()
-    if (data) setCartCount(data.reduce((sum: number, i: any) => sum + i.quantity, 0))
+    if (data) {
+      setCartItems(data)
+      setCartCount(data.reduce((sum: number, i: any) => sum + i.quantity, 0))
+    }
   }
 
   useEffect(() => {
@@ -105,6 +109,7 @@ export function Navbar({ isApproved = false }: NavbarProps) {
             {/* Cart */}
             {isApproved && (
               <button
+                onMouseEnter={() => fetchCartCount()}
                 onClick={() => { setCartOpen(true); fetchCartCount() }}
                 className="relative p-2 transition-opacity hover:opacity-70"
                 style={{ color: 'rgba(200,205,212,0.6)' }}
@@ -170,7 +175,7 @@ export function Navbar({ isApproved = false }: NavbarProps) {
       </nav>
 
       {/* Cart Sidebar */}
-      <CartSidebar isOpen={cartOpen} onClose={() => { setCartOpen(false); fetchCartCount() }} />
+      <CartSidebar isOpen={cartOpen} onClose={() => { setCartOpen(false); fetchCartCount() }} initialItems={cartItems} onRefresh={fetchCartCount} />
     </>
   )
 }

@@ -7,10 +7,12 @@ const PRETENDARD = "'Pretendard', 'Apple SD Gothic Neo', sans-serif"
 interface CartSidebarProps {
   isOpen: boolean
   onClose: () => void
+  initialItems?: any[]
+  onRefresh?: () => void
 }
 
-export function CartSidebar({ isOpen, onClose }: CartSidebarProps) {
-  const [items, setItems] = useState<any[]>([])
+export function CartSidebar({ isOpen, onClose, initialItems = [], onRefresh }: CartSidebarProps) {
+  const [items, setItems] = useState<any[]>(initialItems)
   const [loading, setLoading] = useState(false)
 
   async function fetchCart() {
@@ -22,7 +24,11 @@ export function CartSidebar({ isOpen, onClose }: CartSidebarProps) {
   }
 
   useEffect(() => {
-    if (isOpen) fetchCart()
+    setItems(initialItems)
+  }, [initialItems])
+
+  useEffect(() => {
+    if (isOpen && items.length === 0) fetchCart()
   }, [isOpen])
 
   useEffect(() => {
@@ -33,6 +39,7 @@ export function CartSidebar({ isOpen, onClose }: CartSidebarProps) {
   async function handleRemove(productId: string) {
     await fetch('/api/cart', { method: 'DELETE', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ product_id: productId }) })
     fetchCart()
+    if (onRefresh) onRefresh()
   }
 
   async function handleUpdateQty(productId: string, quantity: number) {
@@ -70,13 +77,17 @@ export function CartSidebar({ isOpen, onClose }: CartSidebarProps) {
           ) : (
             items.map(item => (
               <div key={item.product_id} className="flex gap-4 py-4 border-b border-gray-100">
-                {item.products.image_url ? (
-                  <img src={item.products.image_url} alt={item.products.name_ko} style={{ width: 72, height: 72, objectFit: 'cover', borderRadius: 8, flexShrink: 0 }} />
-                ) : (
-                  <div style={{ width: 72, height: 72, background: '#F8F6F2', borderRadius: 8, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 28, flexShrink: 0 }}>📦</div>
-                )}
+                <a href={`/products/${item.product_id}`} onClick={onClose} style={{ flexShrink: 0, textDecoration: 'none' }}>
+                  {item.products.image_url ? (
+                    <img src={item.products.image_url} alt={item.products.name_ko} style={{ width: 72, height: 72, objectFit: 'cover', borderRadius: 8 }} />
+                  ) : (
+                    <div style={{ width: 72, height: 72, background: '#F8F6F2', borderRadius: 8, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 28 }}>📦</div>
+                  )}
+                </a>
                 <div className="flex-1">
-                  <p style={{ fontFamily: PRETENDARD, fontSize: 14, fontWeight: 600, color: '#1e2025', marginBottom: 4 }}>{item.products.name_ko}</p>
+                  <a href={`/products/${item.product_id}`} onClick={onClose} style={{ textDecoration: 'none' }}>
+                    <p style={{ fontFamily: PRETENDARD, fontSize: 14, fontWeight: 600, color: '#1e2025', marginBottom: 4 }}>{item.products.name_ko}</p>
+                  </a>
                   <p style={{ fontFamily: PRETENDARD, fontSize: 14, fontWeight: 700, color: item.products.sale_price ? '#B84A4A' : '#1e2025' }}>
                     ₩{(item.products.sale_price || item.products.price || 0).toLocaleString()}
                   </p>
@@ -99,13 +110,13 @@ export function CartSidebar({ isOpen, onClose }: CartSidebarProps) {
         {items.length > 0 && (
           <div className="px-7 py-6 border-t border-gray-100">
             <div className="flex justify-between mb-5">
-              <span style={{ fontFamily: PRETENDARD, fontSize: 14, color: '#8a9099' }}>합계</span>
+              <span style={{ fontFamily: PRETENDARD, fontSize: 14, color: '#8a9099' }}>총 상품금액</span>
               <span style={{ fontFamily: PRETENDARD, fontSize: 20, fontWeight: 700, color: '#1e2025' }}>₩{total.toLocaleString()}</span>
             </div>
             <Link href="/cart" onClick={onClose}
               className="block w-full py-4 text-center text-white font-bold no-underline transition-all hover:-translate-y-0.5"
               style={{ background: '#4a6fa5', borderRadius: 6, fontFamily: PRETENDARD, fontSize: 15, fontWeight: 700 }}>
-              장바구니 보기 →
+              주문하기
             </Link>
           </div>
         )}
