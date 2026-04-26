@@ -3,7 +3,7 @@ import { createClient } from '@/lib/supabase/server'
 import { createServiceClient } from '@/lib/supabase/service'
 
 function generateOrderNumber() {
-  const now = new Date()
+  const now = new Date(new Date().toLocaleString('en-US', { timeZone: 'Asia/Seoul' }))
   const date = `${String(now.getFullYear()).slice(2)}${String(now.getMonth()+1).padStart(2,'0')}${String(now.getDate()).padStart(2,'0')}`
   const seq = String(Math.floor(Math.random() * 9999) + 1).padStart(4, '0')
   return `${date}-${seq}`

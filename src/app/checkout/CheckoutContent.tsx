@@ -23,6 +23,7 @@ export function CheckoutContent({ cartItems, profile }: { cartItems: any[], prof
     address1: profile?.address ?? '',
     address2: profile?.address_detail ?? '',
     memo: '',
+    customMemo: '',
   })
 
   function handleAgreeAll(checked: boolean) {
@@ -45,9 +46,10 @@ export function CheckoutContent({ cartItems, profile }: { cartItems: any[], prof
         address1: profile?.address ?? '',
         address2: profile?.address_detail ?? '',
         memo: '',
+        customMemo: '',
       })
     } else {
-      setShipping({ name: '', phone: '', zipcode: '', address1: '', address2: '', memo: '' })
+      setShipping({ name: '', phone: '', zipcode: '', address1: '', address2: '', memo: '', customMemo: '' })
     }
   }
 
@@ -85,7 +87,7 @@ export function CheckoutContent({ cartItems, profile }: { cartItems: any[], prof
           shipping_zipcode: shipping.zipcode,
           shipping_address1: shipping.address1,
           shipping_address2: shipping.address2,
-          shipping_memo: shipping.memo,
+          shipping_memo: shipping.memo === 'custom' ? (shipping.customMemo ?? '') : shipping.memo,
         }),
       })
       const data = await res.json()
@@ -94,6 +96,13 @@ export function CheckoutContent({ cartItems, profile }: { cartItems: any[], prof
     } finally {
       setLoading(false)
     }
+  }
+
+  function formatPhone(v: string) {
+    v = v.replace(/[^0-9]/g, '')
+    if (v.length >= 4) v = v.slice(0,3) + '-' + v.slice(3)
+    if (v.length >= 9) v = v.slice(0,7) + '-' + v.slice(7)
+    return v.slice(0,13)
   }
 
   function openPostcode() {
@@ -183,7 +192,7 @@ export function CheckoutContent({ cartItems, profile }: { cartItems: any[], prof
                   <div>
                     <label style={labelStyle}>연락처 *</label>
                     <input type="text" placeholder="010-0000-0000" value={shipping.phone}
-                      onChange={e => setShipping(v => ({ ...v, phone: e.target.value }))}
+                      onChange={e => setShipping(v => ({ ...v, phone: formatPhone(e.target.value) }))}
                       style={inputStyle}
                       onFocus={e => e.target.style.borderColor = C.accent}
                       onBlur={e => e.target.style.borderColor = C.silver} />
