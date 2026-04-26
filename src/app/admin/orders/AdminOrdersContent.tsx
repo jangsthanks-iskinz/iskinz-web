@@ -288,7 +288,7 @@ export function AdminOrdersContent({ orders, statusFilter, statusOptions }: {
             <div style={{ display: 'flex', gap: 8, marginBottom: 12 }}>
               <span style={{ padding: '4px 12px', background: '#F8F6F2', color: '#8a9099', borderRadius: 4, fontSize: 12, fontFamily: PRETENDARD, fontWeight: 600, cursor: 'pointer' }}
                 onClick={() => {
-                  const allIds = new Set((detailOrder.order_items ?? []).map((i: any) => i.id))
+                  const allIds = new Set<string>((detailOrder.order_items ?? []).map((i: any) => i.id as string))
                   setCancelItems(allIds)
                   const fullQty: Record<string, number> = {}
                   ;(detailOrder.order_items ?? []).forEach((i: any) => { fullQty[i.id] = i.quantity })
