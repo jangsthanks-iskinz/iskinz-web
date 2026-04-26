@@ -65,8 +65,10 @@ function CartContent() {
         total_amount,
       }),
     })
-    const { ok, order_number } = await res.json()
-    if (ok) router.push(`/cart/complete?order=${order_number}`)
+    const data = await res.json()
+    console.log('[Order Response]', data)
+    if (data.ok) router.push(`/cart/complete?order=${data.order_number}`)
+    else alert('주문 오류: ' + (data.error || '알 수 없는 오류'))
     setOrdering(false)
   }
 

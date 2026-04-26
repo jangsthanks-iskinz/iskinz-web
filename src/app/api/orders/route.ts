@@ -22,8 +22,12 @@ export async function POST(req: Request) {
       user_id: user.id,
       order_number,
       total_amount,
-      status: '주문접수',
+      status: 'pending',
       memo: memo || null,
+      shipping_name: '',
+      shipping_phone: '',
+      shipping_zipcode: '',
+      shipping_address1: '',
     }).select().single()
 
     if (orderErr) return NextResponse.json({ ok: false, error: orderErr.message }, { status: 500 })
@@ -32,8 +36,9 @@ export async function POST(req: Request) {
       order_id: order.id,
       product_id: item.product_id,
       product_name: item.product_name,
-      price: item.price,
+      unit_price: item.price,
       quantity: item.quantity,
+      subtotal: item.price * item.quantity,
     }))
 
     await service.from('order_items').insert(orderItems)
