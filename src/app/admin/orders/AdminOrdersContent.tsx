@@ -27,6 +27,7 @@ export function AdminOrdersContent({ orders, statusFilter, statusOptions }: {
   const [refundBank, setRefundBank] = useState('')
   const [refundAccount, setRefundAccount] = useState('')
   const [refundHolder, setRefundHolder] = useState('')
+  const [cancelQty, setCancelQty] = useState<Record<string, number>>({})
 
   const tabs = [{ key: 'all', label: '전체' }, ...statusOptions.map(s => ({ key: s.value, label: s.label }))]
 
@@ -100,13 +101,29 @@ export function AdminOrdersContent({ orders, statusFilter, statusOptions }: {
       alert('환불 계좌 정보를 모두 입력해주세요.')
       return
     }
-    const memo = isBankTransfer ? `환불계좌: ${refundBank} ${refundAccount} (${refundHolder})` : '카드/토스 취소 처리 필요'
+    const cancelledItems = (detailOrder.order_items ?? [])
+      .filter((i: any) => cancelItems.has(i.id))
+      .map((i: any) => ({
+        product_name: i.product_name,
+        quantity: cancelQty[i.id] ?? i.quantity,
+        unit_price: i.unit_price,
+        subtotal: (i.unit_price || 0) * (cancelQty[i.id] ?? i.quantity),
+      }))
+    const refundTotal = cancelledItems.reduce((sum: number, i: any) => sum + i.subtotal, 0)
+    const isPartial = cancelItems.size < (detailOrder.order_items ?? []).length
+    const cancelType = isPartial ? '부분취소' : '전체취소'
+    const memo = isBankTransfer
+      ? `[${cancelType}] 환불계좌: ${refundBank} ${refundAccount} (${refundHolder}) 환불금액: ${refundTotal.toLocaleString()}원`
+      : `[${cancelType}] 카드/토스 취소 처리 필요 환불금액: ${refundTotal.toLocaleString()}원`
+    const newStatus = isPartial ? detailOrder.status : 'cancelled'
     await fetch('/api/admin/orders/status', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ orderId: detailOrder.id, status: 'cancelled', memo }),
+      body: JSON.stringify({ orderId: detailOrder.id, status: newStatus, memo, cancel_items: cancelledItems }),
     })
     setShowCancelModal(false)
+    setCancelItems(new Set())
+    setCancelQty({})
     router.refresh()
   }
 
@@ -162,7 +179,7 @@ export function AdminOrdersContent({ orders, statusFilter, statusOptions }: {
                   <input type="checkbox" checked={selected.size === orders.length && orders.length > 0}
                     onChange={e => toggleAll(e.target.checked)} />
                 </th>
-                {['주문번호', '회원', '병원명', '주문 상품', '금액', '상태', '상태 변경'].map(h => (
+                {['주문번호', '회원', '병원명', '주문 상품', '총 결제금액', '상태'].map(h => (
                   <th key={h} className="px-5 py-3 text-left text-[11px] font-bold tracking-[1px] uppercase whitespace-nowrap"
                     style={{ color: 'var(--text-3)', fontFamily: 'Montserrat, sans-serif' }}>{h}</th>
                 ))}
@@ -191,19 +208,13 @@ export function AdminOrdersContent({ orders, statusFilter, statusOptions }: {
                       {items.length > 2 && <div style={{ fontFamily: PRETENDARD, fontSize: 11, color: '#8a9099' }}>외 {items.length - 2}건</div>}
                     </td>
                     <td className="px-5 py-4 font-semibold whitespace-nowrap" style={{ color: 'var(--navy)' }} onClick={() => { setDetailOrder(o); setAdminMemo(o.memo ?? '') }}>
-                      ₩{o.total_amount?.toLocaleString()}
-                    </td>
-                    <td className="px-5 py-4" onClick={() => { setDetailOrder(o); setAdminMemo(o.memo ?? '') }}>
-                      <span className="inline-block text-[10px] font-bold px-2.5 py-1 whitespace-nowrap"
-                        style={{ background: s ? `${s.color}18` : '#F0EDE8', color: s?.color ?? 'var(--text-2)', fontFamily: 'Montserrat, sans-serif' }}>
-                        {s?.label ?? o.status}
-                      </span>
+                      {o.total_amount?.toLocaleString()}원
                     </td>
                     <td className="px-5 py-4" onClick={e => e.stopPropagation()}>
                       <select value={o.status} onChange={e => handleSingleStatus(o.id, e.target.value)}
-                        style={{ padding: '6px 10px', border: '1px solid #E8E4DD', borderRadius: 6, fontSize: 12, fontFamily: PRETENDARD, background: 'white' }}>
-                        {statusOptions.map(s => (
-                          <option key={s.value} value={s.value}>{s.label}</option>
+                        style={{ padding: '6px 10px', border: `1.5px solid ${s?.color ?? '#E8E4DD'}`, borderRadius: 6, fontSize: 12, fontFamily: PRETENDARD, background: s ? `${s.color}10` : 'white', color: s?.color ?? '#1e2025', fontWeight: 700 }}>
+                        {statusOptions.map(st => (
+                          <option key={st.value} value={st.value}>{st.label}</option>
                         ))}
                       </select>
                     </td>
@@ -262,6 +273,11 @@ export function AdminOrdersContent({ orders, statusFilter, statusOptions }: {
             <h3 style={{ fontFamily: PRETENDARD, fontSize: 16, fontWeight: 700, marginBottom: 20 }}>주문 취소/환불</h3>
 
             {/* 주문 취소 */}
+            <div style={{ display: 'flex', gap: 8, marginBottom: 12 }}>
+              <span style={{ padding: '4px 12px', background: cancelItems.size === (detailOrder.order_items ?? []).length ? '#B84A4A' : '#F8F6F2', color: cancelItems.size === (detailOrder.order_items ?? []).length ? 'white' : '#8a9099', borderRadius: 4, fontSize: 12, fontFamily: PRETENDARD, fontWeight: 600, cursor: 'pointer' }}
+                onClick={() => setCancelItems(new Set((detailOrder.order_items ?? []).map((i: any) => i.id)))}>전체취소</span>
+              <span style={{ padding: '4px 12px', background: cancelItems.size > 0 && cancelItems.size < (detailOrder.order_items ?? []).length ? '#C6A052' : '#F8F6F2', color: cancelItems.size > 0 && cancelItems.size < (detailOrder.order_items ?? []).length ? 'white' : '#8a9099', borderRadius: 4, fontSize: 12, fontFamily: PRETENDARD, fontWeight: 600 }}>부분취소</span>
+            </div>
             <p style={{ fontFamily: PRETENDARD, fontSize: 13, fontWeight: 600, color: '#8a9099', marginBottom: 10 }}>주문 취소</p>
             <table style={{ width: '100%', borderCollapse: 'collapse', marginBottom: 12 }}>
               <thead>
@@ -284,7 +300,15 @@ export function AdminOrdersContent({ orders, statusFilter, statusOptions }: {
                         }} />
                     </td>
                     <td style={{ padding: '10px 12px', fontFamily: PRETENDARD, fontSize: 13, color: '#1e2025' }}>{item.product_name}</td>
-                    <td style={{ padding: '10px 12px', fontFamily: PRETENDARD, fontSize: 13, color: '#1e2025', textAlign: 'center' }}>{item.quantity}</td>
+                    <td style={{ padding: '10px 12px', textAlign: 'center' }}>
+                      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6 }}>
+                        <button onClick={() => setCancelQty(q => ({ ...q, [item.id]: Math.max(1, (q[item.id] ?? item.quantity) - 1) }))}
+                          style={{ width: 24, height: 24, border: '1px solid #E8E4DD', borderRadius: 4, background: 'white', cursor: 'pointer', fontSize: 14 }}>−</button>
+                        <span style={{ fontFamily: PRETENDARD, fontSize: 13, minWidth: 20, textAlign: 'center' }}>{cancelQty[item.id] ?? item.quantity}</span>
+                        <button onClick={() => setCancelQty(q => ({ ...q, [item.id]: Math.min(item.quantity, (q[item.id] ?? item.quantity) + 1) }))}
+                          style={{ width: 24, height: 24, border: '1px solid #E8E4DD', borderRadius: 4, background: 'white', cursor: 'pointer', fontSize: 14 }}>+</button>
+                      </div>
+                    </td>
                     <td style={{ padding: '10px 12px', fontFamily: PRETENDARD, fontSize: 13, color: '#1e2025', textAlign: 'right' }}>{item.subtotal?.toLocaleString()}원</td>
                   </tr>
                 ))}
@@ -294,7 +318,7 @@ export function AdminOrdersContent({ orders, statusFilter, statusOptions }: {
               <div style={{ display: 'flex', justifyContent: 'flex-end', gap: 16, padding: '10px 12px', background: '#F8F6F2', borderRadius: 6, marginBottom: 12 }}>
                 <span style={{ fontFamily: PRETENDARD, fontSize: 13, fontWeight: 700, color: '#1e2025' }}>총 환불금액</span>
                 <span style={{ fontFamily: PRETENDARD, fontSize: 14, fontWeight: 700, color: '#B84A4A' }}>
-                  {(detailOrder.order_items ?? []).filter((i: any) => cancelItems.has(i.id)).reduce((sum: number, i: any) => sum + (i.subtotal || 0), 0).toLocaleString()}원
+                  {(detailOrder.order_items ?? []).filter((i: any) => cancelItems.has(i.id)).reduce((sum: number, i: any) => sum + (i.unit_price || 0) * (cancelQty[i.id] ?? i.quantity), 0).toLocaleString()}원
                 </span>
               </div>
             )}
@@ -367,7 +391,7 @@ export function AdminOrdersContent({ orders, statusFilter, statusOptions }: {
                           <tr key={i} style={{ borderBottom: '1px solid #F0EDE8' }}>
                             <td style={{ padding: '10px 12px', fontFamily: PRETENDARD, fontSize: 13, color: '#1e2025' }}>{item.product_name}</td>
                             <td style={{ padding: '10px 12px', fontFamily: PRETENDARD, fontSize: 13, color: '#1e2025', textAlign: 'center' }}>{item.quantity}</td>
-                            <td style={{ padding: '10px 12px', fontFamily: PRETENDARD, fontSize: 13, color: '#1e2025', textAlign: 'right' }}>₩{item.subtotal?.toLocaleString()}</td>
+                            <td style={{ padding: '10px 12px', fontFamily: PRETENDARD, fontSize: 13, color: '#1e2025', textAlign: 'right' }}>{item.subtotal?.toLocaleString()}원</td>
                           </tr>
                         ))}
                       </tbody>
@@ -422,6 +446,42 @@ export function AdminOrdersContent({ orders, statusFilter, statusOptions }: {
                     </table>
                   </div>
 
+                  {/* 취소 내역 */}
+                  {detailOrder.cancel_items && detailOrder.cancel_items.length > 0 && (
+                    <div style={{ marginBottom: 24 }}>
+                      <p style={{ fontFamily: PRETENDARD, fontSize: 13, fontWeight: 700, color: '#B84A4A', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: 12 }}>취소 내역</p>
+                      <table style={{ width: '100%', borderCollapse: 'collapse' }}>
+                        <thead>
+                          <tr style={{ background: '#FFF3F3' }}>
+                            <th style={{ padding: '8px 12px', fontFamily: PRETENDARD, fontSize: 12, fontWeight: 600, color: '#B84A4A', textAlign: 'left' }}>상품명</th>
+                            <th style={{ padding: '8px 12px', fontFamily: PRETENDARD, fontSize: 12, fontWeight: 600, color: '#B84A4A', textAlign: 'center', width: 60 }}>수량</th>
+                            <th style={{ padding: '8px 12px', fontFamily: PRETENDARD, fontSize: 12, fontWeight: 600, color: '#B84A4A', textAlign: 'right', width: 100 }}>금액</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {detailOrder.cancel_items.map((item: any, i: number) => (
+                            <tr key={i} style={{ borderBottom: '1px solid #FFE4E4' }}>
+                              <td style={{ padding: '10px 12px', fontFamily: PRETENDARD, fontSize: 13, color: '#1e2025' }}>{item.product_name}</td>
+                              <td style={{ padding: '10px 12px', fontFamily: PRETENDARD, fontSize: 13, color: '#1e2025', textAlign: 'center' }}>{item.quantity}</td>
+                              <td style={{ padding: '10px 12px', fontFamily: PRETENDARD, fontSize: 13, color: '#B84A4A', textAlign: 'right' }}>{item.subtotal?.toLocaleString()}원</td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                      <div style={{ display: 'flex', justifyContent: 'flex-end', gap: 16, padding: '10px 12px', background: '#FFF3F3', borderRadius: '0 0 6px 6px' }}>
+                        <span style={{ fontFamily: PRETENDARD, fontSize: 13, fontWeight: 700, color: '#1e2025' }}>총 환불금액</span>
+                        <span style={{ fontFamily: PRETENDARD, fontSize: 14, fontWeight: 700, color: '#B84A4A' }}>
+                          {detailOrder.cancel_items.reduce((sum: number, i: any) => sum + (i.subtotal || 0), 0).toLocaleString()}원
+                        </span>
+                      </div>
+                      {detailOrder.memo && (
+                        <div style={{ marginTop: 8, padding: '10px 12px', background: '#F8F6F2', borderRadius: 6, fontFamily: PRETENDARD, fontSize: 12, color: '#8a9099' }}>
+                          {detailOrder.memo}
+                        </div>
+                      )}
+                    </div>
+                  )}
+
                   {/* 배송 정보 */}
                   <div>
                     <p style={{ fontFamily: PRETENDARD, fontSize: 13, fontWeight: 700, color: '#8a9099', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: 12 }}>배송 정보</p>
@@ -444,13 +504,13 @@ export function AdminOrdersContent({ orders, statusFilter, statusOptions }: {
                           <td style={{ padding: '10px 0' }}>
                             <select value={detailOrder.courier_name ?? ''}
                               onChange={async e => {
+                                const newVal = e.target.value
+                                setDetailOrder({ ...detailOrder, courier_name: newVal })
                                 await fetch('/api/admin/orders/status', {
                                   method: 'POST',
                                   headers: { 'Content-Type': 'application/json' },
-                                  body: JSON.stringify({ orderId: detailOrder.id, status: detailOrder.status, courier_name: e.target.value }),
+                                  body: JSON.stringify({ orderId: detailOrder.id, status: detailOrder.status, courier_name: newVal }),
                                 })
-                                setDetailOrder({ ...detailOrder, courier_name: e.target.value })
-                                router.refresh()
                               }}
                               style={{ padding: '8px 10px', border: '1px solid #C8CDD4', borderRadius: 6, fontSize: 13, fontFamily: PRETENDARD }}>
                               <option value="">택배사 선택</option>
