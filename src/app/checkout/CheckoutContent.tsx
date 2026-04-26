@@ -16,7 +16,7 @@ export function CheckoutContent({ cartItems, profile }: { cartItems: any[], prof
   const [paymentMethod, setPaymentMethod] = useState<PaymentMethod>('bank_transfer')
   const [loading, setLoading] = useState(false)
   const [agreed, setAgreed] = useState({ all: false, privacy: false, third_party: false, payment: false, access: false })
-  const [shipping, setShipping] = useState({
+  const [shipping, setShipping] = useState<any>({
     name: profile?.name ?? '',
     phone: profile?.phone ?? '',
     zipcode: profile?.postcode ?? '',
@@ -87,7 +87,7 @@ export function CheckoutContent({ cartItems, profile }: { cartItems: any[], prof
           shipping_zipcode: shipping.zipcode,
           shipping_address1: shipping.address1,
           shipping_address2: shipping.address2,
-          shipping_memo: shipping.memo === 'custom' ? (shipping.customMemo ?? '') : shipping.memo,
+          shipping_memo: (!shipping.memo || shipping.memo === '') ? null : shipping.memo === 'custom' ? (shipping.customMemo || null) : shipping.memo,
         }),
       })
       const data = await res.json()
@@ -101,7 +101,7 @@ export function CheckoutContent({ cartItems, profile }: { cartItems: any[], prof
   function formatPhone(v: string) {
     v = v.replace(/[^0-9]/g, '')
     if (v.length >= 4) v = v.slice(0,3) + '-' + v.slice(3)
-    if (v.length >= 9) v = v.slice(0,7) + '-' + v.slice(7)
+    if (v.length >= 9) v = v.slice(0,8) + '-' + v.slice(8)
     return v.slice(0,13)
   }
 
