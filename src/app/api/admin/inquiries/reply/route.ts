@@ -8,6 +8,7 @@ const ADMIN_EMAIL = process.env.ADMIN_EMAIL ?? 'ceo@iskinz.com'
 
 export async function POST(req: Request) {
   try {
+    const resend = new Resend(process.env.RESEND_API_KEY)
     const { inquiryId, customerEmail, customerName, inquiryType, originalMessage, reply } = await req.json()
 
     // 고객에게 답변 발송 (ceo CC)
