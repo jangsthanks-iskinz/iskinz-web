@@ -1,7 +1,7 @@
 'use client'
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
-
+import { STATUS_OPTIONS } from './constants'
 const PRETENDARD = "'Pretendard', 'Apple SD Gothic Neo', sans-serif"
 
 export function AdminOrdersContent({ orders, statusFilter, statusOptions }: {
