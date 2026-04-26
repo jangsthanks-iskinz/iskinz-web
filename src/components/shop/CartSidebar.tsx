@@ -99,13 +99,13 @@ export function CartSidebar({ isOpen, onClose }: CartSidebarProps) {
         {items.length > 0 && (
           <div className="px-7 py-6 border-t border-gray-100">
             <div className="flex justify-between mb-5">
-              <span style={{ fontFamily: PRETENDARD, fontSize: 14, color: '#8a9099' }}>합계</span>
+              <span style={{ fontFamily: PRETENDARD, fontSize: 14, color: '#8a9099' }}>총 상품금액</span>
               <span style={{ fontFamily: PRETENDARD, fontSize: 20, fontWeight: 700, color: '#1e2025' }}>₩{total.toLocaleString()}</span>
             </div>
             <Link href="/cart" onClick={onClose}
               className="block w-full py-4 text-center text-white font-bold no-underline transition-all hover:-translate-y-0.5"
               style={{ background: '#4a6fa5', borderRadius: 6, fontFamily: PRETENDARD, fontSize: 15, fontWeight: 700 }}>
-              장바구니 보기 →
+              주문하기
             </Link>
           </div>
         )}

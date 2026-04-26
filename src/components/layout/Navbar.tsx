@@ -105,6 +105,7 @@ export function Navbar({ isApproved = false }: NavbarProps) {
             {/* Cart */}
             {isApproved && (
               <button
+                onMouseEnter={() => fetchCartCount()}
                 onClick={() => { setCartOpen(true); fetchCartCount() }}
                 className="relative p-2 transition-opacity hover:opacity-70"
                 style={{ color: 'rgba(200,205,212,0.6)' }}

@@ -116,13 +116,17 @@ function CartContent() {
                         setSelected(next)
                       }}
                     />
-                    {item.products.image_url ? (
-                      <img src={item.products.image_url} alt={item.products.name_ko} style={{ width: 72, height: 72, objectFit: 'cover', borderRadius: 8, border: '1px solid #E8E4DD', flexShrink: 0 }} />
-                    ) : (
-                      <div style={{ width: 72, height: 72, background: '#F8F6F2', borderRadius: 8, border: '1px solid #E8E4DD', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 28, flexShrink: 0 }}>📦</div>
-                    )}
+                    <a href={`/products/${item.product_id}`} style={{ flexShrink: 0, textDecoration: 'none' }}>
+                      {item.products.image_url ? (
+                        <img src={item.products.image_url} alt={item.products.name_ko} style={{ width: 72, height: 72, objectFit: 'cover', borderRadius: 8, border: '1px solid #E8E4DD' }} />
+                      ) : (
+                        <div style={{ width: 72, height: 72, background: '#F8F6F2', borderRadius: 8, border: '1px solid #E8E4DD', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 28 }}>📦</div>
+                      )}
+                    </a>
                     <div style={{ flex: 1 }}>
-                      <p style={{ fontFamily: PRETENDARD, fontSize: 15, fontWeight: 700, color: C.charcoal, marginBottom: 4 }}>{item.products.name_ko}</p>
+                      <a href={`/products/${item.product_id}`} style={{ textDecoration: 'none' }}>
+                        <p style={{ fontFamily: PRETENDARD, fontSize: 15, fontWeight: 700, color: C.charcoal, marginBottom: 4 }}>{item.products.name_ko}</p>
+                      </a>
                       {item.products.sale_price && (
                         <p style={{ fontFamily: PRETENDARD, fontSize: 12, color: C.silverDark, textDecoration: 'line-through' }}>{item.products.price?.toLocaleString()}원</p>
                       )}
@@ -146,10 +150,32 @@ function CartContent() {
             </div>
 
             <div style={{ background: 'white', border: '1px solid #E8E4DD', borderRadius: 12, padding: 24 }}>
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 20 }}>
-                <span style={{ fontFamily: PRETENDARD, fontSize: 15, color: C.silverDark }}>선택 상품 합계</span>
-                <span style={{ fontFamily: PRETENDARD, fontSize: 22, fontWeight: 700, color: C.charcoal }}>{totalPrice.toLocaleString()}원</span>
-              </div>
+              {(() => {
+                const origTotal = selectedItems.reduce((sum, i) => sum + (i.products.price || 0) * i.quantity, 0)
+                const discTotal = selectedItems.reduce((sum, i) => sum + ((i.products.price || 0) - (i.products.sale_price || i.products.price || 0)) * i.quantity, 0)
+                return (
+                  <>
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: 10, marginBottom: 16 }}>
+                      <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                        <span style={{ fontFamily: PRETENDARD, fontSize: 14, color: C.silverDark }}>상품 금액</span>
+                        <span style={{ fontFamily: PRETENDARD, fontSize: 14, color: C.charcoal }}>{origTotal.toLocaleString()}원</span>
+                      </div>
+                      <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                        <span style={{ fontFamily: PRETENDARD, fontSize: 14, color: C.silverDark }}>할인 금액</span>
+                        <span style={{ fontFamily: PRETENDARD, fontSize: 14, color: '#B84A4A' }}>-{discTotal.toLocaleString()}원</span>
+                      </div>
+                      <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                        <span style={{ fontFamily: PRETENDARD, fontSize: 14, color: C.silverDark }}>배송비</span>
+                        <span style={{ fontFamily: PRETENDARD, fontSize: 14, color: C.charcoal }}>무료</span>
+                      </div>
+                    </div>
+                    <div style={{ borderTop: '1px solid #E8E4DD', paddingTop: 16, display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 20 }}>
+                      <span style={{ fontFamily: PRETENDARD, fontSize: 15, fontWeight: 700, color: C.charcoal }}>총 주문금액</span>
+                      <span style={{ fontFamily: PRETENDARD, fontSize: 24, fontWeight: 700, color: C.accent }}>{totalPrice.toLocaleString()}원</span>
+                    </div>
+                  </>
+                )
+              })()}
               <div style={{ display: 'flex', gap: 12 }}>
                 <button onClick={() => handleOrder(selectedItems)} disabled={ordering || selectedItems.length === 0}
                   style={{ flex: 1, padding: '14px', background: 'white', color: C.charcoal, border: '1px solid #E8E4DD', borderRadius: 6, fontFamily: PRETENDARD, fontSize: 14, fontWeight: 700, cursor: 'pointer', opacity: selectedItems.length === 0 ? 0.4 : 1 }}>
