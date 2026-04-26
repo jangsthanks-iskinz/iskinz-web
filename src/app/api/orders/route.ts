@@ -22,7 +22,7 @@ export async function POST(req: Request) {
       user_id: user.id,
       order_number,
       total_amount,
-      status: '주문접수',
+      status: 'pending',
       memo: memo || null,
       shipping_name: '',
       shipping_phone: '',

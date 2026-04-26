@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
 import { createServiceClient } from '@/lib/supabase/service'
 
-const ALLOWED_STATUSES = ['pending', 'paid', 'preparing', 'shipped', 'delivered', 'cancelled', '주문접수', '처리중', '배송중', '완료', '취소']
+const ALLOWED_STATUSES = ['pending', 'paid', 'preparing', 'shipped', 'delivered', 'cancelled', 'refunded']
 
 export async function POST(req: NextRequest) {
   const supabase = createClient()
