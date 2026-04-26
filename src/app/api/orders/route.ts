@@ -32,8 +32,9 @@ export async function POST(req: Request) {
       order_id: order.id,
       product_id: item.product_id,
       product_name: item.product_name,
-      price: item.price,
+      unit_price: item.price,
       quantity: item.quantity,
+      subtotal: item.price * item.quantity,
     }))
 
     await service.from('order_items').insert(orderItems)
