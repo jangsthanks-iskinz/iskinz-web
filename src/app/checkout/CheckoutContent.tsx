@@ -184,7 +184,7 @@ export function CheckoutContent({ cartItems, profile }: { cartItems: any[], prof
                   <div>
                     <label style={labelStyle}>수령인 이름 *</label>
                     <input type="text" placeholder="홍길동" value={shipping.name}
-                      onChange={e => setShipping(v => ({ ...v, name: e.target.value }))}
+                      onChange={e => setShipping((v: any) => ({ ...v, name: e.target.value }))}
                       style={inputStyle}
                       onFocus={e => e.target.style.borderColor = C.accent}
                       onBlur={e => e.target.style.borderColor = C.silver} />
@@ -192,7 +192,7 @@ export function CheckoutContent({ cartItems, profile }: { cartItems: any[], prof
                   <div>
                     <label style={labelStyle}>연락처 *</label>
                     <input type="text" placeholder="010-0000-0000" value={shipping.phone}
-                      onChange={e => setShipping(v => ({ ...v, phone: formatPhone(e.target.value) }))}
+                      onChange={e => setShipping((v: any) => ({ ...v, phone: formatPhone(e.target.value) }))}
                       style={inputStyle}
                       onFocus={e => e.target.style.borderColor = C.accent}
                       onBlur={e => e.target.style.borderColor = C.silver} />
@@ -212,7 +212,7 @@ export function CheckoutContent({ cartItems, profile }: { cartItems: any[], prof
                   <input type="text" placeholder="도로명 주소" value={shipping.address1} readOnly
                     style={{ ...inputStyle, background: '#f5f4f1', marginBottom: 8 }} />
                   <input id="address2" type="text" placeholder="상세주소 입력" value={shipping.address2}
-                    onChange={e => setShipping(v => ({ ...v, address2: e.target.value }))}
+                    onChange={e => setShipping((v: any) => ({ ...v, address2: e.target.value }))}
                     style={inputStyle}
                     onFocus={e => e.target.style.borderColor = C.accent}
                     onBlur={e => e.target.style.borderColor = C.silver} />
@@ -220,7 +220,7 @@ export function CheckoutContent({ cartItems, profile }: { cartItems: any[], prof
 
                 <div>
                   <label style={labelStyle}>배송 메시지</label>
-                  <select value={shipping.memo} onChange={e => setShipping(v => ({ ...v, memo: e.target.value }))}
+                  <select value={shipping.memo} onChange={e => setShipping((v: any) => ({ ...v, memo: e.target.value }))}
                     style={{ ...inputStyle, background: 'white' }}>
                     <option value="">배송 메시지를 선택해주세요</option>
                     <option value="부재 시 경비실에 맡겨주세요">부재 시 경비실에 맡겨주세요</option>
