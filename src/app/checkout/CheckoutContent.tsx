@@ -109,7 +109,7 @@ export function CheckoutContent({ cartItems, profile }: { cartItems: any[], prof
     if (typeof window === 'undefined') return
     new (window as any).daum.Postcode({
       oncomplete: function(data: any) {
-        setShipping(v => ({ ...v, zipcode: data.zonecode, address1: data.roadAddress, address2: '' }))
+        setShipping((v: any) => ({ ...v, zipcode: data.zonecode, address1: data.roadAddress, address2: '' }))
         setTimeout(() => document.getElementById('address2')?.focus(), 100)
       }
     }).open()
