@@ -126,6 +126,7 @@ export function AdminOrdersContent({ orders, statusFilter, statusOptions }: {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ orderId: detailOrder.id, status: newStatus, memo, cancel_items: cancelledItems, cancel_type: cancelType }),
     })
+    setDetailOrder({ ...detailOrder, status: newStatus, memo, cancel_items: cancelledItems, cancel_type: cancelType })
     setShowCancelModal(false)
     setCancelItems(new Set())
     setCancelQty({})
