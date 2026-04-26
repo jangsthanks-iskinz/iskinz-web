@@ -24,6 +24,10 @@ export async function POST(req: Request) {
       total_amount,
       status: '주문접수',
       memo: memo || null,
+      shipping_name: '',
+      shipping_phone: '',
+      shipping_zipcode: '',
+      shipping_address1: '',
     }).select().single()
 
     if (orderErr) return NextResponse.json({ ok: false, error: orderErr.message }, { status: 500 })
