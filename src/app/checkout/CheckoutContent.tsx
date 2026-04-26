@@ -226,7 +226,14 @@ export function CheckoutContent({ cartItems, profile }: { cartItems: any[], prof
                     <option value="부재 시 경비실에 맡겨주세요">부재 시 경비실에 맡겨주세요</option>
                     <option value="직접 받겠습니다">직접 받겠습니다</option>
                     <option value="문 앞에 놓아주세요">문 앞에 놓아주세요</option>
+                    <option value="custom">직접 입력</option>
                   </select>
+                  {shipping.memo === 'custom' && (
+                    <input type="text" placeholder="배송 메시지를 입력해주세요"
+                      value={shipping.customMemo}
+                      onChange={e => setShipping((v) => ({ ...v, customMemo: e.target.value }))}
+                      style={inputStyle} />
+                  )}
                 </div>
               </div>
             </div>
