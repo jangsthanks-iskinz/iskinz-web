@@ -1,4 +1,5 @@
 'use client'
+import Script from 'next/script'
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
@@ -15,13 +16,14 @@ export function CheckoutContent({ cartItems, profile }: { cartItems: any[], prof
   const [paymentMethod, setPaymentMethod] = useState<PaymentMethod>('bank_transfer')
   const [loading, setLoading] = useState(false)
   const [agreed, setAgreed] = useState({ all: false, privacy: false, third_party: false, payment: false, access: false })
-  const [shipping, setShipping] = useState({
+  const [shipping, setShipping] = useState<any>({
     name: profile?.name ?? '',
     phone: profile?.phone ?? '',
     zipcode: profile?.postcode ?? '',
     address1: profile?.address ?? '',
     address2: profile?.address_detail ?? '',
     memo: '',
+    customMemo: '',
   })
 
   function handleAgreeAll(checked: boolean) {
@@ -44,9 +46,10 @@ export function CheckoutContent({ cartItems, profile }: { cartItems: any[], prof
         address1: profile?.address ?? '',
         address2: profile?.address_detail ?? '',
         memo: '',
+        customMemo: '',
       })
     } else {
-      setShipping({ name: '', phone: '', zipcode: '', address1: '', address2: '', memo: '' })
+      setShipping({ name: '', phone: '', zipcode: '', address1: '', address2: '', memo: '', customMemo: '' })
     }
   }
 
@@ -84,7 +87,7 @@ export function CheckoutContent({ cartItems, profile }: { cartItems: any[], prof
           shipping_zipcode: shipping.zipcode,
           shipping_address1: shipping.address1,
           shipping_address2: shipping.address2,
-          shipping_memo: shipping.memo,
+          shipping_memo: (!shipping.memo || shipping.memo === '') ? null : shipping.memo === 'custom' ? (shipping.customMemo || null) : shipping.memo,
         }),
       })
       const data = await res.json()
@@ -93,6 +96,23 @@ export function CheckoutContent({ cartItems, profile }: { cartItems: any[], prof
     } finally {
       setLoading(false)
     }
+  }
+
+  function formatPhone(v: string) {
+    v = v.replace(/[^0-9]/g, '')
+    if (v.length >= 4) v = v.slice(0,3) + '-' + v.slice(3)
+    if (v.length >= 9) v = v.slice(0,8) + '-' + v.slice(8)
+    return v.slice(0,13)
+  }
+
+  function openPostcode() {
+    if (typeof window === 'undefined') return
+    new (window as any).daum.Postcode({
+      oncomplete: function(data: any) {
+        setShipping((v: any) => ({ ...v, zipcode: data.zonecode, address1: data.roadAddress, address2: '' }))
+        setTimeout(() => document.getElementById('address2')?.focus(), 100)
+      }
+    }).open()
   }
 
   const inputStyle: React.CSSProperties = {
@@ -106,6 +126,8 @@ export function CheckoutContent({ cartItems, profile }: { cartItems: any[], prof
   }
 
   return (
+    <>
+      <Script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js" strategy="lazyOnload" />
     <div style={{ background: C.offWhite, minHeight: '100vh', paddingTop: 100 }}>
       <div className="container mx-auto px-6 py-12 max-w-5xl">
 
@@ -162,7 +184,7 @@ export function CheckoutContent({ cartItems, profile }: { cartItems: any[], prof
                   <div>
                     <label style={labelStyle}>수령인 이름 *</label>
                     <input type="text" placeholder="홍길동" value={shipping.name}
-                      onChange={e => setShipping(v => ({ ...v, name: e.target.value }))}
+                      onChange={e => setShipping((v: any) => ({ ...v, name: e.target.value }))}
                       style={inputStyle}
                       onFocus={e => e.target.style.borderColor = C.accent}
                       onBlur={e => e.target.style.borderColor = C.silver} />
@@ -170,7 +192,7 @@ export function CheckoutContent({ cartItems, profile }: { cartItems: any[], prof
                   <div>
                     <label style={labelStyle}>연락처 *</label>
                     <input type="text" placeholder="010-0000-0000" value={shipping.phone}
-                      onChange={e => setShipping(v => ({ ...v, phone: e.target.value }))}
+                      onChange={e => setShipping((v: any) => ({ ...v, phone: formatPhone(e.target.value) }))}
                       style={inputStyle}
                       onFocus={e => e.target.style.borderColor = C.accent}
                       onBlur={e => e.target.style.borderColor = C.silver} />
@@ -182,15 +204,15 @@ export function CheckoutContent({ cartItems, profile }: { cartItems: any[], prof
                   <div style={{ display: 'flex', gap: 8, marginBottom: 8 }}>
                     <input type="text" placeholder="우편번호" value={shipping.zipcode} readOnly
                       style={{ ...inputStyle, width: 130, background: '#f5f4f1' }} />
-                    <button type="button"
+                    <button type="button" onClick={openPostcode}
                       style={{ padding: '10px 16px', background: 'white', border: `1px solid ${C.silver}`, borderRadius: 6, fontSize: 13, fontFamily: PRETENDARD, cursor: 'pointer' }}>
                       우편번호 검색
                     </button>
                   </div>
                   <input type="text" placeholder="도로명 주소" value={shipping.address1} readOnly
                     style={{ ...inputStyle, background: '#f5f4f1', marginBottom: 8 }} />
-                  <input type="text" placeholder="상세주소 입력" value={shipping.address2}
-                    onChange={e => setShipping(v => ({ ...v, address2: e.target.value }))}
+                  <input id="address2" type="text" placeholder="상세주소 입력" value={shipping.address2}
+                    onChange={e => setShipping((v: any) => ({ ...v, address2: e.target.value }))}
                     style={inputStyle}
                     onFocus={e => e.target.style.borderColor = C.accent}
                     onBlur={e => e.target.style.borderColor = C.silver} />
@@ -198,13 +220,20 @@ export function CheckoutContent({ cartItems, profile }: { cartItems: any[], prof
 
                 <div>
                   <label style={labelStyle}>배송 메시지</label>
-                  <select value={shipping.memo} onChange={e => setShipping(v => ({ ...v, memo: e.target.value }))}
+                  <select value={shipping.memo} onChange={e => setShipping((v: any) => ({ ...v, memo: e.target.value }))}
                     style={{ ...inputStyle, background: 'white' }}>
                     <option value="">배송 메시지를 선택해주세요</option>
                     <option value="부재 시 경비실에 맡겨주세요">부재 시 경비실에 맡겨주세요</option>
                     <option value="직접 받겠습니다">직접 받겠습니다</option>
                     <option value="문 앞에 놓아주세요">문 앞에 놓아주세요</option>
+                    <option value="custom">직접 입력</option>
                   </select>
+                  {shipping.memo === 'custom' && (
+                    <input type="text" placeholder="배송 메시지를 입력해주세요"
+                      value={shipping.customMemo}
+                      onChange={e => setShipping((v: any) => ({ ...v, customMemo: e.target.value }))}
+                      style={inputStyle} />
+                  )}
                 </div>
               </div>
             </div>
@@ -297,5 +326,6 @@ export function CheckoutContent({ cartItems, profile }: { cartItems: any[], prof
         </div>
       </div>
     </div>
+    </>
   )
 }
