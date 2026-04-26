@@ -152,11 +152,11 @@ export function CartContent({ initialItems }: { initialItems: any[] }) {
                 <span style={{ fontFamily: PRETENDARD, fontSize: 24, fontWeight: 700, color: C.accent }}>{totalPrice.toLocaleString()}원</span>
               </div>
               <div style={{ display: 'flex', gap: 12 }}>
-                <button onClick={() => router.push('/checkout')} disabled={ordering || selectedItems.length === 0}
+                <button onClick={() => router.push(`/checkout?items=${selectedItems.map(i => i.product_id).join(',')}`)} disabled={ordering || selectedItems.length === 0}
                   style={{ flex: 1, padding: '14px', background: 'white', color: C.charcoal, border: '1px solid #E8E4DD', borderRadius: 6, fontFamily: PRETENDARD, fontSize: 14, fontWeight: 700, cursor: 'pointer', opacity: selectedItems.length === 0 ? 0.4 : 1 }}>
                   {ordering ? '처리 중...' : `선택 상품 주문하기 (${selectedItems.length})`}
                 </button>
-                <button onClick={() => router.push('/checkout')} disabled={ordering || items.length === 0}
+                <button onClick={() => router.push(`/checkout?items=${items.map(i => i.product_id).join(',')}`)} disabled={ordering || items.length === 0}
                   style={{ flex: 1, padding: '14px', background: C.accent, color: 'white', border: 'none', borderRadius: 6, fontFamily: PRETENDARD, fontSize: 14, fontWeight: 700, cursor: 'pointer' }}>
                   {ordering ? '처리 중...' : `전체 상품 주문하기 (${items.length})`}
                 </button>

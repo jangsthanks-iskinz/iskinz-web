@@ -2,10 +2,13 @@ import { NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
 import { createServiceClient } from '@/lib/supabase/service'
 
-function generateOrderNumber() {
+async function generateOrderNumber(service: any) {
   const now = new Date(new Date().toLocaleString('en-US', { timeZone: 'Asia/Seoul' }))
   const date = `${String(now.getFullYear()).slice(2)}${String(now.getMonth()+1).padStart(2,'0')}${String(now.getDate()).padStart(2,'0')}`
-  const seq = String(Math.floor(Math.random() * 9999) + 1).padStart(4, '0')
+  const startOfDay = new Date(now)
+  startOfDay.setHours(0, 0, 0, 0)
+  const { count } = await service.from('orders').select('*', { count: 'exact', head: true }).gte('created_at', startOfDay.toISOString())
+  const seq = String((count ?? 0) + 1).padStart(4, '0')
   return `${date}-${seq}`
 }
 
@@ -19,7 +22,7 @@ export async function POST(req: Request) {
     const { items, subtotal_amount, total_amount, payment_method, recipient_name, recipient_phone, shipping_zipcode, shipping_address1, shipping_address2, shipping_memo, memo } = body
 
     const service = createServiceClient()
-    const order_number = generateOrderNumber()
+    const order_number = await generateOrderNumber(service)
 
     const { data: order, error: orderErr } = await service.from('orders').insert({
       user_id: user.id,
