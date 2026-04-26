@@ -1,4 +1,5 @@
 'use client'
+import Script from 'next/script'
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
@@ -95,6 +96,16 @@ export function CheckoutContent({ cartItems, profile }: { cartItems: any[], prof
     }
   }
 
+  function openPostcode() {
+    if (typeof window === 'undefined') return
+    new (window as any).daum.Postcode({
+      oncomplete: function(data: any) {
+        setShipping(v => ({ ...v, zipcode: data.zonecode, address1: data.roadAddress, address2: '' }))
+        setTimeout(() => document.getElementById('address2')?.focus(), 100)
+      }
+    }).open()
+  }
+
   const inputStyle: React.CSSProperties = {
     width: '100%', padding: '10px 12px', border: `1px solid ${C.silver}`,
     background: C.offWhite, fontSize: 14, outline: 'none', borderRadius: 6,
@@ -106,6 +117,8 @@ export function CheckoutContent({ cartItems, profile }: { cartItems: any[], prof
   }
 
   return (
+    <>
+      <Script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js" strategy="lazyOnload" />
     <div style={{ background: C.offWhite, minHeight: '100vh', paddingTop: 100 }}>
       <div className="container mx-auto px-6 py-12 max-w-5xl">
 
@@ -182,14 +195,14 @@ export function CheckoutContent({ cartItems, profile }: { cartItems: any[], prof
                   <div style={{ display: 'flex', gap: 8, marginBottom: 8 }}>
                     <input type="text" placeholder="우편번호" value={shipping.zipcode} readOnly
                       style={{ ...inputStyle, width: 130, background: '#f5f4f1' }} />
-                    <button type="button"
+                    <button type="button" onClick={openPostcode}
                       style={{ padding: '10px 16px', background: 'white', border: `1px solid ${C.silver}`, borderRadius: 6, fontSize: 13, fontFamily: PRETENDARD, cursor: 'pointer' }}>
                       우편번호 검색
                     </button>
                   </div>
                   <input type="text" placeholder="도로명 주소" value={shipping.address1} readOnly
                     style={{ ...inputStyle, background: '#f5f4f1', marginBottom: 8 }} />
-                  <input type="text" placeholder="상세주소 입력" value={shipping.address2}
+                  <input id="address2" type="text" placeholder="상세주소 입력" value={shipping.address2}
                     onChange={e => setShipping(v => ({ ...v, address2: e.target.value }))}
                     style={inputStyle}
                     onFocus={e => e.target.style.borderColor = C.accent}
@@ -297,5 +310,6 @@ export function CheckoutContent({ cartItems, profile }: { cartItems: any[], prof
         </div>
       </div>
     </div>
+    </>
   )
 }
