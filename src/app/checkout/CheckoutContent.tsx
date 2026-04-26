@@ -88,7 +88,7 @@ export function CheckoutContent({ cartItems, profile }: { cartItems: any[], prof
         }),
       })
       const data = await res.json()
-      if (data.ok) router.push(`/checkout/success?order=${data.order_number}`)
+      if (data.ok) router.push(`/checkout/success?order=${data.order_number}&method=${paymentMethod}`)
       else alert('주문 오류: ' + (data.error || '알 수 없는 오류'))
     } finally {
       setLoading(false)
