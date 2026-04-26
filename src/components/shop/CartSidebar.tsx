@@ -28,7 +28,7 @@ export function CartSidebar({ isOpen, onClose, initialItems = [], onRefresh }: C
   }, [initialItems])
 
   useEffect(() => {
-    if (isOpen) fetchCart()
+    if (isOpen && items.length === 0) fetchCart()
   }, [isOpen])
 
   useEffect(() => {
