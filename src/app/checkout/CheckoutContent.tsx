@@ -231,7 +231,7 @@ export function CheckoutContent({ cartItems, profile }: { cartItems: any[], prof
                   {shipping.memo === 'custom' && (
                     <input type="text" placeholder="배송 메시지를 입력해주세요"
                       value={shipping.customMemo}
-                      onChange={e => setShipping((v) => ({ ...v, customMemo: e.target.value }))}
+                      onChange={e => setShipping((v: any) => ({ ...v, customMemo: e.target.value }))}
                       style={inputStyle} />
                   )}
                 </div>
