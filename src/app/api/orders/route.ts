@@ -14,7 +14,10 @@ export async function POST(req: Request) {
     const supabase = createClient()
     const { data: { user } } = await supabase.auth.getUser()
     if (!user) return NextResponse.json({ ok: false }, { status: 401 })
-    const { items, total_amount, memo } = await req.json()
+
+    const body = await req.json()
+    const { items, subtotal_amount, total_amount, payment_method, recipient_name, recipient_phone, shipping_zipcode, shipping_address1, shipping_address2, shipping_memo, memo } = body
+
     const service = createServiceClient()
     const order_number = generateOrderNumber()
 
@@ -22,12 +25,16 @@ export async function POST(req: Request) {
       user_id: user.id,
       order_number,
       total_amount,
+      subtotal_amount: subtotal_amount || total_amount,
       status: 'pending',
+      payment_method: payment_method || null,
+      recipient_name: recipient_name || '',
+      recipient_phone: recipient_phone || '',
+      shipping_zipcode: shipping_zipcode || '',
+      shipping_address1: shipping_address1 || '',
+      shipping_address2: shipping_address2 || null,
+      shipping_memo: shipping_memo || null,
       memo: memo || null,
-      shipping_name: '',
-      shipping_phone: '',
-      shipping_zipcode: '',
-      shipping_address1: '',
     }).select().single()
 
     if (orderErr) return NextResponse.json({ ok: false, error: orderErr.message }, { status: 500 })
