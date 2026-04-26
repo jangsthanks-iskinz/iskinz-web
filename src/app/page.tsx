@@ -3,6 +3,7 @@ import { ContactSection } from '@/components/home/ContactSection'
 import { HomeLoginForm } from '@/components/home/HomeLoginForm'
 import { createClient } from '@/lib/supabase/server'
 import { SITE } from '@/constants/site'
+import { NewsFeed } from '@/components/NewsFeed'
 
 /* ─── Shared style tokens ─── */
 const C = {
@@ -195,7 +196,10 @@ function ApprovedPage() {
         </div>
       </section>
 
-      {/* ② 신뢰 바 */}
+      {/* ② 뉴스 피드 */}
+      <NewsFeed />
+
+      {/* ③ 신뢰 바 */}
       <section className="py-3.5 border-y" style={{ background: C.charcoalMid, borderColor: 'rgba(200,205,212,0.08)' }}>
         <div className="container mx-auto px-6">
           <div className="flex flex-wrap justify-center gap-x-5 sm:gap-x-10 md:gap-x-14 gap-y-2 items-center">
