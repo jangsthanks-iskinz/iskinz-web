@@ -4,7 +4,7 @@ import { useRouter } from 'next/navigation'
 
 const PRETENDARD = "'Pretendard', 'Apple SD Gothic Neo', sans-serif"
 
-const COURIER_OPTIONS = ['CJ대한통운', '한진택배', '롯데택배', '우체국택배', '로젠택배', '카카오T택배', 'DHL', 'FedEx']
+const COURIER_OPTIONS = ['직접배송', 'CJ대한통운', '한진택배', '롯데택배', '우체국택배', '로젠택배', '카카오T택배', 'DHL', 'FedEx']
 
 export function AdminOrdersContent({ orders, statusFilter, statusOptions }: {
   orders: any[]
@@ -261,19 +261,43 @@ export function AdminOrdersContent({ orders, statusFilter, statusOptions }: {
           <div style={{ background: 'white', borderRadius: 12, padding: 32, width: '100%', maxWidth: 480 }}>
             <h3 style={{ fontFamily: PRETENDARD, fontSize: 16, fontWeight: 700, marginBottom: 20 }}>주문 취소/환불</h3>
 
-            {/* 취소할 상품 선택 */}
-            <p style={{ fontFamily: PRETENDARD, fontSize: 13, fontWeight: 600, color: '#8a9099', marginBottom: 10 }}>취소할 상품 선택</p>
-            {(detailOrder.order_items ?? []).map((item: any) => (
-              <label key={item.id} style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 8, cursor: 'pointer' }}>
-                <input type="checkbox" checked={cancelItems.has(item.id)}
-                  onChange={e => {
-                    const next = new Set(cancelItems)
-                    e.target.checked ? next.add(item.id) : next.delete(item.id)
-                    setCancelItems(next)
-                  }} />
-                <span style={{ fontFamily: PRETENDARD, fontSize: 13, color: '#1e2025' }}>{item.product_name} ({item.quantity}개)</span>
-              </label>
-            ))}
+            {/* 주문 취소 */}
+            <p style={{ fontFamily: PRETENDARD, fontSize: 13, fontWeight: 600, color: '#8a9099', marginBottom: 10 }}>주문 취소</p>
+            <table style={{ width: '100%', borderCollapse: 'collapse', marginBottom: 12 }}>
+              <thead>
+                <tr style={{ background: '#F8F6F2' }}>
+                  <th style={{ padding: '8px 12px', fontFamily: PRETENDARD, fontSize: 12, fontWeight: 600, color: '#8a9099', textAlign: 'left' }}></th>
+                  <th style={{ padding: '8px 12px', fontFamily: PRETENDARD, fontSize: 12, fontWeight: 600, color: '#8a9099', textAlign: 'left' }}>상품명</th>
+                  <th style={{ padding: '8px 12px', fontFamily: PRETENDARD, fontSize: 12, fontWeight: 600, color: '#8a9099', textAlign: 'center', width: 50 }}>수량</th>
+                  <th style={{ padding: '8px 12px', fontFamily: PRETENDARD, fontSize: 12, fontWeight: 600, color: '#8a9099', textAlign: 'right', width: 100 }}>금액</th>
+                </tr>
+              </thead>
+              <tbody>
+                {(detailOrder.order_items ?? []).map((item: any) => (
+                  <tr key={item.id} style={{ borderBottom: '1px solid #F0EDE8' }}>
+                    <td style={{ padding: '10px 12px' }}>
+                      <input type="checkbox" checked={cancelItems.has(item.id)}
+                        onChange={e => {
+                          const next = new Set(cancelItems)
+                          e.target.checked ? next.add(item.id) : next.delete(item.id)
+                          setCancelItems(next)
+                        }} />
+                    </td>
+                    <td style={{ padding: '10px 12px', fontFamily: PRETENDARD, fontSize: 13, color: '#1e2025' }}>{item.product_name}</td>
+                    <td style={{ padding: '10px 12px', fontFamily: PRETENDARD, fontSize: 13, color: '#1e2025', textAlign: 'center' }}>{item.quantity}</td>
+                    <td style={{ padding: '10px 12px', fontFamily: PRETENDARD, fontSize: 13, color: '#1e2025', textAlign: 'right' }}>{item.subtotal?.toLocaleString()}원</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+            {cancelItems.size > 0 && (
+              <div style={{ display: 'flex', justifyContent: 'flex-end', gap: 16, padding: '10px 12px', background: '#F8F6F2', borderRadius: 6, marginBottom: 12 }}>
+                <span style={{ fontFamily: PRETENDARD, fontSize: 13, fontWeight: 700, color: '#1e2025' }}>총 환불금액</span>
+                <span style={{ fontFamily: PRETENDARD, fontSize: 14, fontWeight: 700, color: '#B84A4A' }}>
+                  {(detailOrder.order_items ?? []).filter((i: any) => cancelItems.has(i.id)).reduce((sum: number, i: any) => sum + (i.subtotal || 0), 0).toLocaleString()}원
+                </span>
+              </div>
+            )}
 
             {/* 무통장입금 환불 계좌 */}
             {detailOrder.payment_method === 'bank_transfer' && (
@@ -348,6 +372,16 @@ export function AdminOrdersContent({ orders, statusFilter, statusOptions }: {
                         ))}
                       </tbody>
                     </table>
+                    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: 6, marginTop: 12, paddingTop: 12, borderTop: '1px solid #E8E4DD' }}>
+                      <div style={{ display: 'flex', gap: 24, fontFamily: PRETENDARD, fontSize: 13 }}>
+                        <span style={{ color: '#8a9099' }}>총 상품금액</span>
+                        <span style={{ color: '#1e2025', fontWeight: 600 }}>{(detailOrder.order_items ?? []).reduce((sum: number, i: any) => sum + (i.subtotal || 0), 0).toLocaleString()}원</span>
+                      </div>
+                      <div style={{ display: 'flex', gap: 24, fontFamily: PRETENDARD, fontSize: 14, fontWeight: 700 }}>
+                        <span style={{ color: '#1e2025' }}>총 결제금액</span>
+                        <span style={{ color: '#4a6fa5' }}>{detailOrder.total_amount?.toLocaleString()}원</span>
+                      </div>
+                    </div>
                   </div>
 
                   {/* 주문 정보 */}
@@ -360,8 +394,8 @@ export function AdminOrdersContent({ orders, statusFilter, statusOptions }: {
                           { label: '주문번호', value: <span style={{ display: 'flex', alignItems: 'center', gap: 8 }}>{detailOrder.order_number}<span style={{ background: s ? `${s.color}18` : '#F0EDE8', color: s?.color, fontSize: 11, fontWeight: 700, padding: '2px 8px', borderRadius: 4 }}>{s?.label ?? detailOrder.status}</span></span> },
                           { label: '주문자', value: detailOrder.profiles?.name ?? '-' },
                           { label: '병원명', value: detailOrder.profiles?.hospital_name ?? '-' },
-                          { label: '총 상품금액', value: `₩${detailOrder.subtotal_amount?.toLocaleString() ?? '-'}` },
-                          { label: '총 결제금액', value: `₩${detailOrder.total_amount?.toLocaleString() ?? '-'}` },
+                          { label: '총 상품금액', value: `${detailOrder.subtotal_amount?.toLocaleString() ?? '-'}원` },
+                          { label: '총 결제금액', value: `${detailOrder.total_amount?.toLocaleString() ?? '-'}원` },
                           { label: '결제 수단', value: detailOrder.payment_method === 'bank_transfer' ? '무통장입금' : detailOrder.payment_method === 'credit_card' ? '신용카드' : detailOrder.payment_method === 'toss_pay' ? '토스페이' : '-' },
                         ].map(r => (
                           <tr key={r.label} style={{ borderBottom: '1px solid #F0EDE8' }}>
