@@ -110,17 +110,23 @@ export function AdminOrdersContent({ orders, statusFilter, statusOptions }: {
         subtotal: (i.unit_price || 0) * (cancelQty[i.id] ?? i.quantity),
       }))
     const refundTotal = cancelledItems.reduce((sum: number, i: any) => sum + i.subtotal, 0)
-    const isPartial = cancelItems.size < (detailOrder.order_items ?? []).length
-    const cancelType = isPartial ? '부분취소' : '전체취소'
+    const isPartial = (detailOrder.order_items ?? []).some((i: any) => {
+      if (!cancelItems.has(i.id)) return true  // 선택 안된 상품 있으면 부분취소
+      const cancelledQty = cancelQty[i.id] ?? i.quantity
+      return cancelledQty < i.quantity  // 수량이 부분이면 부분취소
+    })
+    const cancelType = isPartial ? 'partial' : 'full'
+    const cancelLabel = isPartial ? '부분취소' : '전체취소'
     const memo = isBankTransfer
-      ? `[${cancelType}] 환불계좌: ${refundBank} ${refundAccount} (${refundHolder}) 환불금액: ${refundTotal.toLocaleString()}원`
-      : `[${cancelType}] 카드/토스 취소 처리 필요 환불금액: ${refundTotal.toLocaleString()}원`
+      ? `[${cancelLabel}] 환불계좌: ${refundBank} ${refundAccount} (${refundHolder}) 환불금액: ${refundTotal.toLocaleString()}원`
+      : `[${cancelLabel}] 카드/토스 취소 처리 필요 환불금액: ${refundTotal.toLocaleString()}원`
     const newStatus = isPartial ? detailOrder.status : 'cancelled'
     await fetch('/api/admin/orders/status', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ orderId: detailOrder.id, status: newStatus, memo, cancel_items: cancelledItems }),
+      body: JSON.stringify({ orderId: detailOrder.id, status: newStatus, memo, cancel_items: cancelledItems, cancel_type: cancelType }),
     })
+    setDetailOrder({ ...detailOrder, status: newStatus, memo, cancel_items: cancelledItems, cancel_type: cancelType })
     setShowCancelModal(false)
     setCancelItems(new Set())
     setCancelQty({})
@@ -211,12 +217,19 @@ export function AdminOrdersContent({ orders, statusFilter, statusOptions }: {
                       {o.total_amount?.toLocaleString()}원
                     </td>
                     <td className="px-5 py-4" onClick={e => e.stopPropagation()}>
-                      <select value={o.status} onChange={e => handleSingleStatus(o.id, e.target.value)}
-                        style={{ padding: '6px 10px', border: `1.5px solid ${s?.color ?? '#E8E4DD'}`, borderRadius: 6, fontSize: 12, fontFamily: PRETENDARD, background: s ? `${s.color}10` : 'white', color: s?.color ?? '#1e2025', fontWeight: 700 }}>
-                        {statusOptions.map(st => (
-                          <option key={st.value} value={st.value}>{st.label}</option>
-                        ))}
-                      </select>
+                      <div style={{ display: 'flex', flexDirection: 'column', gap: 4, alignItems: 'flex-start' }}>
+                        <select value={o.status} onChange={e => handleSingleStatus(o.id, e.target.value)}
+                          style={{ padding: '6px 10px', border: `1.5px solid ${s?.color ?? '#E8E4DD'}`, borderRadius: 6, fontSize: 12, fontFamily: PRETENDARD, background: s ? `${s.color}10` : 'white', color: s?.color ?? '#1e2025', fontWeight: 700 }}>
+                          {statusOptions.map(st => (
+                            <option key={st.value} value={st.value}>{st.label}</option>
+                          ))}
+                        </select>
+                        {o.cancel_type && (
+                          <span style={{ fontSize: 10, fontWeight: 700, fontFamily: PRETENDARD, color: '#B84A4A', background: 'rgba(184,74,74,0.08)', padding: '2px 6px', borderRadius: 4 }}>
+                            {o.cancel_type === 'full' ? '전체취소' : '부분취소'}
+                          </span>
+                        )}
+                      </div>
                     </td>
                   </tr>
                 )
@@ -274,9 +287,14 @@ export function AdminOrdersContent({ orders, statusFilter, statusOptions }: {
 
             {/* 주문 취소 */}
             <div style={{ display: 'flex', gap: 8, marginBottom: 12 }}>
-              <span style={{ padding: '4px 12px', background: cancelItems.size === (detailOrder.order_items ?? []).length ? '#B84A4A' : '#F8F6F2', color: cancelItems.size === (detailOrder.order_items ?? []).length ? 'white' : '#8a9099', borderRadius: 4, fontSize: 12, fontFamily: PRETENDARD, fontWeight: 600, cursor: 'pointer' }}
-                onClick={() => setCancelItems(new Set((detailOrder.order_items ?? []).map((i: any) => i.id)))}>전체취소</span>
-              <span style={{ padding: '4px 12px', background: cancelItems.size > 0 && cancelItems.size < (detailOrder.order_items ?? []).length ? '#C6A052' : '#F8F6F2', color: cancelItems.size > 0 && cancelItems.size < (detailOrder.order_items ?? []).length ? 'white' : '#8a9099', borderRadius: 4, fontSize: 12, fontFamily: PRETENDARD, fontWeight: 600 }}>부분취소</span>
+              <span style={{ padding: '4px 12px', background: '#F8F6F2', color: '#8a9099', borderRadius: 4, fontSize: 12, fontFamily: PRETENDARD, fontWeight: 600, cursor: 'pointer' }}
+                onClick={() => {
+                  const allIds = new Set<string>((detailOrder.order_items ?? []).map((i: any) => i.id as string))
+                  setCancelItems(allIds)
+                  const fullQty: Record<string, number> = {}
+                  ;(detailOrder.order_items ?? []).forEach((i: any) => { fullQty[i.id] = i.quantity })
+                  setCancelQty(fullQty)
+                }}>전체취소</span>
             </div>
             <p style={{ fontFamily: PRETENDARD, fontSize: 13, fontWeight: 600, color: '#8a9099', marginBottom: 10 }}>주문 취소</p>
             <table style={{ width: '100%', borderCollapse: 'collapse', marginBottom: 12 }}>
@@ -414,7 +432,7 @@ export function AdminOrdersContent({ orders, statusFilter, statusOptions }: {
                     <table style={{ width: '100%', borderCollapse: 'collapse' }}>
                       <tbody>
                         {[
-                          { label: '주문일자', value: new Date(detailOrder.created_at).toLocaleString('ko-KR') },
+                          { label: '주문일자', value: new Date(detailOrder.created_at).toLocaleString('ko-KR', { timeZone: 'Asia/Seoul' }) },
                           { label: '주문번호', value: <span style={{ display: 'flex', alignItems: 'center', gap: 8 }}>{detailOrder.order_number}<span style={{ background: s ? `${s.color}18` : '#F0EDE8', color: s?.color, fontSize: 11, fontWeight: 700, padding: '2px 8px', borderRadius: 4 }}>{s?.label ?? detailOrder.status}</span></span> },
                           { label: '주문자', value: detailOrder.profiles?.name ?? '-' },
                           { label: '병원명', value: detailOrder.profiles?.hospital_name ?? '-' },
@@ -468,11 +486,19 @@ export function AdminOrdersContent({ orders, statusFilter, statusOptions }: {
                           ))}
                         </tbody>
                       </table>
-                      <div style={{ display: 'flex', justifyContent: 'flex-end', gap: 16, padding: '10px 12px', background: '#FFF3F3', borderRadius: '0 0 6px 6px' }}>
-                        <span style={{ fontFamily: PRETENDARD, fontSize: 13, fontWeight: 700, color: '#1e2025' }}>총 환불금액</span>
-                        <span style={{ fontFamily: PRETENDARD, fontSize: 14, fontWeight: 700, color: '#B84A4A' }}>
-                          {detailOrder.cancel_items.reduce((sum: number, i: any) => sum + (i.subtotal || 0), 0).toLocaleString()}원
-                        </span>
+                      <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: 6, padding: '10px 12px', background: '#FFF3F3', borderRadius: '0 0 6px 6px' }}>
+                        <div style={{ display: 'flex', gap: 16 }}>
+                          <span style={{ fontFamily: PRETENDARD, fontSize: 13, fontWeight: 700, color: '#1e2025' }}>총 환불금액</span>
+                          <span style={{ fontFamily: PRETENDARD, fontSize: 14, fontWeight: 700, color: '#B84A4A' }}>
+                            {detailOrder.cancel_items.reduce((sum: number, i: any) => sum + (i.subtotal || 0), 0).toLocaleString()}원
+                          </span>
+                        </div>
+                        <div style={{ display: 'flex', gap: 16 }}>
+                          <span style={{ fontFamily: PRETENDARD, fontSize: 13, fontWeight: 700, color: '#1e2025' }}>최종 실 결제금액</span>
+                          <span style={{ fontFamily: PRETENDARD, fontSize: 14, fontWeight: 700, color: '#4a6fa5' }}>
+                            {Math.max(0, (detailOrder.total_amount || 0) - detailOrder.cancel_items.reduce((sum: number, i: any) => sum + (i.subtotal || 0), 0)).toLocaleString()}원
+                          </span>
+                        </div>
                       </div>
                       {detailOrder.memo && (
                         <div style={{ marginTop: 8, padding: '10px 12px', background: '#F8F6F2', borderRadius: 6, fontFamily: PRETENDARD, fontSize: 12, color: '#8a9099' }}>
