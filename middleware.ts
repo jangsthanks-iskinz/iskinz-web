@@ -14,7 +14,7 @@ export async function middleware(request: NextRequest) {
     !pathname.startsWith('/maintenance') &&
     !pathname.startsWith('/_next')
   ) {
-    return NextResponse.rewrite(new URL('/maintenance', request.url))
+    return NextResponse.redirect(new URL('/maintenance', request.url))
   }
 
   let supabaseResponse = NextResponse.next({ request })
