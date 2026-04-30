@@ -30,6 +30,7 @@ export function AdminOrdersContent({ orders, statusFilter, statusOptions }: {
   const [cancelQty, setCancelQty] = useState<Record<string, number>>({})
   const [cancelReason, setCancelReason] = useState('')
   const [cancelReasonDirect, setCancelReasonDirect] = useState('')
+  const [showWithdrawModal, setShowWithdrawModal] = useState(false)
 
   const tabs = [{ key: 'all', label: '전체' }, ...statusOptions.map(s => ({ key: s.value, label: s.label }))]
 
@@ -87,19 +88,21 @@ export function AdminOrdersContent({ orders, statusFilter, statusOptions }: {
   async function handleCancelWithdraw() {
     if (!detailOrder) return
     const prevStatus = detailOrder.previous_status || 'pending'
+    // 메모에서 환불계좌 정보만 삭제
+    const cleanedMemo = (detailOrder.memo || '').replace(/\[.*?취소.*?\].*?환불계좌:.*?(\n|$)/g, '').replace(/환불계좌:.*?(\n|$)/g, '').trim()
     await fetch('/api/admin/orders/status', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         orderId: detailOrder.id,
         status: prevStatus,
-        cancel_items: null,
-        cancel_type: null,
-        cancel_reason: null,
+        memo: cleanedMemo,
+        cancel_withdrawn: true,
         previous_status: null,
       }),
     })
-    setDetailOrder({ ...detailOrder, status: prevStatus, cancel_items: null, cancel_type: null, cancel_reason: null, previous_status: null })
+    setDetailOrder({ ...detailOrder, status: prevStatus, memo: cleanedMemo, cancel_withdrawn: true, previous_status: null })
+    setShowWithdrawModal(false)
     router.refresh()
   }
 
@@ -417,6 +420,47 @@ export function AdminOrdersContent({ orders, statusFilter, statusOptions }: {
         </div>
       )}
 
+      {/* 취소 철회 확인 모달 */}
+      {showWithdrawModal && detailOrder && (
+        <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.5)', zIndex: 1200, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 24 }}>
+          <div style={{ background: 'white', borderRadius: 12, padding: 32, width: '100%', maxWidth: 480 }}>
+            <h3 style={{ fontFamily: PRETENDARD, fontSize: 16, fontWeight: 700, marginBottom: 8 }}>취소 철회 확인</h3>
+            <p style={{ fontFamily: PRETENDARD, fontSize: 13, color: '#8a9099', marginBottom: 20 }}>아래 취소 접수된 상품을 철회합니다.</p>
+            <table style={{ width: '100%', borderCollapse: 'collapse', marginBottom: 16 }}>
+              <thead>
+                <tr style={{ background: '#F8F6F2' }}>
+                  <th style={{ padding: '8px 12px', fontFamily: PRETENDARD, fontSize: 12, fontWeight: 600, color: '#8a9099', textAlign: 'left' }}>상품명</th>
+                  <th style={{ padding: '8px 12px', fontFamily: PRETENDARD, fontSize: 12, fontWeight: 600, color: '#8a9099', textAlign: 'center', width: 60 }}>수량</th>
+                  <th style={{ padding: '8px 12px', fontFamily: PRETENDARD, fontSize: 12, fontWeight: 600, color: '#8a9099', textAlign: 'right', width: 100 }}>금액</th>
+                </tr>
+              </thead>
+              <tbody>
+                {(detailOrder.cancel_items ?? []).map((item: any, i: number) => (
+                  <tr key={i} style={{ borderBottom: '1px solid #F0EDE8' }}>
+                    <td style={{ padding: '10px 12px', fontFamily: PRETENDARD, fontSize: 13, color: '#1e2025' }}>{item.product_name}</td>
+                    <td style={{ padding: '10px 12px', fontFamily: PRETENDARD, fontSize: 13, color: '#1e2025', textAlign: 'center' }}>{item.quantity}</td>
+                    <td style={{ padding: '10px 12px', fontFamily: PRETENDARD, fontSize: 13, color: '#1e2025', textAlign: 'right' }}>{item.subtotal?.toLocaleString()}원</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+            <div style={{ padding: '10px 12px', background: '#FFF3F3', borderRadius: 6, marginBottom: 20, fontFamily: PRETENDARD, fontSize: 12, color: '#B84A4A' }}>
+              ※ 관리자 메모의 환불 계좌 정보가 삭제됩니다.
+            </div>
+            <div style={{ display: 'flex', gap: 12 }}>
+              <button onClick={() => setShowWithdrawModal(false)}
+                style={{ flex: 1, padding: '12px', border: '1px solid #C8CDD4', borderRadius: 6, fontFamily: PRETENDARD, fontSize: 14, cursor: 'pointer', background: 'white' }}>
+                닫기
+              </button>
+              <button onClick={handleCancelWithdraw}
+                style={{ flex: 1, padding: '12px', background: '#4a6fa5', color: 'white', border: 'none', borderRadius: 6, fontFamily: PRETENDARD, fontSize: 14, fontWeight: 700, cursor: 'pointer' }}>
+                철회 확인
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* 주문 세부내역 모달 */}
       {detailOrder && !showTrackingModal && !showCancelModal && (
         <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.5)', zIndex: 1000, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 24 }}>
@@ -428,8 +472,8 @@ export function AdminOrdersContent({ orders, statusFilter, statusOptions }: {
                   style={{ padding: '8px 16px', background: '#B84A4A', color: 'white', border: 'none', borderRadius: 6, fontFamily: PRETENDARD, fontSize: 13, fontWeight: 600, cursor: 'pointer' }}>
                   취소/환불
                 </button>
-                {detailOrder.cancel_type && (
-                  <button onClick={handleCancelWithdraw}
+                {detailOrder.cancel_type && !detailOrder.cancel_withdrawn && (
+                  <button onClick={() => setShowWithdrawModal(true)}
                     style={{ padding: '8px 16px', background: 'white', color: '#B84A4A', border: '1px solid #B84A4A', borderRadius: 6, fontFamily: PRETENDARD, fontSize: 13, fontWeight: 600, cursor: 'pointer' }}>
                     취소 철회
                   </button>

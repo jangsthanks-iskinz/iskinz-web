@@ -11,7 +11,7 @@ export async function POST(req: NextRequest) {
   const { data: profile } = await supabase.from('profiles').select('role').eq('id', user.id).single()
   if (profile?.role !== 'admin') return NextResponse.json({ error: 'Forbidden' }, { status: 403 })
 
-  const { orderId, status, courier_name, tracking_number, memo, cancel_items, cancel_type, cancel_reason, previous_status } = await req.json()
+  const { orderId, status, courier_name, tracking_number, memo, cancel_items, cancel_type, cancel_reason, previous_status, cancel_withdrawn } = await req.json()
   if (!ALLOWED_STATUSES.includes(status)) return NextResponse.json({ error: 'Invalid status' }, { status: 400 })
 
   const updateData: any = { status, updated_at: new Date().toISOString() }
@@ -22,6 +22,7 @@ export async function POST(req: NextRequest) {
   if (cancel_type !== undefined) updateData.cancel_type = cancel_type
   if (cancel_reason !== undefined) updateData.cancel_reason = cancel_reason
   if (previous_status !== undefined) updateData.previous_status = previous_status
+  if (cancel_withdrawn !== undefined) updateData.cancel_withdrawn = cancel_withdrawn
 
   const service = createServiceClient()
   const { error } = await service.from('orders').update(updateData).eq('id', orderId)
