@@ -29,6 +29,12 @@ export async function POST(req: NextRequest) {
   if (return_reason !== undefined) updateData.return_reason = return_reason
   if (return_withdrawn !== undefined) updateData.return_withdrawn = return_withdrawn
   if (previous_status_before_return !== undefined) updateData.previous_status_before_return = previous_status_before_return
+  if (return_status !== undefined) updateData.return_status = return_status
+  if (return_items !== undefined) updateData.return_items = return_items
+  if (return_type !== undefined) updateData.return_type = return_type
+  if (return_reason !== undefined) updateData.return_reason = return_reason
+  if (return_withdrawn !== undefined) updateData.return_withdrawn = return_withdrawn
+  if (previous_status_before_return !== undefined) updateData.previous_status_before_return = previous_status_before_return
 
   const service = createServiceClient()
   const { error } = await service.from('orders').update(updateData).eq('id', orderId)

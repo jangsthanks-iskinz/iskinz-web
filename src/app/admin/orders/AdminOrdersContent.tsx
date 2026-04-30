@@ -32,6 +32,16 @@ export function AdminOrdersContent({ orders, statusFilter, statusOptions }: {
   const [cancelReason, setCancelReason] = useState('')
   const [cancelReasonDirect, setCancelReasonDirect] = useState('')
   const [showWithdrawModal, setShowWithdrawModal] = useState(false)
+  const [showReturnModal, setShowReturnModal] = useState(false)
+  const [showReturnWithdrawModal, setShowReturnWithdrawModal] = useState(false)
+  const [returnItems, setReturnItems] = useState<Set<string>>(new Set())
+  const [returnQty, setReturnQty] = useState<Record<string, number>>({})
+  const [returnReason, setReturnReason] = useState('')
+  const [returnReasonDirect, setReturnReasonDirect] = useState('')
+  const [returnCollected, setReturnCollected] = useState(false)
+  const [returnRefundBank, setReturnRefundBank] = useState('')
+  const [returnRefundAccount, setReturnRefundAccount] = useState('')
+  const [returnRefundHolder, setReturnRefundHolder] = useState('')
 
   const tabs = [{ key: 'all', label: '전체' }, ...statusOptions.map(s => ({ key: s.value, label: s.label }))]
 
@@ -112,6 +122,97 @@ export function AdminOrdersContent({ orders, statusFilter, statusOptions }: {
     setDetailOrder(updated)
     setOrderList(prev => prev.map(o => o.id === detailOrder.id ? { ...o, status: prevStatus, cancel_withdrawn: true } : o))
     setShowWithdrawModal(false)
+  }
+
+  async function handleReturn() {
+    if (!detailOrder) return
+    if (!returnReason) { alert('반품 사유를 선택해주세요.'); return }
+    if (returnReason === '직접입력' && !returnReasonDirect) { alert('반품 사유를 입력해주세요.'); return }
+    if (returnItems.size === 0) { alert('반품할 상품을 선택해주세요.'); return }
+    const isBankTransfer = detailOrder.payment_method === 'bank_transfer'
+    if (isBankTransfer && (!returnRefundBank || !returnRefundAccount || !returnRefundHolder)) {
+      alert('환불 계좌 정보를 모두 입력해주세요.'); return
+    }
+    const returnedItems = (detailOrder.order_items ?? [])
+      .filter((i: any) => returnItems.has(i.id))
+      .map((i: any) => ({
+        product_name: i.product_name,
+        quantity: returnQty[i.id] ?? i.quantity,
+        unit_price: i.unit_price,
+        subtotal: (i.unit_price || 0) * (returnQty[i.id] ?? i.quantity),
+      }))
+    const isPartial = (detailOrder.order_items ?? []).some((i: any) => {
+      if (!returnItems.has(i.id)) return true
+      return (returnQty[i.id] ?? i.quantity) < i.quantity
+    })
+    const finalReason = returnReason === '직접입력' ? returnReasonDirect : returnReason
+    const returnStatus = returnCollected ? 'return_collected' : 'return_collecting'
+    const memo = isBankTransfer
+      ? `[반품] 환불계좌: ${returnRefundBank} ${returnRefundAccount} (${returnRefundHolder})`
+      : `[반품] 카드/토스 환불 처리 필요`
+    await fetch('/api/admin/orders/status', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        orderId: detailOrder.id,
+        status: detailOrder.status,
+        return_status: returnStatus,
+        return_items: returnedItems,
+        return_type: isPartial ? 'partial' : 'full',
+        return_reason: finalReason,
+        return_withdrawn: false,
+        previous_status_before_return: detailOrder.status,
+        memo,
+      }),
+    })
+    const updated = { ...detailOrder, return_status: returnStatus, return_items: returnedItems, return_type: isPartial ? 'partial' : 'full', return_reason: finalReason, return_withdrawn: false, memo }
+    setDetailOrder(updated)
+    setOrderList(prev => prev.map(o => o.id === detailOrder.id ? { ...o, return_status: returnStatus, return_type: isPartial ? 'partial' : 'full', return_withdrawn: false } : o))
+    setShowReturnModal(false)
+    setReturnItems(new Set())
+    setReturnQty({})
+    setReturnReason('')
+    setReturnReasonDirect('')
+    setReturnCollected(false)
+    setReturnRefundBank('')
+    setReturnRefundAccount('')
+    setReturnRefundHolder('')
+  }
+
+  async function handleReturnWithdraw() {
+    if (!detailOrder) return
+    const prevStatus = detailOrder.previous_status_before_return || detailOrder.status
+    const cleanedMemo = (detailOrder.memo || '')
+      .replace(/[반품].*?(
+|$)/g, '')
+      .replace(/환불계좌:.*?(
+|$)/g, '')
+      .trim()
+    await fetch('/api/admin/orders/status', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        orderId: detailOrder.id,
+        status: prevStatus,
+        return_withdrawn: true,
+        previous_status_before_return: null,
+        memo: cleanedMemo,
+      }),
+    })
+    const updated = { ...detailOrder, status: prevStatus, return_withdrawn: true, previous_status_before_return: null, memo: cleanedMemo }
+    setDetailOrder(updated)
+    setOrderList(prev => prev.map(o => o.id === detailOrder.id ? { ...o, return_withdrawn: true } : o))
+    setShowReturnWithdrawModal(false)
+  }
+
+  async function handleReturnStatusUpdate(newReturnStatus: string) {
+    if (!detailOrder) return
+    await fetch('/api/admin/orders/status', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ orderId: detailOrder.id, status: detailOrder.status, return_status: newReturnStatus }),
+    })
+    setDetailOrder({ ...detailOrder, return_status: newReturnStatus })
   }
 
   async function saveMemo() {
@@ -269,6 +370,16 @@ export function AdminOrdersContent({ orders, statusFilter, statusOptions }: {
                         {o.cancel_withdrawn && (
                           <span style={{ fontSize: 10, fontWeight: 700, fontFamily: PRETENDARD, color: '#4a6fa5', background: 'rgba(74,111,165,0.08)', padding: '2px 6px', borderRadius: 4 }}>
                             취소철회
+                          </span>
+                        )}
+                        {o.return_status && !o.return_withdrawn && (
+                          <span style={{ fontSize: 10, fontWeight: 700, fontFamily: PRETENDARD, color: '#4a6fa5', background: 'rgba(74,111,165,0.08)', padding: '2px 6px', borderRadius: 4 }}>
+                            {o.return_type === 'full' ? '전체반품' : '부분반품'}
+                          </span>
+                        )}
+                        {o.return_withdrawn && (
+                          <span style={{ fontSize: 10, fontWeight: 700, fontFamily: PRETENDARD, color: '#8a9099', background: 'rgba(138,144,153,0.08)', padding: '2px 6px', borderRadius: 4 }}>
+                            반품철회
                           </span>
                         )}
                       </div>
@@ -476,6 +587,140 @@ export function AdminOrdersContent({ orders, statusFilter, statusOptions }: {
         </div>
       )}
 
+      {/* 반품 접수 모달 */}
+      {showReturnModal && detailOrder && (
+        <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.5)', zIndex: 1100, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 24 }}>
+          <div style={{ background: 'white', borderRadius: 12, padding: 32, width: '100%', maxWidth: 520, maxHeight: '85vh', overflowY: 'auto' }}>
+            <h3 style={{ fontFamily: PRETENDARD, fontSize: 16, fontWeight: 700, marginBottom: 20 }}>반품 접수</h3>
+            <p style={{ fontFamily: PRETENDARD, fontSize: 13, fontWeight: 600, color: '#1e2025', marginBottom: 10 }}>반품 사유 *</p>
+            <select value={returnReason} onChange={e => setReturnReason(e.target.value)}
+              style={{ width: '100%', padding: '10px 12px', border: '1px solid #C8CDD4', borderRadius: 6, fontSize: 13, fontFamily: PRETENDARD, marginBottom: 8 }}>
+              <option value="">반품 사유 선택</option>
+              <option value="고객변심">고객변심</option>
+              <option value="상품불량">상품불량</option>
+              <option value="배송지연">배송지연</option>
+              <option value="기타">기타</option>
+              <option value="직접입력">직접입력</option>
+            </select>
+            {returnReason === '직접입력' && (
+              <input type="text" placeholder="반품 사유를 입력해주세요" value={returnReasonDirect}
+                onChange={e => setReturnReasonDirect(e.target.value)}
+                style={{ width: '100%', padding: '10px 12px', border: '1px solid #C8CDD4', borderRadius: 6, fontSize: 13, fontFamily: PRETENDARD, boxSizing: 'border-box' as const, marginBottom: 16 }} />
+            )}
+            <p style={{ fontFamily: PRETENDARD, fontSize: 13, fontWeight: 600, color: '#1e2025', marginBottom: 10, marginTop: 8 }}>반품 상품 선택</p>
+            <div style={{ display: 'flex', gap: 8, marginBottom: 12 }}>
+              <span style={{ padding: '4px 12px', background: '#F8F6F2', color: '#8a9099', borderRadius: 4, fontSize: 12, fontFamily: PRETENDARD, fontWeight: 600, cursor: 'pointer' }}
+                onClick={() => {
+                  const allIds = new Set<string>((detailOrder.order_items ?? []).map((i: any) => i.id as string))
+                  setReturnItems(allIds)
+                  const fullQty: Record<string, number> = {}
+                  ;(detailOrder.order_items ?? []).forEach((i: any) => { fullQty[i.id] = i.quantity })
+                  setReturnQty(fullQty)
+                }}>전체반품</span>
+            </div>
+            <table style={{ width: '100%', borderCollapse: 'collapse', marginBottom: 12 }}>
+              <thead>
+                <tr style={{ background: '#F8F6F2' }}>
+                  <th style={{ padding: '8px 12px', width: 32 }}></th>
+                  <th style={{ padding: '8px 12px', fontFamily: PRETENDARD, fontSize: 12, fontWeight: 600, color: '#8a9099', textAlign: 'left' }}>상품명</th>
+                  <th style={{ padding: '8px 12px', fontFamily: PRETENDARD, fontSize: 12, fontWeight: 600, color: '#8a9099', textAlign: 'center', width: 80 }}>수량</th>
+                  <th style={{ padding: '8px 12px', fontFamily: PRETENDARD, fontSize: 12, fontWeight: 600, color: '#8a9099', textAlign: 'right', width: 100 }}>금액</th>
+                </tr>
+              </thead>
+              <tbody>
+                {(detailOrder.order_items ?? []).map((item: any) => (
+                  <tr key={item.id} style={{ borderBottom: '1px solid #F0EDE8' }}>
+                    <td style={{ padding: '10px 12px' }}>
+                      <input type="checkbox" checked={returnItems.has(item.id)}
+                        onChange={e => {
+                          const next = new Set<string>(returnItems)
+                          e.target.checked ? next.add(item.id) : next.delete(item.id)
+                          setReturnItems(next)
+                        }} />
+                    </td>
+                    <td style={{ padding: '10px 12px', fontFamily: PRETENDARD, fontSize: 13, color: '#1e2025' }}>{item.product_name}</td>
+                    <td style={{ padding: '10px 12px', textAlign: 'center' }}>
+                      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6 }}>
+                        <button onClick={() => setReturnQty(q => ({ ...q, [item.id]: Math.max(1, (q[item.id] ?? item.quantity) - 1) }))}
+                          style={{ width: 24, height: 24, border: '1px solid #E8E4DD', borderRadius: 4, background: 'white', cursor: 'pointer', fontSize: 14 }}>−</button>
+                        <span style={{ fontFamily: PRETENDARD, fontSize: 13, minWidth: 20, textAlign: 'center' }}>{returnQty[item.id] ?? item.quantity}</span>
+                        <button onClick={() => setReturnQty(q => ({ ...q, [item.id]: Math.min(item.quantity, (q[item.id] ?? item.quantity) + 1) }))}
+                          style={{ width: 24, height: 24, border: '1px solid #E8E4DD', borderRadius: 4, background: 'white', cursor: 'pointer', fontSize: 14 }}>+</button>
+                      </div>
+                    </td>
+                    <td style={{ padding: '10px 12px', fontFamily: PRETENDARD, fontSize: 13, color: '#1e2025', textAlign: 'right' }}>{item.subtotal?.toLocaleString()}원</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+            <label style={{ display: 'flex', alignItems: 'center', gap: 8, fontFamily: PRETENDARD, fontSize: 13, color: '#1e2025', cursor: 'pointer', marginBottom: 16, padding: '12px', background: '#F8F6F2', borderRadius: 6 }}>
+              <input type="checkbox" checked={returnCollected} onChange={e => setReturnCollected(e.target.checked)} />
+              수거 완료 (체크 시 반품 회수 완료 상태로 접수)
+            </label>
+            {detailOrder.payment_method === 'bank_transfer' && (
+              <div style={{ padding: 16, background: '#F8F6F2', borderRadius: 8, marginBottom: 16 }}>
+                <p style={{ fontFamily: PRETENDARD, fontSize: 13, fontWeight: 600, color: '#1e2025', marginBottom: 12 }}>환불 계좌 정보 *</p>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+                  <input type="text" placeholder="은행명" value={returnRefundBank} onChange={e => setReturnRefundBank(e.target.value)}
+                    style={{ padding: '10px 12px', border: '1px solid #C8CDD4', borderRadius: 6, fontSize: 14, fontFamily: PRETENDARD }} />
+                  <input type="text" placeholder="계좌번호" value={returnRefundAccount} onChange={e => setReturnRefundAccount(e.target.value)}
+                    style={{ padding: '10px 12px', border: '1px solid #C8CDD4', borderRadius: 6, fontSize: 14, fontFamily: PRETENDARD }} />
+                  <input type="text" placeholder="예금주" value={returnRefundHolder} onChange={e => setReturnRefundHolder(e.target.value)}
+                    style={{ padding: '10px 12px', border: '1px solid #C8CDD4', borderRadius: 6, fontSize: 14, fontFamily: PRETENDARD }} />
+                </div>
+              </div>
+            )}
+            <div style={{ display: 'flex', gap: 12 }}>
+              <button onClick={() => { setShowReturnModal(false); setReturnItems(new Set()); setReturnQty({}); setReturnReason(''); setReturnReasonDirect(''); setReturnCollected(false) }}
+                style={{ flex: 1, padding: '12px', border: '1px solid #C8CDD4', borderRadius: 6, fontFamily: PRETENDARD, fontSize: 14, cursor: 'pointer', background: 'white' }}>닫기</button>
+              <button onClick={handleReturn} disabled={returnItems.size === 0}
+                style={{ flex: 1, padding: '12px', background: '#4a6fa5', color: 'white', border: 'none', borderRadius: 6, fontFamily: PRETENDARD, fontSize: 14, fontWeight: 700, cursor: returnItems.size === 0 ? 'not-allowed' : 'pointer', opacity: returnItems.size === 0 ? 0.5 : 1 }}>
+                반품 접수
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* 반품 철회 확인 모달 */}
+      {showReturnWithdrawModal && detailOrder && (
+        <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.5)', zIndex: 1200, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 24 }}>
+          <div style={{ background: 'white', borderRadius: 12, padding: 32, width: '100%', maxWidth: 480 }}>
+            <h3 style={{ fontFamily: PRETENDARD, fontSize: 16, fontWeight: 700, marginBottom: 8 }}>반품 철회 확인</h3>
+            <p style={{ fontFamily: PRETENDARD, fontSize: 13, color: '#8a9099', marginBottom: 20 }}>아래 반품 접수된 상품을 철회합니다.</p>
+            <table style={{ width: '100%', borderCollapse: 'collapse', marginBottom: 16 }}>
+              <thead>
+                <tr style={{ background: '#EEF2F8' }}>
+                  <th style={{ padding: '8px 12px', fontFamily: PRETENDARD, fontSize: 12, fontWeight: 600, color: '#4a6fa5', textAlign: 'left' }}>상품명</th>
+                  <th style={{ padding: '8px 12px', fontFamily: PRETENDARD, fontSize: 12, fontWeight: 600, color: '#4a6fa5', textAlign: 'center', width: 60 }}>수량</th>
+                  <th style={{ padding: '8px 12px', fontFamily: PRETENDARD, fontSize: 12, fontWeight: 600, color: '#4a6fa5', textAlign: 'right', width: 100 }}>금액</th>
+                </tr>
+              </thead>
+              <tbody>
+                {(detailOrder.return_items ?? []).map((item: any, i: number) => (
+                  <tr key={i} style={{ borderBottom: '1px solid #E8F0FF' }}>
+                    <td style={{ padding: '10px 12px', fontFamily: PRETENDARD, fontSize: 13, color: '#1e2025' }}>{item.product_name}</td>
+                    <td style={{ padding: '10px 12px', fontFamily: PRETENDARD, fontSize: 13, color: '#1e2025', textAlign: 'center' }}>{item.quantity}</td>
+                    <td style={{ padding: '10px 12px', fontFamily: PRETENDARD, fontSize: 13, color: '#4a6fa5', textAlign: 'right' }}>{item.subtotal?.toLocaleString()}원</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+            <div style={{ padding: '10px 12px', background: '#EEF2F8', borderRadius: 6, marginBottom: 20, fontFamily: PRETENDARD, fontSize: 12, color: '#4a6fa5' }}>
+              ※ 관리자 메모의 환불 계좌 정보가 삭제됩니다.
+            </div>
+            <div style={{ display: 'flex', gap: 12 }}>
+              <button onClick={() => setShowReturnWithdrawModal(false)}
+                style={{ flex: 1, padding: '12px', border: '1px solid #C8CDD4', borderRadius: 6, fontFamily: PRETENDARD, fontSize: 14, cursor: 'pointer', background: 'white' }}>닫기</button>
+              <button onClick={handleReturnWithdraw}
+                style={{ flex: 1, padding: '12px', background: '#4a6fa5', color: 'white', border: 'none', borderRadius: 6, fontFamily: PRETENDARD, fontSize: 14, fontWeight: 700, cursor: 'pointer' }}>
+                철회 확인
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* 주문 세부내역 모달 */}
       {detailOrder && !showTrackingModal && !showCancelModal && (
         <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.5)', zIndex: 1000, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 24 }}
@@ -493,6 +738,18 @@ export function AdminOrdersContent({ orders, statusFilter, statusOptions }: {
                   <button onClick={() => setShowWithdrawModal(true)}
                     style={{ padding: '8px 16px', background: 'white', color: '#B84A4A', border: '1px solid #B84A4A', borderRadius: 6, fontFamily: PRETENDARD, fontSize: 13, fontWeight: 600, cursor: 'pointer' }}>
                     취소 철회
+                  </button>
+                )}
+                {(detailOrder.status === 'shipped' || detailOrder.status === 'delivered') && !detailOrder.return_status && (
+                  <button onClick={() => setShowReturnModal(true)}
+                    style={{ padding: '8px 16px', background: '#4a6fa5', color: 'white', border: 'none', borderRadius: 6, fontFamily: PRETENDARD, fontSize: 13, fontWeight: 600, cursor: 'pointer' }}>
+                    반품 접수
+                  </button>
+                )}
+                {detailOrder.return_status && !detailOrder.return_withdrawn && (
+                  <button onClick={() => setShowReturnWithdrawModal(true)}
+                    style={{ padding: '8px 16px', background: 'white', color: '#4a6fa5', border: '1px solid #4a6fa5', borderRadius: 6, fontFamily: PRETENDARD, fontSize: 13, fontWeight: 600, cursor: 'pointer' }}>
+                    반품 철회
                   </button>
                 )}
                 <button onClick={() => setDetailOrder(null)} style={{ background: 'none', border: 'none', fontSize: 20, cursor: 'pointer', color: '#8a9099' }}>✕</button>
@@ -535,6 +792,65 @@ export function AdminOrdersContent({ orders, statusFilter, statusOptions }: {
                       </div>
                     </div>
                   </div>
+
+                  {/* 반품 내역 */}
+                  {detailOrder.return_items && detailOrder.return_items.length > 0 && !detailOrder.return_withdrawn && (
+                    <div style={{ marginBottom: 24 }}>
+                      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 12 }}>
+                        <p style={{ fontFamily: PRETENDARD, fontSize: 13, fontWeight: 700, color: '#4a6fa5' }}>반품 내역</p>
+                        <div style={{ display: 'flex', gap: 6, alignItems: 'center' }}>
+                          {detailOrder.return_status === 'return_collecting' && (
+                            <button onClick={() => handleReturnStatusUpdate('return_collected')}
+                              style={{ padding: '4px 12px', background: '#4a6fa5', color: 'white', border: 'none', borderRadius: 4, fontSize: 12, fontFamily: PRETENDARD, cursor: 'pointer' }}>
+                              회수 완료 처리
+                            </button>
+                          )}
+                          {detailOrder.return_status === 'return_collected' && (
+                            <button onClick={() => handleReturnStatusUpdate('return_completed')}
+                              style={{ padding: '4px 12px', background: '#4A7C59', color: 'white', border: 'none', borderRadius: 4, fontSize: 12, fontFamily: PRETENDARD, cursor: 'pointer' }}>
+                              반품 완료(환불) 처리
+                            </button>
+                          )}
+                          <span style={{ padding: '4px 10px', fontSize: 11, fontWeight: 700, fontFamily: PRETENDARD, borderRadius: 4,
+                            background: detailOrder.return_status === 'return_completed' ? 'rgba(74,124,89,0.1)' : detailOrder.return_status === 'return_collected' ? 'rgba(74,111,165,0.1)' : 'rgba(198,160,82,0.1)',
+                            color: detailOrder.return_status === 'return_completed' ? '#4A7C59' : detailOrder.return_status === 'return_collected' ? '#4a6fa5' : '#C6A052' }}>
+                            {detailOrder.return_status === 'return_collecting' ? '반품 회수 중' : detailOrder.return_status === 'return_collected' ? '반품 회수 완료' : '반품 완료'}
+                          </span>
+                        </div>
+                      </div>
+                      <table style={{ width: '100%', borderCollapse: 'collapse' }}>
+                        <thead>
+                          <tr style={{ background: '#EEF2F8' }}>
+                            <th style={{ padding: '8px 12px', fontFamily: PRETENDARD, fontSize: 12, fontWeight: 600, color: '#4a6fa5', textAlign: 'left' }}>상품명</th>
+                            <th style={{ padding: '8px 12px', fontFamily: PRETENDARD, fontSize: 12, fontWeight: 600, color: '#4a6fa5', textAlign: 'center', width: 60 }}>수량</th>
+                            <th style={{ padding: '8px 12px', fontFamily: PRETENDARD, fontSize: 12, fontWeight: 600, color: '#4a6fa5', textAlign: 'right', width: 100 }}>금액</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {detailOrder.return_items.map((item: any, i: number) => (
+                            <tr key={i} style={{ borderBottom: '1px solid #E8F0FF' }}>
+                              <td style={{ padding: '10px 12px', fontFamily: PRETENDARD, fontSize: 13, color: '#1e2025' }}>{item.product_name}</td>
+                              <td style={{ padding: '10px 12px', fontFamily: PRETENDARD, fontSize: 13, color: '#1e2025', textAlign: 'center' }}>{item.quantity}</td>
+                              <td style={{ padding: '10px 12px', fontFamily: PRETENDARD, fontSize: 13, color: '#4a6fa5', textAlign: 'right' }}>{item.subtotal?.toLocaleString()}원</td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                      <div style={{ padding: '10px 12px', background: '#EEF2F8', borderRadius: '0 0 6px 6px' }}>
+                        <div style={{ display: 'flex', justifyContent: 'flex-end', gap: 16 }}>
+                          <span style={{ fontFamily: PRETENDARD, fontSize: 13, fontWeight: 700, color: '#1e2025' }}>총 환불금액</span>
+                          <span style={{ fontFamily: PRETENDARD, fontSize: 14, fontWeight: 700, color: '#4a6fa5' }}>
+                            {detailOrder.return_items.reduce((sum: number, i: any) => sum + (i.subtotal || 0), 0).toLocaleString()}원
+                          </span>
+                        </div>
+                      </div>
+                      {detailOrder.return_reason && (
+                        <div style={{ marginTop: 8, padding: '10px 12px', background: '#EEF2F8', borderRadius: 6, fontFamily: PRETENDARD, fontSize: 12, color: '#4a6fa5' }}>
+                          반품 사유: {detailOrder.return_reason}
+                        </div>
+                      )}
+                    </div>
+                  )}
 
                   {/* 주문 정보 */}
                   <div style={{ marginBottom: 24 }}>
