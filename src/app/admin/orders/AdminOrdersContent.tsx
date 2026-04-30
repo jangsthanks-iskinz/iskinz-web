@@ -28,6 +28,8 @@ export function AdminOrdersContent({ orders, statusFilter, statusOptions }: {
   const [refundAccount, setRefundAccount] = useState('')
   const [refundHolder, setRefundHolder] = useState('')
   const [cancelQty, setCancelQty] = useState<Record<string, number>>({})
+  const [cancelReason, setCancelReason] = useState('')
+  const [cancelReasonDirect, setCancelReasonDirect] = useState('')
 
   const tabs = [{ key: 'all', label: '전체' }, ...statusOptions.map(s => ({ key: s.value, label: s.label }))]
 
@@ -121,15 +123,18 @@ export function AdminOrdersContent({ orders, statusFilter, statusOptions }: {
       ? `[${cancelLabel}] 환불계좌: ${refundBank} ${refundAccount} (${refundHolder}) 환불금액: ${refundTotal.toLocaleString()}원`
       : `[${cancelLabel}] 카드/토스 취소 처리 필요 환불금액: ${refundTotal.toLocaleString()}원`
     const newStatus = isPartial ? detailOrder.status : 'cancelled'
+    const finalReason = cancelReason === '직접입력' ? cancelReasonDirect : cancelReason
     await fetch('/api/admin/orders/status', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ orderId: detailOrder.id, status: newStatus, memo, cancel_items: cancelledItems, cancel_type: cancelType }),
+      body: JSON.stringify({ orderId: detailOrder.id, status: newStatus, memo, cancel_items: cancelledItems, cancel_type: cancelType, cancel_reason: finalReason }),
     })
-    setDetailOrder({ ...detailOrder, status: newStatus, memo, cancel_items: cancelledItems, cancel_type: cancelType })
+    setDetailOrder({ ...detailOrder, status: newStatus, memo, cancel_items: cancelledItems, cancel_type: cancelType, cancel_reason: finalReason })
     setShowCancelModal(false)
     setCancelItems(new Set())
     setCancelQty({})
+    setCancelReason('')
+    setCancelReasonDirect('')
     router.refresh()
   }
 
@@ -341,6 +346,25 @@ export function AdminOrdersContent({ orders, statusFilter, statusOptions }: {
               </div>
             )}
 
+            {/* 취소 사유 */}
+            <div style={{ marginBottom: 16 }}>
+              <p style={{ fontFamily: PRETENDARD, fontSize: 13, fontWeight: 600, color: '#1e2025', marginBottom: 10 }}>취소 사유</p>
+              <select value={cancelReason} onChange={e => setCancelReason(e.target.value)}
+                style={{ width: '100%', padding: '10px 12px', border: '1px solid #C8CDD4', borderRadius: 6, fontSize: 13, fontFamily: PRETENDARD, marginBottom: 8 }}>
+                <option value="">취소 사유 선택</option>
+                <option value="고객변심">고객변심</option>
+                <option value="상품불량">상품불량</option>
+                <option value="배송지연">배송지연</option>
+                <option value="기타">기타</option>
+                <option value="직접입력">직접입력</option>
+              </select>
+              {cancelReason === '직접입력' && (
+                <input type="text" placeholder="취소 사유를 입력해주세요" value={cancelReasonDirect}
+                  onChange={e => setCancelReasonDirect(e.target.value)}
+                  style={{ width: '100%', padding: '10px 12px', border: '1px solid #C8CDD4', borderRadius: 6, fontSize: 13, fontFamily: PRETENDARD, boxSizing: 'border-box' as const }} />
+              )}
+            </div>
+
             {/* 무통장입금 환불 계좌 */}
             {detailOrder.payment_method === 'bank_transfer' && (
               <div style={{ marginTop: 20, padding: 16, background: '#F8F6F2', borderRadius: 8 }}>
@@ -500,6 +524,11 @@ export function AdminOrdersContent({ orders, statusFilter, statusOptions }: {
                           </span>
                         </div>
                       </div>
+                      {detailOrder.cancel_reason && (
+                        <div style={{ marginTop: 8, padding: '10px 12px', background: '#FFF3F3', borderRadius: 6, fontFamily: PRETENDARD, fontSize: 12, color: '#B84A4A' }}>
+                          취소 사유: {detailOrder.cancel_reason}
+                        </div>
+                      )}
                       {detailOrder.memo && (
                         <div style={{ marginTop: 8, padding: '10px 12px', background: '#F8F6F2', borderRadius: 6, fontFamily: PRETENDARD, fontSize: 12, color: '#8a9099' }}>
                           {detailOrder.memo}
