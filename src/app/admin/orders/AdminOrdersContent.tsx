@@ -84,6 +84,25 @@ export function AdminOrdersContent({ orders, statusFilter, statusOptions }: {
     router.refresh()
   }
 
+  async function handleCancelWithdraw() {
+    if (!detailOrder) return
+    const prevStatus = detailOrder.previous_status || 'pending'
+    await fetch('/api/admin/orders/status', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        orderId: detailOrder.id,
+        status: prevStatus,
+        cancel_items: null,
+        cancel_type: null,
+        cancel_reason: null,
+        previous_status: null,
+      }),
+    })
+    setDetailOrder({ ...detailOrder, status: prevStatus, cancel_items: null, cancel_type: null, cancel_reason: null, previous_status: null })
+    router.refresh()
+  }
+
   async function saveMemo() {
     if (!detailOrder) return
     setMemoSaving(true)
@@ -127,9 +146,9 @@ export function AdminOrdersContent({ orders, statusFilter, statusOptions }: {
     await fetch('/api/admin/orders/status', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ orderId: detailOrder.id, status: newStatus, memo, cancel_items: cancelledItems, cancel_type: cancelType, cancel_reason: finalReason }),
+      body: JSON.stringify({ orderId: detailOrder.id, status: newStatus, memo, cancel_items: cancelledItems, cancel_type: cancelType, cancel_reason: finalReason, previous_status: detailOrder.status }),
     })
-    setDetailOrder({ ...detailOrder, status: newStatus, memo, cancel_items: cancelledItems, cancel_type: cancelType, cancel_reason: finalReason })
+    setDetailOrder({ ...detailOrder, status: newStatus, memo, cancel_items: cancelledItems, cancel_type: cancelType, cancel_reason: finalReason, previous_status: detailOrder.status })
     setShowCancelModal(false)
     setCancelItems(new Set())
     setCancelQty({})
@@ -409,6 +428,12 @@ export function AdminOrdersContent({ orders, statusFilter, statusOptions }: {
                   style={{ padding: '8px 16px', background: '#B84A4A', color: 'white', border: 'none', borderRadius: 6, fontFamily: PRETENDARD, fontSize: 13, fontWeight: 600, cursor: 'pointer' }}>
                   취소/환불
                 </button>
+                {detailOrder.cancel_type && (
+                  <button onClick={handleCancelWithdraw}
+                    style={{ padding: '8px 16px', background: 'white', color: '#B84A4A', border: '1px solid #B84A4A', borderRadius: 6, fontFamily: PRETENDARD, fontSize: 13, fontWeight: 600, cursor: 'pointer' }}>
+                    취소 철회
+                  </button>
+                )}
                 <button onClick={() => setDetailOrder(null)} style={{ background: 'none', border: 'none', fontSize: 20, cursor: 'pointer', color: '#8a9099' }}>✕</button>
               </div>
             </div>
