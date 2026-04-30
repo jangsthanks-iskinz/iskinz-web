@@ -12,6 +12,7 @@ export function AdminOrdersContent({ orders, statusFilter, statusOptions }: {
   statusOptions: { value: string, label: string, color: string }[]
 }) {
   const router = useRouter()
+  const [orderList, setOrderList] = useState<any[]>(orders)
   const [selected, setSelected] = useState<Set<string>>(new Set())
   const [bulkStatus, setBulkStatus] = useState('')
   const [bulkLoading, setBulkLoading] = useState(false)
@@ -41,7 +42,7 @@ export function AdminOrdersContent({ orders, statusFilter, statusOptions }: {
   }
 
   function toggleAll(checked: boolean) {
-    setSelected(checked ? new Set(orders.map(o => o.id)) : new Set())
+    setSelected(checked ? new Set(orderList.map(o => o.id)) : new Set())
   }
 
   async function handleBulkStatusChange() {
@@ -107,7 +108,9 @@ export function AdminOrdersContent({ orders, statusFilter, statusOptions }: {
         previous_status: null,
       }),
     })
-    setDetailOrder({ ...detailOrder, status: prevStatus, memo: cleanedMemo, cancel_withdrawn: true, previous_status: null })
+    const updated = { ...detailOrder, status: prevStatus, memo: cleanedMemo, cancel_withdrawn: true, previous_status: null }
+    setDetailOrder(updated)
+    setOrderList(prev => prev.map(o => o.id === detailOrder.id ? { ...o, status: prevStatus, cancel_withdrawn: true } : o))
     setShowWithdrawModal(false)
   }
 
@@ -216,7 +219,7 @@ export function AdminOrdersContent({ orders, statusFilter, statusOptions }: {
             <thead>
               <tr style={{ background: '#F8F6F2' }}>
                 <th className="px-4 py-3">
-                  <input type="checkbox" checked={selected.size === orders.length && orders.length > 0}
+                  <input type="checkbox" checked={selected.size === orderList.length && orderList.length > 0}
                     onChange={e => toggleAll(e.target.checked)} />
                 </th>
                 {['주문번호', '회원', '병원명', '주문 상품', '총 결제금액', '상태'].map(h => (
@@ -226,7 +229,7 @@ export function AdminOrdersContent({ orders, statusFilter, statusOptions }: {
               </tr>
             </thead>
             <tbody>
-              {orders.length === 0 ? (
+              {orderList.length === 0 ? (
                 <tr><td colSpan={8} className="px-6 py-12 text-center text-sm" style={{ color: 'var(--text-3)' }}>주문이 없습니다</td></tr>
               ) : orders.map((o: any) => {
                 const s = statusOptions.find(x => x.value === o.status)
