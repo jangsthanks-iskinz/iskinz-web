@@ -183,10 +183,8 @@ export function AdminOrdersContent({ orders, statusFilter, statusOptions }: {
     if (!detailOrder) return
     const prevStatus = detailOrder.previous_status_before_return || detailOrder.status
     const cleanedMemo = (detailOrder.memo || '')
-      .replace(/[반품].*?(
-|$)/g, '')
-      .replace(/환불계좌:.*?(
-|$)/g, '')
+      .replace(/\[반품\][^\n]*(\n|$)/g, '')
+      .replace(/환불계좌:[^\n]*(\n|$)/g, '')
       .trim()
     await fetch('/api/admin/orders/status', {
       method: 'POST',
