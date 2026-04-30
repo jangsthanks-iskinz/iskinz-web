@@ -89,7 +89,13 @@ export function AdminOrdersContent({ orders, statusFilter, statusOptions }: {
     if (!detailOrder) return
     const prevStatus = detailOrder.previous_status || 'pending'
     // 메모에서 환불계좌 정보만 삭제
-    const cleanedMemo = (detailOrder.memo || '').replace(/환불계좌:.*?(\n|$)/g, '').trim()
+    const cleanedMemo = (detailOrder.memo || '')
+      .replace(/\[.*?취소\].*?환불계좌:.*?(\n|$)/g, '')
+      .replace(/환불계좌:.*?(\n|$)/g, '')
+      .replace(/은행:.*?(\n|$)/g, '')
+      .replace(/계좌번호:.*?(\n|$)/g, '')
+      .replace(/예금주:.*?(\n|$)/g, '')
+      .trim()
     await fetch('/api/admin/orders/status', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -144,6 +150,8 @@ export function AdminOrdersContent({ orders, statusFilter, statusOptions }: {
       ? `[${cancelLabel}] 환불계좌: ${refundBank} ${refundAccount} (${refundHolder}) 환불금액: ${refundTotal.toLocaleString()}원`
       : `[${cancelLabel}] 카드/토스 취소 처리 필요 환불금액: ${refundTotal.toLocaleString()}원`
     const newStatus = isPartial ? detailOrder.status : 'cancelled'
+    if (!cancelReason) { alert('취소 사유를 선택해주세요.'); return }
+    if (cancelReason === '직접입력' && !cancelReasonDirect) { alert('취소 사유를 입력해주세요.'); return }
     const finalReason = cancelReason === '직접입력' ? cancelReasonDirect : cancelReason
     await fetch('/api/admin/orders/status', {
       method: 'POST',
@@ -250,9 +258,14 @@ export function AdminOrdersContent({ orders, statusFilter, statusOptions }: {
                             <option key={st.value} value={st.value}>{st.label}</option>
                           ))}
                         </select>
-                        {o.cancel_type && (
+                        {o.cancel_type && !o.cancel_withdrawn && (
                           <span style={{ fontSize: 10, fontWeight: 700, fontFamily: PRETENDARD, color: '#B84A4A', background: 'rgba(184,74,74,0.08)', padding: '2px 6px', borderRadius: 4 }}>
                             {o.cancel_type === 'full' ? '전체취소' : '부분취소'}
+                          </span>
+                        )}
+                        {o.cancel_withdrawn && (
+                          <span style={{ fontSize: 10, fontWeight: 700, fontFamily: PRETENDARD, color: '#4a6fa5', background: 'rgba(74,111,165,0.08)', padding: '2px 6px', borderRadius: 4 }}>
+                            취소철회
                           </span>
                         )}
                       </div>
