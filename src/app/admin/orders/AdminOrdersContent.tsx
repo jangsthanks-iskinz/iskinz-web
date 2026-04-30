@@ -211,6 +211,7 @@ export function AdminOrdersContent({ orders, statusFilter, statusOptions }: {
       body: JSON.stringify({ orderId: detailOrder.id, status: detailOrder.status, return_status: newReturnStatus }),
     })
     setDetailOrder({ ...detailOrder, return_status: newReturnStatus })
+    setOrderList(prev => prev.map(o => o.id === detailOrder.id ? { ...o, return_status: newReturnStatus } : o))
   }
 
   async function saveMemo() {
@@ -738,7 +739,7 @@ export function AdminOrdersContent({ orders, statusFilter, statusOptions }: {
                     취소 철회
                   </button>
                 )}
-                {(detailOrder.status === 'shipped' || detailOrder.status === 'delivered') && !detailOrder.return_status && (
+                {(detailOrder.status === 'shipped' || detailOrder.status === 'delivered') && (!detailOrder.return_status || detailOrder.return_withdrawn) && (
                   <button onClick={() => setShowReturnModal(true)}
                     style={{ padding: '8px 16px', background: '#4a6fa5', color: 'white', border: 'none', borderRadius: 6, fontFamily: PRETENDARD, fontSize: 13, fontWeight: 600, cursor: 'pointer' }}>
                     반품 접수
