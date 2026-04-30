@@ -89,7 +89,7 @@ export function AdminOrdersContent({ orders, statusFilter, statusOptions }: {
     if (!detailOrder) return
     const prevStatus = detailOrder.previous_status || 'pending'
     // 메모에서 환불계좌 정보만 삭제
-    const cleanedMemo = (detailOrder.memo || '').replace(/\[.*?취소.*?\].*?환불계좌:.*?(\n|$)/g, '').replace(/환불계좌:.*?(\n|$)/g, '').trim()
+    const cleanedMemo = (detailOrder.memo || '').replace(/환불계좌:.*?(\n|$)/g, '').trim()
     await fetch('/api/admin/orders/status', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -103,7 +103,6 @@ export function AdminOrdersContent({ orders, statusFilter, statusOptions }: {
     })
     setDetailOrder({ ...detailOrder, status: prevStatus, memo: cleanedMemo, cancel_withdrawn: true, previous_status: null })
     setShowWithdrawModal(false)
-    router.refresh()
   }
 
   async function saveMemo() {
@@ -463,8 +462,10 @@ export function AdminOrdersContent({ orders, statusFilter, statusOptions }: {
 
       {/* 주문 세부내역 모달 */}
       {detailOrder && !showTrackingModal && !showCancelModal && (
-        <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.5)', zIndex: 1000, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 24 }}>
-          <div style={{ background: 'white', borderRadius: 12, padding: 32, width: '100%', maxWidth: 640, maxHeight: '85vh', overflowY: 'auto' }}>
+        <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.5)', zIndex: 1000, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 24 }}
+          onClick={() => setDetailOrder(null)}>
+          <div style={{ background: 'white', borderRadius: 12, padding: 32, width: '100%', maxWidth: 640, maxHeight: '85vh', overflowY: 'auto' }}
+            onClick={e => e.stopPropagation()}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 24 }}>
               <h3 style={{ fontFamily: PRETENDARD, fontSize: 18, fontWeight: 700, color: '#1e2025' }}>주문 세부내역</h3>
               <div style={{ display: 'flex', gap: 8 }}>
@@ -558,7 +559,7 @@ export function AdminOrdersContent({ orders, statusFilter, statusOptions }: {
                   </div>
 
                   {/* 취소 내역 */}
-                  {detailOrder.cancel_items && detailOrder.cancel_items.length > 0 && (
+                  {detailOrder.cancel_items && detailOrder.cancel_items.length > 0 && !detailOrder.cancel_withdrawn && (
                     <div style={{ marginBottom: 24 }}>
                       <p style={{ fontFamily: PRETENDARD, fontSize: 13, fontWeight: 700, color: '#B84A4A', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: 12 }}>취소 내역</p>
                       <table style={{ width: '100%', borderCollapse: 'collapse' }}>
