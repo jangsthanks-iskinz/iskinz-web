@@ -201,7 +201,7 @@ function NctfContent() {
                 NCTF® 135 HA 사용자의 <strong style={{ color: NS.charcoal }}>80%</strong>가 이미 복합 시술 적용 중
               </p>
               <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8 }}>
-                {['NCTF + 보톡스·톡신', 'NCTF + Art Filler', 'NCTF + 콜라겐 유도제', 'NCTF + 레이저·RF', 'NCTF + 화학적 필링', 'NCTF + 마이크로니들링', 'NCTF + 수술'].map(c => (
+                {['NCTF + 보톡스·톡신', 'NCTF + Stylage 필러', 'NCTF + 콜라겐 유도제', 'NCTF + 레이저·RF', 'NCTF + 화학적 필링', 'NCTF + 마이크로니들링', 'NCTF + 수술'].map(c => (
                   <span key={c} style={{ fontFamily: NSF.condensed, fontSize: 10, letterSpacing: '0.2em', textTransform: 'uppercase', padding: '8px 14px', border: `1px solid rgba(74,111,165,0.3)`, background: 'rgba(74,111,165,0.06)', color: NS.accent }}>
                     + {c}
                   </span>
