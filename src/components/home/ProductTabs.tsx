@@ -29,27 +29,6 @@ const PRODUCTS = [
     specs: ['3단계 프로토콜 (집중기·강화기·유지기)', '전안면·목·데콜테', '당일 배송 가능'],
   },
   {
-    id: 're2o', brand: 'fillmed', type: 'booster', featured: false,
-    brandLabel: 'Fillmed', tag: '', sub: 'Skin Booster',
-    name: 'Re2O', ha: 'Retino-Filler',
-    desc: '레티노이드 기반 피부 재생 부스터. 피부 결 개선 및 항노화 효과를 동시에 제공합니다.',
-    specs: ['레티노이드 복합체 함유', '피부 재생 촉진', '표피~진피 동시 작용'],
-  },
-  {
-    id: 'artf-u', brand: 'fillmed', type: 'filler', featured: false,
-    brandLabel: 'Fillmed', tag: 'BESTSELLER', sub: 'Dermal Filler',
-    name: 'Art Filler Universal', ha: '중등도 주름',
-    desc: '팔자주름·마리오네트 라인 교정에 최적화된 Fillmed 더말필러. Lidocaine 함유.',
-    specs: ['중등도 주름 교정', 'Lidocaine 함유', '중간~심층 진피 주입'],
-  },
-  {
-    id: 'artf-v', brand: 'fillmed', type: 'filler', featured: false,
-    brandLabel: 'Fillmed', tag: '', sub: 'Volumizer',
-    name: 'Art Filler Volume', ha: '볼륨 복원',
-    desc: '볼·광대·턱 등 대용량 볼륨 복원 전용 필러. 심층 진피~피하 조직.',
-    specs: ['대용량 볼륨 복원', '안면 윤곽 리모델링', '12개월 이상 지속'],
-  },
-  {
     id: 'hycoox', brand: 'fillmed', type: 'device', featured: false,
     brandLabel: 'Fillmed', tag: 'NEW', sub: 'Auto Injector',
     name: 'HYCOOX', ha: '자동 주입',
