@@ -1,12 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
-import { createClient as createAdmin } from '@supabase/supabase-js'
-
-const supabaseAdmin = createAdmin(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.SUPABASE_SERVICE_ROLE_KEY!
-)
-
+import { createServiceClient } from '@/lib/supabase/service'
 export async function POST(req: NextRequest) {
   // verify caller is admin
   const supabase = createClient()
@@ -16,7 +10,7 @@ export async function POST(req: NextRequest) {
   if (profile?.role !== 'admin') return NextResponse.json({ error: 'Forbidden' }, { status: 403 })
 
   const { userId, approved } = await req.json()
-  const { error } = await supabaseAdmin
+  const { error } = await createServiceClient()
     .from('profiles')
     .update({ approved, updated_at: new Date().toISOString() })
     .eq('id', userId)

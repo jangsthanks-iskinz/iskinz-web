@@ -2,15 +2,13 @@ import { NextResponse } from 'next/server'
 import { createServiceClient } from '@/lib/supabase/service'
 import { Resend } from 'resend'
 
-const resend = new Resend(process.env.RESEND_API_KEY)
 const FROM = process.env.RESEND_FROM ?? 'ISKINZ <noreply@iskinz.com>'
 const ADMIN_EMAIL = process.env.ADMIN_EMAIL ?? 'ceo@iskinz.com'
 
 export async function POST(req: Request) {
   try {
+    const resend = new Resend(process.env.RESEND_API_KEY)
     const { inquiryId, customerEmail, customerName, inquiryType, originalMessage, reply } = await req.json()
-
-    // 고객에게 답변 발송 (ceo CC)
     const { error } = await resend.emails.send({
       from: FROM,
       to: customerEmail,
@@ -34,16 +32,12 @@ export async function POST(req: Request) {
         </div>
       `,
     })
-
     if (error) {
       console.error('[Inquiry Reply Error]', error)
       return NextResponse.json({ ok: false }, { status: 500 })
     }
-
-    // 문의 상태를 replied로 업데이트
     const supabase = createServiceClient()
     await supabase.from('inquiries').update({ status: 'replied' }).eq('id', inquiryId)
-
     return NextResponse.json({ ok: true })
   } catch (err) {
     console.error('[Inquiry Reply API Error]', err)

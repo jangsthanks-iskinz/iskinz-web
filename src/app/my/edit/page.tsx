@@ -1,4 +1,5 @@
 'use client'
+import Script from 'next/script'
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
@@ -61,6 +62,12 @@ export default function EditProfilePage() {
     return v.slice(0,13)
   }
 
+  function formatBirth(v: string) {
+    v = v.replace(/[^0-9]/g, '')
+    if (v.length >= 5) v = v.slice(0,4) + '/' + v.slice(4)
+    if (v.length >= 8) v = v.slice(0,7) + '/' + v.slice(7)
+    return v.slice(0,10)
+  }
   function formatBiz(v: string) {
     v = v.replace(/[^0-9]/g, '')
     if (v.length >= 4) v = v.slice(0,3) + '-' + v.slice(3)
@@ -153,7 +160,7 @@ export default function EditProfilePage() {
 
   return (
     <div className="min-h-screen pt-24 pb-16" style={{ background: C.offWhite }}>
-      <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js" />
+      <Script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js" strategy="lazyOnload" />
       <div className="container mx-auto px-6 max-w-lg">
 
         <div className="flex items-center gap-4 mb-10">
@@ -201,7 +208,7 @@ export default function EditProfilePage() {
                   <div>
                     <label style={labelStyle}>생년월일</label>
                     <input type="text" placeholder="YYYY/MM/DD" maxLength={10} value={form.birthDate}
-                      onChange={e => setForm(v => ({ ...v, birthDate: e.target.value }))}
+                      onChange={e => setForm(v => ({ ...v, birthDate: formatBirth(e.target.value) }))}
                       style={inputStyle}
                       onFocus={e => e.target.style.borderColor = C.accent}
                       onBlur={e => e.target.style.borderColor = C.silver}

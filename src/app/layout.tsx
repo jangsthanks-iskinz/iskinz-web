@@ -2,7 +2,6 @@ import type { Metadata } from 'next'
 import './globals.css'
 import { Navbar } from '@/components/layout/Navbar'
 import { Footer } from '@/components/layout/Footer'
-import { CartSidebar } from '@/components/shop/CartSidebar'
 import { SITE } from '@/constants/site'
 import { createClient } from '@/lib/supabase/server'
 
@@ -44,7 +43,6 @@ export default async function RootLayout({ children }: { children: React.ReactNo
       </head>
       <body>
         <Navbar isApproved={isApproved} />
-        <CartSidebar />
         <main>{children}</main>
         <Footer />
       </body>
