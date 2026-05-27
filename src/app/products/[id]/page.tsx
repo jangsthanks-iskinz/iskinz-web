@@ -27,8 +27,6 @@ export default async function ProductDetailPage({ params }: { params: { id: stri
 
   if (!p) notFound()
 
-  const discount = p.price && p.sale_price ? Math.round((1 - p.sale_price / p.price) * 100) : null
-
   const accordions = [
     { key: 'product_info', label: '상품정보 제공고시' },
     { key: 'shipping', label: '배송안내' },
@@ -68,40 +66,24 @@ export default async function ProductDetailPage({ params }: { params: { id: stri
               <p style={{ fontFamily: PRETENDARD, fontSize: 14, color: C.silverDark, lineHeight: 1.8, marginBottom: 24 }}>{p.description}</p>
             )}
 
-            {/* 가격 */}
+            {/* 가격 문의 안내 */}
             <div style={{ padding: '20px 0', borderTop: '1px solid #E8E4DD', borderBottom: '1px solid #E8E4DD', marginBottom: 24 }}>
-              {p.sale_price ? (
-                <div>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 4 }}>
-                    <span style={{ fontSize: 13, color: C.silverDark, textDecoration: 'line-through', fontFamily: PRETENDARD }}>
-                      정가 {p.price?.toLocaleString()}원
-                    </span>
-                    {discount && (
-                      <span style={{ background: '#B84A4A', color: 'white', padding: '2px 8px', borderRadius: 4, fontSize: 12, fontWeight: 700, fontFamily: PRETENDARD }}>
-                        {discount}% 할인
-                      </span>
-                    )}
-                  </div>
-                  <p style={{ fontSize: 28, fontWeight: 700, color: '#B84A4A', fontFamily: PRETENDARD }}>
-                    {p.sale_price.toLocaleString()}원
-                  </p>
-                </div>
-              ) : p.price ? (
-                <p style={{ fontSize: 28, fontWeight: 700, color: C.charcoal, fontFamily: PRETENDARD }}>
-                  {p.price.toLocaleString()}원
-                </p>
-              ) : null}
+              <p style={{ fontFamily: CONDENSED, fontSize: 11, letterSpacing: '0.2em', textTransform: 'uppercase', color: C.silverDark, marginBottom: 6 }}>
+                Price
+              </p>
+              <p style={{ fontFamily: PRETENDARD, fontSize: 14, color: C.charcoal, fontWeight: 500 }}>
+                가격은 문의를 통해 안내드립니다
+              </p>
+              <p style={{ fontFamily: PRETENDARD, fontSize: 12, color: C.silverDark, marginTop: 4 }}>
+                병원 회원 승인 후 개별 안내
+              </p>
             </div>
 
             {/* 버튼 영역 */}
             <div style={{ display: 'flex', gap: 12 }}>
               <Link href={`/contact?productName=${encodeURIComponent(p.name_ko)}`}
-                style={{ flex: 1, padding: '14px 16px', background: 'white', color: C.charcoal, border: 'none', borderRadius: 6, fontFamily: PRETENDARD, fontSize: 14, fontWeight: 600, textDecoration: 'none', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                문의하기
-              </Link>
-              <Link href={`/cart?add=${p.id}`}
                 style={{ flex: 1, padding: '14px 16px', background: C.accent, color: 'white', border: 'none', borderRadius: 6, fontFamily: PRETENDARD, fontSize: 14, fontWeight: 700, textDecoration: 'none', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                장바구니
+                가격 문의하기
               </Link>
             </div>
           </div>
