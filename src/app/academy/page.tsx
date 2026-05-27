@@ -10,8 +10,9 @@ export const metadata = {
 
 /* ─── 탭 정의 ─── */
 const TABS = [
-  { id: 'nctf',      label: 'NCTF 135 HA' },
-  { id: 'nanosoft',  label: '나노소프트' },
+  { id: 'nctf',     label: 'NCTF 135 HA' },
+  { id: 'nanosoft', label: '나노소프트' },
+  { id: 'stylage',  label: 'Stylage' },
 ]
 
 /* ══════════════════════════════════════════════
@@ -511,6 +512,366 @@ function NanosoftContent() {
 }
 
 /* ══════════════════════════════════════════════
+   Stylage 콘텐츠 — VIVACY
+══════════════════════════════════════════════ */
+function StyleageContent() {
+  const gold   = '#B4924E'
+  const goldLt = '#D4B483'
+  const goldPale = 'rgba(180,146,78,0.12)'
+
+  return (
+    <div>
+      {/* ① 제품 헤더 + 브랜드 소개 */}
+      <section style={{ background: NS.charcoal, padding: '80px 0 0' }}>
+        <div className="container mx-auto px-6 lg:px-14">
+          <FadeIn>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 14, marginBottom: 20 }}>
+              <div style={{ width: 24, height: 1, background: gold, flexShrink: 0 }} />
+              <span style={{ fontFamily: NSF.condensed, fontSize: 10, letterSpacing: '0.4em', textTransform: 'uppercase' as const, color: gold }}>
+                PREMIUM FILLER · VIVACY
+              </span>
+            </div>
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-end pb-16">
+              <div>
+                <h2 style={{ fontFamily: NSF.serif, fontSize: 'clamp(3rem, 6vw, 5rem)', fontWeight: 300, color: '#fff', lineHeight: 0.95, letterSpacing: '-0.01em', marginBottom: '0.5rem' }}>
+                  STYLAGE<em style={{ fontStyle: 'italic', color: goldLt }}>®</em>
+                </h2>
+                <p style={{ fontFamily: NSF.condensed, fontSize: 11, letterSpacing: '0.35em', textTransform: 'uppercase', color: NS.silverDark, marginBottom: '2.5rem' }}>
+                  IPN-LIKE TECHNOLOGY — BY VIVACY
+                </p>
+                <p style={{ fontSize: 13, fontWeight: 300, color: NS.silverLight, lineHeight: 1.8, maxWidth: 400 }}>
+                  <strong style={{ display: 'block', fontSize: 15, fontWeight: 300, color: NS.silver, marginBottom: 8, fontFamily: NSF.condensed, letterSpacing: '0.15em', textTransform: 'uppercase' }}>
+                    IPN-LIKE · MANNITOL · BI-SOFT®
+                  </strong>
+                  프랑스 Vivacy의 Stylage 라인. IPN-LIKE 기술로 만들어진 균일하고 자연스러운 HA 겔. Mannitol 항산화 복합체로 효과를 더 오래 유지합니다.
+                </p>
+              </div>
+              {/* 스탯 그리드 */}
+              <div className="grid grid-cols-2 gap-px" style={{ background: 'rgba(200,205,212,0.1)' }}>
+                {[
+                  { num: '4종',    unit: '',      label: 'Stylage 라인업' },
+                  { num: '14–20', unit: 'mg/ml', label: 'HA 농도 범위' },
+                  { num: '12+',   unit: '개월',  label: '효과 지속 기간' },
+                  { num: '2007',  unit: 'yr',    label: 'Vivacy 설립' },
+                ].map(s => (
+                  <div key={s.label} style={{ background: NS.charcoalMid, padding: '32px 28px' }}>
+                    <div style={{ fontFamily: NSF.condensed, fontSize: 30, fontWeight: 200, color: '#fff', letterSpacing: '-0.02em', lineHeight: 1 }}>
+                      {s.num}{s.unit && <small style={{ fontSize: 14 }}> {s.unit}</small>}
+                    </div>
+                    <div style={{ fontFamily: NSF.condensed, fontSize: 9, letterSpacing: '0.2em', textTransform: 'uppercase', color: NS.silverDark, marginTop: 6 }}>{s.label}</div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </FadeIn>
+        </div>
+        {/* 인트로 스트립 */}
+        <div style={{ background: NS.silverLight, borderTop: `1px solid ${NS.silver}`, padding: '16px 20px', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 20, overflowX: 'auto', flexWrap: 'wrap' }}>
+          {[
+            'IPN-LIKE Technology · 균일한 겔 구조',
+            'Mannitol · 항산화 보호',
+            'Bi-Soft® Syringe · 시술 편의성',
+            'CE Marked · 정품 인증',
+            'Lidocaine 함유 · 통증 최소화',
+          ].map(t => (
+            <div key={t} style={{ display: 'flex', alignItems: 'center', gap: 10, whiteSpace: 'nowrap' }}>
+              <div style={{ width: 5, height: 5, borderRadius: '50%', background: gold, flexShrink: 0 }} />
+              <span style={{ fontFamily: NSF.condensed, fontSize: 11, letterSpacing: '0.2em', textTransform: 'uppercase', color: NS.charcoalMid }}>{t}</span>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* ② 핵심 기술 — 화이트 */}
+      <section style={{ background: '#fff', padding: '80px 0' }}>
+        <div className="container mx-auto px-6 lg:px-14">
+          <FadeIn>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 14, marginBottom: 20 }}>
+              <div style={{ width: 24, height: 1, background: gold, flexShrink: 0 }} />
+              <span style={{ fontFamily: NSF.condensed, fontSize: 10, letterSpacing: '0.4em', textTransform: 'uppercase' as const, color: gold }}>KEY TECHNOLOGIES</span>
+            </div>
+            <h3 style={{ fontFamily: NSF.serif, fontSize: 'clamp(1.8rem, 3vw, 2.8rem)', fontWeight: 300, color: NS.charcoal, lineHeight: 1.1, marginBottom: '3rem' }}>
+              Stylage를 특별하게 만드는<br /><em style={{ fontStyle: 'italic', color: NS.warm }}>3가지 핵심 기술</em>
+            </h3>
+          </FadeIn>
+          <div>
+            {[
+              {
+                num: '01',
+                title: 'IPN-LIKE Technology',
+                titleKo: '균일하고 자연스러운 겔',
+                desc: '기존 HA 필러와 달리 IPN-LIKE(Interpenetrating Network-Like) 기술로 제조된 Stylage는 균일한 3D 겔 구조를 형성합니다. 주입 후 겔이 고르게 분포되어 자연스러운 볼륨과 매끄러운 텍스처를 제공하며, 덩어리(lump) 형성 위험을 크게 줄입니다.',
+              },
+              {
+                num: '02',
+                title: 'Mannitol 항산화 복합체',
+                titleKo: '효과 지속 시간 연장',
+                desc: 'Mannitol은 강력한 항산화제로, 체내 활성산소(ROS)로부터 HA를 보호합니다. 덕분에 Stylage는 일반 HA 필러보다 분해 속도가 느리고 효과가 더 오래 지속됩니다. 염증 반응도 억제하여 시술 후 붓기와 통증이 적습니다.',
+              },
+              {
+                num: '03',
+                title: 'Bi-Soft® Syringe',
+                titleKo: '최적화된 시술 편의성',
+                desc: '독자적인 Bi-Soft® 시린지는 저항이 낮아 일관된 압력으로 겔을 주입할 수 있습니다. 시술자의 손 피로도를 줄이고, 정밀한 양 조절이 가능해 과주입 위험을 최소화합니다. Lidocaine 함유 제품은 시술 중 통증을 추가로 감소시킵니다.',
+              },
+            ].map((item, i) => (
+              <FadeIn key={item.num} delay={i * 0.07}>
+                <div style={{ display: 'grid', gridTemplateColumns: '80px 1fr', gap: 28, padding: '28px 0', borderBottom: `1px solid ${NS.silverLight}`, borderTop: i === 0 ? `1px solid ${NS.silverLight}` : undefined }}>
+                  <div style={{ fontFamily: NSF.serif, fontSize: 56, fontWeight: 300, color: NS.silver, lineHeight: 1, paddingTop: 4 }}>{item.num}</div>
+                  <div style={{ paddingTop: 6 }}>
+                    <p style={{ fontFamily: NSF.condensed, fontSize: 9, letterSpacing: '0.3em', textTransform: 'uppercase', color: gold, marginBottom: 4 }}>{item.title}</p>
+                    <p style={{ fontFamily: NSF.condensed, fontSize: 13, letterSpacing: '0.15em', textTransform: 'uppercase', color: NS.charcoal, fontWeight: 500, marginBottom: 8 }}>{item.titleKo}</p>
+                    <p style={{ fontSize: 13, fontWeight: 300, lineHeight: 1.75, color: NS.muted }}>{item.desc}</p>
+                  </div>
+                </div>
+              </FadeIn>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ③ 제품 라인업 — 다크 */}
+      <section style={{ background: NS.charcoal, padding: '80px 0', position: 'relative', overflow: 'hidden' }}>
+        <div style={{ position: 'absolute', right: -20, top: '50%', transform: 'translateY(-50%)', fontFamily: NSF.serif, fontSize: 220, fontWeight: 300, color: 'rgba(200,205,212,0.03)', lineHeight: 1, whiteSpace: 'nowrap', pointerEvents: 'none', userSelect: 'none' }}>STYLAGE</div>
+        <div className="container mx-auto px-6 lg:px-14 relative">
+          <FadeIn>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 14, marginBottom: 20 }}>
+              <div style={{ width: 24, height: 1, background: gold, flexShrink: 0 }} />
+              <span style={{ fontFamily: NSF.condensed, fontSize: 10, letterSpacing: '0.4em', textTransform: 'uppercase' as const, color: gold }}>PRODUCT LINEUP</span>
+            </div>
+            <h3 style={{ fontFamily: NSF.serif, fontSize: 'clamp(1.8rem, 3vw, 2.8rem)', fontWeight: 300, color: '#fff', lineHeight: 1.1, marginBottom: '1rem' }}>
+              적응증에 맞는<br /><em style={{ fontStyle: 'italic', color: goldLt }}>4가지 제품 라인</em>
+            </h3>
+            <p style={{ fontSize: 13, fontWeight: 300, color: NS.silverDark, maxWidth: 480, lineHeight: 1.7, marginBottom: '3rem' }}>
+              잔주름부터 심층 볼륨 복원까지, 각 적응증에 최적화된 Stylage 제품을 선택하세요.
+            </p>
+          </FadeIn>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 1, background: 'rgba(200,205,212,0.1)' }}>
+            {[
+              {
+                name: 'Stylage S',
+                ha: '14 mg/ml HA',
+                tag: '잔주름·표재성',
+                color: gold,
+                indication: '눈가 Crow\'s Feet · 이마 잔주름 · 구순 주변 바코드 주름',
+                depth: '표피 ~ 중간 진피',
+                needle: '32G',
+                duration: '6~9개월',
+                lidocaine: false,
+                desc: '가장 표재성 적응증 전용. 눈가와 이마의 고운 잔주름, 구순 주변 미세 주름에 사용. IPN-LIKE 겔의 낮은 점도로 표피층에 자연스럽게 퍼집니다.',
+                technique: '선형 레트로그레이드 · 파퓰 기법',
+              },
+              {
+                name: 'Stylage M',
+                ha: '20 mg/ml HA',
+                tag: '중등도 주름 · 인기',
+                color: gold,
+                indication: '팔자주름(NLF) · 마리오네트 라인 · 구각',
+                depth: '중간 ~ 심층 진피',
+                needle: '27G',
+                duration: '9~12개월',
+                lidocaine: true,
+                desc: '가장 많이 사용되는 중등도 주름 교정 제품. Lidocaine 함유로 시술 시 통증이 적고, Mannitol이 겔을 산화로부터 보호해 효과가 오래 지속됩니다.',
+                technique: '레트로그레이드 스레딩 · 팬 기법',
+              },
+              {
+                name: 'Stylage XL',
+                ha: '20 mg/ml HA',
+                tag: '볼륨 복원',
+                color: gold,
+                indication: '광대·뺨 볼륨 복원 · V라인 · 턱',
+                depth: '심층 진피 ~ 피하조직',
+                needle: '25G',
+                duration: '12~15개월',
+                lidocaine: true,
+                desc: '안면 볼륨 복원 및 윤곽 리모델링 전용. 광대와 뺨의 지방 손실을 보완하고 V라인을 만드는 데 최적화된 높은 점도의 겔.',
+                technique: '볼러스 기법 · 캐뉼라 권장',
+              },
+              {
+                name: 'Stylage XXL',
+                ha: '20 mg/ml HA',
+                tag: '최대 볼륨',
+                color: gold,
+                indication: '심층 안면 함몰 · 광범위 볼륨 손실',
+                depth: '피하조직 이상',
+                needle: '23G',
+                duration: '12개월 이상',
+                lidocaine: false,
+                desc: '가장 높은 교정력이 필요한 심층 안면 함몰에 사용. 대용량 볼륨 손실 복원 및 안면 구조적 지지에 적합. 반드시 깊은 층에만 주입.',
+                technique: '볼러스 기법 · 심층 캐뉼라 전용',
+              },
+            ].map((prod, i) => (
+              <FadeIn key={prod.name} delay={i * 0.07}>
+                <div style={{ background: NS.charcoalMid, padding: '32px 28px' }}>
+                  <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 items-start">
+                    {/* 왼쪽: 제품명 + 태그 */}
+                    <div>
+                      <div style={{ display: 'flex', gap: 8, marginBottom: 12, flexWrap: 'wrap' }}>
+                        <span style={{ fontFamily: NSF.condensed, fontSize: 9, letterSpacing: '0.2em', textTransform: 'uppercase', padding: '3px 8px', background: goldPale, color: gold, border: `1px solid rgba(180,146,78,0.3)` }}>
+                          Vivacy
+                        </span>
+                        <span style={{ fontFamily: NSF.condensed, fontSize: 9, letterSpacing: '0.18em', textTransform: 'uppercase', padding: '3px 8px', background: goldPale, color: goldLt }}>
+                          {prod.tag}
+                        </span>
+                        {prod.lidocaine && (
+                          <span style={{ fontFamily: NSF.condensed, fontSize: 9, letterSpacing: '0.18em', textTransform: 'uppercase', padding: '3px 8px', background: 'rgba(74,111,165,0.12)', color: NS.accent, border: `1px solid rgba(74,111,165,0.25)` }}>
+                            Lidocaine
+                          </span>
+                        )}
+                      </div>
+                      <div style={{ fontFamily: NSF.serif, fontSize: 36, fontWeight: 300, color: '#fff', lineHeight: 1, marginBottom: 6 }}>{prod.name}</div>
+                      <div style={{ fontFamily: NSF.condensed, fontSize: 11, letterSpacing: '0.12em', color: gold, marginBottom: 12 }}>{prod.ha}</div>
+                      <p style={{ fontSize: 12.5, fontWeight: 300, lineHeight: 1.75, color: NS.silverDark }}>{prod.desc}</p>
+                    </div>
+                    {/* 가운데: 적응증 + 스펙 */}
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+                      {[
+                        { label: '적응증',  value: prod.indication },
+                        { label: '주입층',  value: prod.depth },
+                        { label: '권장 니들', value: prod.needle + ' needle' },
+                        { label: '지속 기간', value: prod.duration },
+                      ].map(row => (
+                        <div key={row.label} style={{ display: 'flex', gap: 10, fontSize: 12 }}>
+                          <span style={{ fontFamily: NSF.condensed, fontSize: 9, letterSpacing: '0.15em', textTransform: 'uppercase', color: NS.silverDark, flexShrink: 0, width: 60, paddingTop: 2 }}>{row.label}</span>
+                          <span style={{ fontWeight: 300, color: NS.silverLight, lineHeight: 1.5 }}>{row.value}</span>
+                        </div>
+                      ))}
+                    </div>
+                    {/* 오른쪽: 주입 기법 */}
+                    <div style={{ padding: '20px', border: `1px solid rgba(180,146,78,0.15)`, background: 'rgba(180,146,78,0.04)' }}>
+                      <p style={{ fontFamily: NSF.condensed, fontSize: 9, letterSpacing: '0.25em', textTransform: 'uppercase', color: gold, marginBottom: 8 }}>Injection Technique</p>
+                      <p style={{ fontSize: 12, fontWeight: 300, color: NS.silverLight, lineHeight: 1.7 }}>{prod.technique}</p>
+                    </div>
+                  </div>
+                </div>
+              </FadeIn>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ④ 임상 데이터 — 오프화이트 */}
+      <section style={{ background: NS.offWhite, padding: '80px 0' }}>
+        <div className="container mx-auto px-6 lg:px-14">
+          <FadeIn>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 14, marginBottom: 20 }}>
+              <div style={{ width: 24, height: 1, background: gold, flexShrink: 0 }} />
+              <span style={{ fontFamily: NSF.condensed, fontSize: 10, letterSpacing: '0.4em', textTransform: 'uppercase' as const, color: gold }}>CLINICAL EVIDENCE</span>
+            </div>
+            <h3 style={{ fontFamily: NSF.serif, fontSize: 'clamp(1.8rem, 3vw, 2.8rem)', fontWeight: 300, color: NS.charcoal, lineHeight: 1.1, marginBottom: '3rem' }}>
+              Mannitol이 입증하는<br /><em style={{ fontStyle: 'italic', color: NS.warm }}>지속적 효과</em>
+            </h3>
+          </FadeIn>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-px" style={{ background: `rgba(200,205,212,0.3)` }}>
+            {[
+              { pct: '3×',   name: 'HA 분해 억제',    sub: 'vs 표준 HA 겔, in vitro' },
+              { pct: '12+',  name: '개월 효과 지속',  sub: 'Stylage XL 기준' },
+              { pct: '92%',  name: '환자 만족도',      sub: '임상 설문, 6개월 후' },
+              { pct: '100%', name: 'CE 인증 제품',     sub: '전 라인 유럽 인증' },
+            ].map((e, i) => (
+              <FadeIn key={e.name} delay={i * 0.07}>
+                <div style={{ background: '#fff', padding: '36px 24px' }}>
+                  <div style={{ fontFamily: NSF.condensed, fontSize: 36, fontWeight: 200, color: NS.charcoal, lineHeight: 1, letterSpacing: '-0.02em' }}>
+                    <span style={{ color: gold }}>{e.pct.charAt(0)}</span>{e.pct.slice(1)}
+                  </div>
+                  <div style={{ fontFamily: NSF.condensed, fontSize: 10, letterSpacing: '0.2em', textTransform: 'uppercase', color: NS.muted, marginTop: 10, lineHeight: 1.4 }}>
+                    {e.name}<br /><span style={{ color: NS.silverDark }}>{e.sub}</span>
+                  </div>
+                </div>
+              </FadeIn>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ⑤ 시술 프로토콜 + 적응증 선택 가이드 — 화이트 */}
+      <section style={{ background: '#fff', padding: '80px 0' }}>
+        <div className="container mx-auto px-6 lg:px-14">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-start">
+            <FadeIn>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 14, marginBottom: 20 }}>
+                <div style={{ width: 24, height: 1, background: gold, flexShrink: 0 }} />
+                <span style={{ fontFamily: NSF.condensed, fontSize: 10, letterSpacing: '0.4em', textTransform: 'uppercase' as const, color: gold }}>PRODUCT SELECTION GUIDE</span>
+              </div>
+              <h3 style={{ fontFamily: NSF.serif, fontSize: 'clamp(1.8rem, 3vw, 2.8rem)', fontWeight: 300, color: NS.charcoal, lineHeight: 1.1, marginBottom: '1rem' }}>
+                적응증에 따른<br /><em style={{ fontStyle: 'italic', color: NS.warm }}>제품 선택 가이드</em>
+              </h3>
+              <p style={{ fontSize: 13, fontWeight: 300, color: NS.silverDark, lineHeight: 1.7, marginBottom: '2rem' }}>
+                Stylage 라인은 잔주름부터 심층 볼륨 복원까지 단계별로 선택하세요.
+              </p>
+              <div>
+                {[
+                  { prod: 'S',   zone: '눈가 · 이마 · 구순', depth: '표재성', note: '가장 섬세한 부위 전용' },
+                  { prod: 'M',   zone: '팔자주름 · 마리오네트', depth: '중등도', note: 'Lidocaine 함유 · 가장 인기' },
+                  { prod: 'XL',  zone: '광대 · 뺨 · V라인',  depth: '볼륨층',  note: 'Lidocaine 함유 · 캐뉼라 권장' },
+                  { prod: 'XXL', zone: '심층 함몰 교정',      depth: '피하',   note: '최대 교정력 · 심층 전용' },
+                ].map((row, i) => (
+                  <div key={row.prod} style={{ display: 'grid', gridTemplateColumns: '52px 1fr', gap: 20, padding: '20px 0', borderBottom: `1px solid ${NS.silverLight}`, borderTop: i === 0 ? `1px solid ${NS.silverLight}` : undefined }}>
+                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: 44, height: 44, border: `1px solid rgba(180,146,78,0.3)`, background: goldPale }}>
+                      <span style={{ fontFamily: NSF.condensed, fontSize: 12, letterSpacing: '0.1em', color: gold, fontWeight: 600 }}>{row.prod}</span>
+                    </div>
+                    <div>
+                      <p style={{ fontFamily: NSF.condensed, fontSize: 11, letterSpacing: '0.2em', textTransform: 'uppercase', color: NS.charcoal, fontWeight: 500, marginBottom: 2 }}>{row.zone}</p>
+                      <p style={{ fontSize: 12, fontWeight: 300, color: NS.silverDark }}>{row.depth} · {row.note}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </FadeIn>
+            <FadeIn delay={0.15}>
+              <div style={{ background: NS.charcoal, padding: 'clamp(24px, 5vw, 44px)' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 14, marginBottom: 20 }}>
+                  <div style={{ width: 24, height: 1, background: gold, flexShrink: 0 }} />
+                  <span style={{ fontFamily: NSF.condensed, fontSize: 10, letterSpacing: '0.4em', textTransform: 'uppercase' as const, color: gold }}>TREATMENT PROTOCOL</span>
+                </div>
+                <h4 style={{ fontFamily: NSF.serif, fontSize: '1.6rem', fontWeight: 300, color: '#fff', marginBottom: '1.5rem', lineHeight: 1.2 }}>Stylage 시술 프로토콜</h4>
+                <div>
+                  {[
+                    { step: '01', name: '초기 교정', period: '1~2회 시술',  desc: 'Stylage 적응증 평가 후 목표 볼륨·깊이에 맞는 제품 선택. 1차 시술로 충분한 교정 효과 확인.' },
+                    { step: '02', name: '보정 단계', period: '2~4주 후',    desc: '필요 시 Touch-up 시술. Mannitol로 겔이 안정화된 시점에서 최종 결과 평가 및 미세 조정.' },
+                    { step: '03', name: '유지 단계', period: '6~12개월 후', desc: '효과 지속 기간 후 유지 시술. Stylage XL·XXL은 12개월 이상, S·M은 6~12개월 주기 권장.' },
+                  ].map((p, i) => (
+                    <div key={p.step} style={{ display: 'grid', gridTemplateColumns: '52px 1fr', gap: 20, padding: '24px 0', borderBottom: i < 2 ? `1px solid rgba(200,205,212,0.1)` : 'none', borderTop: i === 0 ? `1px solid rgba(200,205,212,0.1)` : undefined }}>
+                      <div style={{ fontFamily: NSF.serif, fontSize: 34, fontWeight: 300, color: NS.silver, lineHeight: 1, paddingTop: 2 }}>{p.step}</div>
+                      <div>
+                        <p style={{ fontFamily: NSF.condensed, fontSize: 11, letterSpacing: '0.2em', textTransform: 'uppercase', color: '#fff', fontWeight: 500, marginBottom: 4 }}>
+                          {p.name} <span style={{ color: gold, marginLeft: 8 }}>{p.period}</span>
+                        </p>
+                        <p style={{ fontSize: 12, fontWeight: 300, lineHeight: 1.65, color: NS.silverDark }}>{p.desc}</p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </FadeIn>
+          </div>
+        </div>
+      </section>
+
+      {/* ⑥ Results Banner */}
+      <div className="grid grid-cols-2 lg:grid-cols-4" style={{ background: NS.charcoalMid }}>
+        {[
+          { pct: '3×',  label: 'HA 분해 억제 효과' },
+          { pct: '92',  label: '% 환자 만족도' },
+          { pct: '12+', label: '개월 효과 지속 (XL)' },
+          { pct: '4',   label: '가지 라인 최적 선택' },
+        ].map((r, i) => (
+          <div key={r.label} style={{ padding: '36px 20px', borderRight: i % 2 === 0 ? '1px solid rgba(200,205,212,0.1)' : 'none', borderBottom: i < 2 ? '1px solid rgba(200,205,212,0.1)' : 'none', textAlign: 'center' }}>
+            <div style={{ fontFamily: NSF.serif, fontSize: 'clamp(2.5rem, 4vw, 3.5rem)', fontWeight: 300, color: '#fff', lineHeight: 1 }}>
+              <span style={{ color: gold }}>{r.pct}</span>
+            </div>
+            <div style={{ fontFamily: NSF.condensed, fontSize: 10, letterSpacing: '0.25em', textTransform: 'uppercase', color: NS.silverDark, marginTop: 8 }}>{r.label}</div>
+          </div>
+        ))}
+      </div>
+
+      {/* CTA */}
+      <CtaSection title="Stylage® 도입 상담" />
+    </div>
+  )
+}
+
+/* ══════════════════════════════════════════════
    공통 CTA
 ══════════════════════════════════════════════ */
 function CtaSection({ title }: { title: string }) {
@@ -610,7 +971,7 @@ export default async function AcademyPage({
       </div>
 
       {/* 콘텐츠 */}
-      {tab === 'nanosoft' ? <NanosoftContent /> : <NctfContent />}
+      {tab === 'nanosoft' ? <NanosoftContent /> : tab === 'stylage' ? <StyleageContent /> : <NctfContent />}
 
     </main>
   )
