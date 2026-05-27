@@ -74,17 +74,17 @@ function GuestPage({ isPending }: { isPending: boolean }) {
         </h1>
 
         <p style={{ fontSize: 14, fontWeight: 300, lineHeight: 1.9, color: C.mid, maxWidth: 420, marginBottom: 40 }}>
-          미용성형 병원을 위한 프리미엄 에스테틱 제품,<br />
-          의약품, 의료기기, 의료소모품을 전문적으로 공급합니다.<br />
-          정품 보증부터 임상 교육, 맞춤 제안까지.
+          프랑스 Fillmed · Vivacy 공식 공급원.<br />
+          미용성형 병원을 위한 프리미엄 스킨부스터·필러를<br />
+          정품 보증부터 임상 교육, 당일 배송까지 책임집니다.
         </p>
 
         <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
           {[
             'Fillmed 정식 공급원 (프랑스)',
+            'Vivacy 정식 공급원 (프랑스)',
             '의료기기판매업 신고 업체',
             '오후 2시 이전 주문 당일 배송',
-            '임상 프로토콜 무상 제공',
           ].map(t => (
             <div key={t} style={{ display: 'flex', alignItems: 'center', gap: 12, fontSize: 14, color: C.mid }}>
               <span style={{ color: C.gold, fontFamily: CONDENSED }}>—</span> {t}
@@ -174,15 +174,15 @@ function ApprovedPage() {
 
           {/* 헤드라인 */}
           <h1 style={{ fontFamily: SERIF, fontSize: 'clamp(2.8rem, 5vw, 5rem)', fontWeight: 300, lineHeight: 1.06, color: C.charcoal, marginBottom: 28 }}>
-            병원이 믿고 맡기는<br />
-            <em style={{ fontStyle: 'italic', color: C.navy }}>메디컬 에스테틱</em><br />
-            파트너
+            프랑스 프리미엄<br />
+            <em style={{ fontStyle: 'italic', color: C.navy }}>Fillmed × Vivacy</em><br />
+            정식 공급원
           </h1>
 
           {/* 설명 */}
           <p style={{ fontSize: 15, fontWeight: 300, lineHeight: 1.9, color: C.mid, maxWidth: 420, marginBottom: 48 }}>
             정품 보증 · 임상 교육 · 당일 배송 · 맞춤 제안<br />
-            <strong style={{ fontWeight: 500, color: C.charcoal }}>Fillmed 정식 공급원</strong> · CE Marked Products
+            <strong style={{ fontWeight: 500, color: C.charcoal }}>Fillmed · Vivacy 공식 공급원</strong> · CE Marked Products
           </p>
 
           {/* 통계 */}
@@ -223,7 +223,6 @@ function ApprovedPage() {
         >
           {/* 도트 패턴 */}
           <div style={{ position: 'absolute', inset: 0, backgroundImage: `url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23B4924E' fill-opacity='0.04'%3E%3Cpath d='M20 20.5V18h-1v2.5H16.5v1H19v2.5h1V21h2.5v-1H20z'/%3E%3C/g%3E%3C/svg%3E")` }} />
-          {/* 그라디언트 오버레이 */}
           <div style={{ position: 'absolute', inset: 0, background: 'radial-gradient(ellipse 60% 40% at 30% 60%, rgba(180,146,78,0.07) 0%, transparent 70%)' }} />
 
           <div style={{ position: 'relative', zIndex: 1, textAlign: 'center' }}>
@@ -243,7 +242,8 @@ function ApprovedPage() {
 
             <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
               {[
-                'Fillmed 정식 공급원',
+                'Fillmed 정식 공급원 (France)',
+                'Vivacy 정식 공급원 (France)',
                 'CE Marked · 정품 인증',
                 '당일 배송 · 냉장 보관',
                 '임상 교육 · 프로토콜 지원',
@@ -266,10 +266,11 @@ function ApprovedPage() {
         <div className="container mx-auto px-6">
           <div className="flex flex-wrap justify-center items-center" style={{ gap: '8px 40px' }}>
             {[
-              { text: '의료기기판매업 신고 업체', hi: false },
-              { text: 'Fillmed 정식 공급원',        hi: true  },
+              { text: '의료기기판매업 신고 업체',     hi: false },
+              { text: 'Fillmed 정식 공급원',           hi: true  },
+              { text: 'Vivacy 정식 공급원',            hi: true  },
               { text: '오후 2시 이전 주문 당일 배송', hi: false },
-              { text: '임상 프로토콜 무상 제공',     hi: false },
+              { text: '임상 프로토콜 무상 제공',       hi: false },
             ].map(({ text, hi }) => (
               <span key={text} style={{ fontFamily: CONDENSED, fontSize: 10, letterSpacing: '0.15em', textTransform: 'uppercase', color: hi ? C.gold : C.muted }}>
                 {text}
@@ -292,10 +293,10 @@ function ApprovedPage() {
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
             {[
-              { icon: '🏆', title: 'Fillmed 정식 공급원', desc: '제조사 직계약 공식 루트로만 입고. Art Filler, NCTF 135HA 등 전 품목 100% 정품 보증.' },
+              { icon: '🏆', title: '프랑스 직공급',    desc: 'Fillmed · Vivacy 제조사 직계약 공식 루트 단독 입고. NCTF 135HA, Stylage 전 라인 100% 정품 보증.' },
               { icon: '🚚', title: '오후 2시 당일 배송', desc: '오후 2시 이전 주문 시 전국 병원 당일 배송. 긴급 시술 준비도 문제없습니다.' },
-              { icon: '💉', title: '임상 교육 지원',     desc: 'Fillmed Asia Masterclass, 시술 프로토콜·임상 가이드 무상 제공. 전문성 향상 지원.' },
-              { icon: '📋', title: '인허가 완비',         desc: '의료기기판매업·통신판매업·화장품책임판매업 신고 완료. 안심하고 거래하세요.' },
+              { icon: '💉', title: '임상 교육 지원',    desc: 'Fillmed Asia Masterclass, Vivacy 시술 프로토콜 교육. 시술 프로토콜·임상 가이드 무상 제공.' },
+              { icon: '📋', title: '인허가 완비',        desc: '의료기기판매업·통신판매업·화장품책임판매업 신고 완료. 안심하고 거래하세요.' },
             ].map((p, i) => (
               <FadeIn key={p.title} delay={i * 0.08}>
                 <div style={{ padding: 28, border: `1px solid ${C.borderLight}`, background: C.warmWhite, height: '100%', transition: 'border-color 0.25s' }}>
@@ -316,10 +317,11 @@ function ApprovedPage() {
             <div style={{ marginTop: 56, paddingTop: 40, borderTop: `1px solid ${C.border}` }}>
               <div className="flex flex-wrap justify-center gap-8 sm:gap-16">
                 {[
-                  { name: '의료기기판매업',   desc: '신고 완료' },
-                  { name: '통신판매업',        desc: '신고 완료' },
-                  { name: '화장품책임판매업',  desc: '등록 완료' },
+                  { name: '의료기기판매업',     desc: '신고 완료' },
+                  { name: '통신판매업',          desc: '신고 완료' },
+                  { name: '화장품책임판매업',    desc: '등록 완료' },
                   { name: 'Fillmed 정식 공급원', desc: '공식 계약' },
+                  { name: 'Vivacy 정식 공급원',  desc: '공식 계약' },
                 ].map(c => (
                   <div key={c.name} style={{ textAlign: 'center' }}>
                     <p style={{ fontFamily: CONDENSED, fontSize: 12, letterSpacing: '0.05em', color: C.charcoal }}>{c.name}</p>
@@ -332,14 +334,106 @@ function ApprovedPage() {
         </div>
       </section>
 
-      {/* ⑤ 제품 라인업 — 탭 필터 */}
+      {/* ⑤ Our Brands — Fillmed × Vivacy */}
+      <section id="brands" style={{ background: C.charcoal, padding: '100px 0' }}>
+        <div className="container mx-auto px-6">
+          <FadeIn>
+            <Eyebrow light>Our Brands</Eyebrow>
+            <h2 style={{ fontFamily: SERIF, fontSize: 'clamp(2.2rem, 3.5vw, 3.2rem)', fontWeight: 300, lineHeight: 1.15, color: C.silverLight, marginBottom: 16 }}>
+              프랑스가 인정한<br />
+              <em style={{ fontStyle: 'italic', color: C.goldLight }}>두 개의 프리미엄 브랜드</em>
+            </h2>
+            <p style={{ fontSize: 14, fontWeight: 300, lineHeight: 1.9, color: 'rgba(200,205,212,0.55)', marginBottom: 56, maxWidth: 520 }}>
+              아이스킨즈는 프랑스 메디컬 에스테틱을 대표하는 Fillmed와 Vivacy의 국내 공식 공급원입니다.
+            </p>
+          </FadeIn>
+
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
+            {/* Fillmed 카드 */}
+            <FadeIn delay={0}>
+              <div style={{ padding: '40px 36px', border: `1px solid rgba(27,56,104,0.5)`, background: 'rgba(27,56,104,0.12)', height: '100%' }}>
+                <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', marginBottom: 28 }}>
+                  <div>
+                    <div style={{ fontFamily: CONDENSED, fontSize: 9, letterSpacing: '0.3em', textTransform: 'uppercase', color: 'rgba(200,205,212,0.4)', marginBottom: 6 }}>France · Since 1994</div>
+                    <div style={{ fontFamily: SERIF, fontSize: 36, fontWeight: 300, color: C.silverLight, lineHeight: 1 }}>FILLMED</div>
+                  </div>
+                  <div style={{ padding: '4px 10px', background: 'rgba(27,56,104,0.4)', border: '1px solid rgba(27,56,104,0.6)', fontFamily: CONDENSED, fontSize: 9, letterSpacing: '0.2em', textTransform: 'uppercase', color: 'rgba(200,205,212,0.6)' }}>
+                    Official Supplier
+                  </div>
+                </div>
+
+                <p style={{ fontSize: 13, fontWeight: 300, lineHeight: 1.85, color: 'rgba(200,205,212,0.6)', marginBottom: 28 }}>
+                  Science &amp; Art of Skin. 135가지 활성 성분을 담은 NCTF 135HA로 전 세계 스킨부스터 시장을 선도하는 프랑스 메디컬 에스테틱 브랜드.
+                </p>
+
+                <div style={{ display: 'flex', flexDirection: 'column', gap: 10, marginBottom: 28 }}>
+                  {[
+                    { label: '대표 제품', value: 'NCTF 135HA · Art Filler · Re2O · HYCOOX' },
+                    { label: '핵심 기술', value: '135 Active Ingredients Complex' },
+                    { label: '적응증',   value: '스킨부스터 · 더말필러 · 자동 인젝터' },
+                  ].map(row => (
+                    <div key={row.label} style={{ display: 'flex', gap: 12, fontSize: 12 }}>
+                      <span style={{ fontFamily: CONDENSED, fontSize: 9, letterSpacing: '0.15em', textTransform: 'uppercase', color: 'rgba(200,205,212,0.35)', flexShrink: 0, width: 56, paddingTop: 2 }}>{row.label}</span>
+                      <span style={{ fontWeight: 300, color: 'rgba(200,205,212,0.65)', lineHeight: 1.6 }}>{row.value}</span>
+                    </div>
+                  ))}
+                </div>
+
+                <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+                  <div style={{ width: 24, height: 1, background: `rgba(27,56,104,0.8)` }} />
+                  <span style={{ fontFamily: CONDENSED, fontSize: 9, letterSpacing: '0.2em', textTransform: 'uppercase', color: 'rgba(200,205,212,0.35)' }}>Fillmed 전 라인 정식 공급</span>
+                </div>
+              </div>
+            </FadeIn>
+
+            {/* Vivacy 카드 */}
+            <FadeIn delay={0.1}>
+              <div style={{ padding: '40px 36px', border: `1px solid rgba(180,146,78,0.3)`, background: 'rgba(180,146,78,0.06)', height: '100%' }}>
+                <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', marginBottom: 28 }}>
+                  <div>
+                    <div style={{ fontFamily: CONDENSED, fontSize: 9, letterSpacing: '0.3em', textTransform: 'uppercase', color: 'rgba(200,205,212,0.4)', marginBottom: 6 }}>France · Since 2007</div>
+                    <div style={{ fontFamily: SERIF, fontSize: 36, fontWeight: 300, color: C.silverLight, lineHeight: 1 }}>VIVACY</div>
+                  </div>
+                  <div style={{ padding: '4px 10px', background: 'rgba(180,146,78,0.15)', border: `1px solid rgba(180,146,78,0.35)`, fontFamily: CONDENSED, fontSize: 9, letterSpacing: '0.2em', textTransform: 'uppercase', color: C.goldLight }}>
+                    Official Supplier
+                  </div>
+                </div>
+
+                <p style={{ fontSize: 13, fontWeight: 300, lineHeight: 1.85, color: 'rgba(200,205,212,0.6)', marginBottom: 28 }}>
+                  IPN-LIKE 기술과 Mannitol 항산화 복합체로 차별화된 Stylage 라인. Bi-Soft® 시린지로 시술 편의성을 혁신한 프랑스 하이알루론산 필러 전문 브랜드.
+                </p>
+
+                <div style={{ display: 'flex', flexDirection: 'column', gap: 10, marginBottom: 28 }}>
+                  {[
+                    { label: '대표 제품', value: 'Stylage S · M · XL · XXL · HydroMax' },
+                    { label: '핵심 기술', value: 'IPN-LIKE Tech · Mannitol · Bi-Soft®' },
+                    { label: '적응증',   value: '잔주름 · 중등도 주름 · 볼륨 복원 · 부스터' },
+                  ].map(row => (
+                    <div key={row.label} style={{ display: 'flex', gap: 12, fontSize: 12 }}>
+                      <span style={{ fontFamily: CONDENSED, fontSize: 9, letterSpacing: '0.15em', textTransform: 'uppercase', color: 'rgba(200,205,212,0.35)', flexShrink: 0, width: 56, paddingTop: 2 }}>{row.label}</span>
+                      <span style={{ fontWeight: 300, color: 'rgba(200,205,212,0.65)', lineHeight: 1.6 }}>{row.value}</span>
+                    </div>
+                  ))}
+                </div>
+
+                <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+                  <div style={{ width: 24, height: 1, background: C.gold }} />
+                  <span style={{ fontFamily: CONDENSED, fontSize: 9, letterSpacing: '0.2em', textTransform: 'uppercase', color: 'rgba(200,205,212,0.35)' }}>Vivacy Stylage 전 라인 정식 공급</span>
+                </div>
+              </div>
+            </FadeIn>
+          </div>
+        </div>
+      </section>
+
+      {/* ⑥ 제품 라인업 — 탭 필터 */}
       <section id="products" style={{ background: C.warmWhite, padding: '100px 0' }}>
         <div className="container mx-auto px-6">
           <FadeIn>
             <Eyebrow>Product Line</Eyebrow>
             <h2 style={{ fontFamily: SERIF, fontSize: 'clamp(2.2rem, 3.5vw, 3.2rem)', fontWeight: 300, lineHeight: 1.15, color: C.charcoal, marginBottom: 8 }}>
-              병원을 위한 프리미엄<br />
-              <em style={{ fontStyle: 'italic', color: C.navy }}>메디컬 에스테틱 라인업</em>
+              Fillmed · Vivacy<br />
+              <em style={{ fontStyle: 'italic', color: C.navy }}>전 라인 공식 공급</em>
             </h2>
             <p style={{ fontSize: 13, fontWeight: 300, color: C.muted, marginBottom: 48 }}>
               가격 정보는 병원 회원 승인 후 공개됩니다
@@ -361,79 +455,162 @@ function ApprovedPage() {
         </div>
       </section>
 
-      {/* ⑥ Academy — 아이보리 */}
+      {/* ⑦ Academy — 6 프로토콜 카드 */}
       <section id="academy" style={{ background: C.ivory, padding: '100px 0' }}>
         <div className="container mx-auto px-6">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-start">
-            <FadeIn>
-              <Eyebrow>ISKINZ Academy</Eyebrow>
-              <h2 style={{ fontFamily: SERIF, fontSize: 'clamp(1.8rem, 3vw, 2.8rem)', fontWeight: 300, lineHeight: 1.2, color: C.charcoal, marginBottom: '1.25rem' }}>
-                의료진의 전문성을<br />한 단계 높이는<br />
-                <em style={{ fontStyle: 'italic', color: C.navy }}>교육 프로그램</em>
-              </h2>
-              <p style={{ fontSize: 14, fontWeight: 300, lineHeight: 1.9, color: C.mid, marginBottom: 36, maxWidth: 420 }}>
-                Fillmed Train The Trainers, Asia Masterclass, 국내 세미나·웨비나까지 — 아이스킨즈 아카데미는 의료진의 지속적인 성장을 지원합니다.
-              </p>
-              <div style={{ display: 'flex', gap: 16, flexWrap: 'wrap' }}>
-                <a href="#contact" style={{ display: 'inline-flex', alignItems: 'center', padding: '13px 28px', fontFamily: CONDENSED, fontSize: 11, letterSpacing: '0.25em', textTransform: 'uppercase', background: C.charcoal, color: '#fff', textDecoration: 'none' }}>
-                  전체 일정 보기
-                </a>
-                <a href="#contact" style={{ display: 'inline-flex', alignItems: 'center', padding: '13px 28px', fontFamily: CONDENSED, fontSize: 11, letterSpacing: '0.25em', textTransform: 'uppercase', background: 'transparent', color: C.charcoal, border: `1px solid rgba(26,26,28,0.28)`, textDecoration: 'none' }}>
-                  신청하기
-                </a>
-              </div>
-            </FadeIn>
+          <FadeIn>
+            <Eyebrow>ISKINZ Academy</Eyebrow>
+            <h2 style={{ fontFamily: SERIF, fontSize: 'clamp(2.2rem, 3.5vw, 3.2rem)', fontWeight: 300, lineHeight: 1.15, color: C.charcoal, marginBottom: 16 }}>
+              의료진을 위한<br />
+              <em style={{ fontStyle: 'italic', color: C.navy }}>임상 프로토콜 교육</em>
+            </h2>
+            <p style={{ fontSize: 14, fontWeight: 300, lineHeight: 1.9, color: C.mid, marginBottom: 56, maxWidth: 520 }}>
+              Fillmed · Vivacy 양사의 시술 프로토콜 교육을 아이스킨즈 아카데미에서 제공합니다. 제품별 적응증·주입 기법·병합 시술 전략을 임상 전문가와 함께 배웁니다.
+            </p>
+          </FadeIn>
 
-            <FadeIn delay={0.15}>
-              <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
-                {[
-                  { date: '2026. 06', tag: 'INTERNATIONAL', title: 'Fillmed Asia Masterclass 2026',    location: '서울 · Grand InterContinental', desc: 'Fillmed 본사 전문가와 함께하는 아시아 최대 규모 스킨부스터 마스터클래스' },
-                  { date: '2026. 05', tag: 'WEBINAR',       title: 'NCTF 135HA 시술 프로토콜 웨비나', location: 'Online · Zoom',                  desc: '3단계 프로토콜(집중기 → 강화기 → 유지기) 심화 교육 및 Q&A' },
-                  { date: '2026. 07', tag: 'SYMPOSIUM',     title: '콤비네이션 테라피 심포지엄',       location: '부산 · 벡스코',                 desc: 'NCTF + 필러 + PLLA 조합 치료 최신 트렌드 및 임상 발표' },
-                ].map((ev, i) => (
-                  <div key={ev.title} style={{ display: 'flex', gap: 20, padding: '20px 24px', background: C.warmWhite, border: `1px solid ${C.borderLight}`, borderLeftWidth: 3, borderLeftColor: i === 0 ? C.gold : 'transparent' }}>
-                    <div style={{ flexShrink: 0, textAlign: 'center', width: 48 }}>
-                      <p style={{ fontFamily: CONDENSED, fontSize: 9, letterSpacing: '0.2em', textTransform: 'uppercase', color: C.muted }}>{ev.date.split('. ')[0]}</p>
-                      <p style={{ fontFamily: SERIF, fontSize: '1.6rem', fontWeight: 400, color: C.gold, lineHeight: 1.1 }}>{ev.date.split('. ')[1]}</p>
-                    </div>
-                    <div>
-                      <span style={{ display: 'inline-block', fontFamily: CONDENSED, fontSize: 9, letterSpacing: '0.2em', textTransform: 'uppercase', background: C.goldPale, color: C.gold, padding: '3px 8px', marginBottom: 8 }}>
-                        {ev.tag}
-                      </span>
-                      <h4 style={{ fontSize: 14, fontWeight: 500, color: C.charcoal, marginBottom: 4 }}>{ev.title}</h4>
-                      <p style={{ fontSize: 12, fontFamily: CONDENSED, letterSpacing: '0.05em', color: C.gold, marginBottom: 6 }}>↳ {ev.location}</p>
-                      <p style={{ fontSize: 12, fontWeight: 300, lineHeight: 1.6, color: C.mid }}>{ev.desc}</p>
-                    </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+            {[
+              {
+                brand: 'Fillmed',
+                brandColor: C.navy,
+                brandPale: 'rgba(27,56,104,0.08)',
+                accentBorder: C.navy,
+                name: 'NCTF 135HA',
+                sub: '스킨부스터',
+                tag: '⭐ FLAGSHIP',
+                desc: '3단계 집중 부스터 프로토콜 (집중기 → 강화기 → 유지기). 135가지 활성 성분의 최적 주입 기법 및 환자별 맞춤 스케줄링.',
+                points: ['전안면·목·데콜테 적용법', 'NCTF + 필러 병합 시술', '집중기 주 1회 × 4주'],
+              },
+              {
+                brand: 'Fillmed',
+                brandColor: C.navy,
+                brandPale: 'rgba(27,56,104,0.08)',
+                accentBorder: C.navy,
+                name: '나노소프트',
+                sub: '나노채널 부스터',
+                tag: 'NCTF 변형',
+                desc: '나노채널 기반 진피 전달 기술. 미세 주입으로 표피 자극 최소화 · 생체 흡수 극대화 프로토콜.',
+                points: ['초미세 32G 나노니들', '눈가·이마 정밀 시술', '민감 피부 적합 프로토콜'],
+              },
+              {
+                brand: 'Vivacy',
+                brandColor: C.gold,
+                brandPale: C.goldPale,
+                accentBorder: C.gold,
+                name: 'Stylage S',
+                sub: '잔주름 교정',
+                tag: '14 mg/ml HA',
+                desc: '눈가 Crow\'s Feet · 이마 · 구순 주변 표재성 잔주름 교정. IPN-LIKE 기술 + Mannitol 항산화 복합체.',
+                points: ['눈가·이마 표재성 주름', '32G 니들 표피~중간 진피', 'Mannitol 항산화 지속'],
+              },
+              {
+                brand: 'Vivacy',
+                brandColor: C.gold,
+                brandPale: C.goldPale,
+                accentBorder: C.gold,
+                name: 'Stylage M',
+                sub: '중등도 주름 교정',
+                tag: '20 mg/ml HA · POPULAR',
+                desc: '팔자주름 · 마리오네트 라인 중등도 교정. Lidocaine 함유로 시술 편의성 향상. Bi-Soft® 시린지.',
+                points: ['팔자주름·마리오네트 주력', 'Lidocaine 포함 시술 편의', '중간~심층 진피 주입'],
+              },
+              {
+                brand: 'Vivacy',
+                brandColor: C.gold,
+                brandPale: C.goldPale,
+                accentBorder: C.gold,
+                name: 'Stylage XL',
+                sub: '볼륨 복원',
+                tag: '20 mg/ml HA',
+                desc: '광대 · 뺨 · V라인 대용량 볼륨 복원. 안면 윤곽 리모델링 프로토콜. 피하조직 이상 주입.',
+                points: ['광대·뺨·V라인 볼륨 복원', '안면 윤곽 리모델링', '피하조직~심층 진피'],
+              },
+              {
+                brand: 'Vivacy',
+                brandColor: C.gold,
+                brandPale: C.goldPale,
+                accentBorder: C.gold,
+                name: 'Stylage XXL',
+                sub: '최대 볼륨 교정',
+                tag: '20 mg/ml HA · MAX',
+                desc: '심층 안면 함몰 최고 교정력. 대용량 볼륨 손실 복원 및 12개월 이상 지속 효과 프로토콜.',
+                points: ['심층 안면 함몰 교정', '12개월 이상 지속', '심층 진피·피하조직'],
+              },
+            ].map((card, i) => (
+              <FadeIn key={card.name} delay={i * 0.07}>
+                <div style={{ padding: '32px 28px', border: `1px solid rgba(180,146,78,0.12)`, borderTop: `3px solid ${card.accentBorder}`, background: C.warmWhite, height: '100%', display: 'flex', flexDirection: 'column', gap: 14 }}>
+                  {/* 브랜드 뱃지 */}
+                  <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
+                    <span style={{ fontFamily: CONDENSED, fontSize: 9, letterSpacing: '0.22em', textTransform: 'uppercase', padding: '3px 8px', background: card.brandPale, color: card.brandColor, border: `1px solid ${card.brandColor === C.navy ? 'rgba(27,56,104,0.2)' : 'rgba(180,146,78,0.25)'}` }}>
+                      {card.brand}
+                    </span>
+                    <span style={{ fontFamily: CONDENSED, fontSize: 9, letterSpacing: '0.18em', textTransform: 'uppercase', padding: '3px 8px', background: card.brandPale, color: card.brandColor }}>
+                      {card.tag}
+                    </span>
                   </div>
-                ))}
-              </div>
-            </FadeIn>
+
+                  {/* 제품명 */}
+                  <div>
+                    <div style={{ fontFamily: CONDENSED, fontSize: 9, letterSpacing: '0.22em', textTransform: 'uppercase', color: C.muted, marginBottom: 6 }}>{card.sub}</div>
+                    <div style={{ fontFamily: SERIF, fontSize: 28, fontWeight: 300, color: C.charcoal, lineHeight: 1 }}>{card.name}</div>
+                  </div>
+
+                  <div style={{ height: 1, background: 'rgba(180,146,78,0.1)' }} />
+
+                  {/* 설명 */}
+                  <p style={{ fontSize: 12.5, fontWeight: 300, lineHeight: 1.8, color: C.mid, flex: 1 }}>{card.desc}</p>
+
+                  {/* 핵심 포인트 */}
+                  <ul style={{ listStyle: 'none', display: 'flex', flexDirection: 'column', gap: 7 }}>
+                    {card.points.map(pt => (
+                      <li key={pt} style={{ display: 'flex', alignItems: 'flex-start', gap: 10, fontSize: 12, color: C.muted }}>
+                        <span style={{ width: 4, height: 4, borderRadius: '50%', background: card.accentBorder, flexShrink: 0, marginTop: 6 }} />
+                        {pt}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </FadeIn>
+            ))}
           </div>
+
+          {/* CTA */}
+          <FadeIn>
+            <div style={{ marginTop: 48, display: 'flex', gap: 16, flexWrap: 'wrap' }}>
+              <a href="#contact" style={{ display: 'inline-flex', alignItems: 'center', padding: '13px 28px', fontFamily: CONDENSED, fontSize: 11, letterSpacing: '0.25em', textTransform: 'uppercase', background: C.charcoal, color: '#fff', textDecoration: 'none' }}>
+                교육 문의하기
+              </a>
+              <a href="#contact" style={{ display: 'inline-flex', alignItems: 'center', padding: '13px 28px', fontFamily: CONDENSED, fontSize: 11, letterSpacing: '0.25em', textTransform: 'uppercase', background: 'transparent', color: C.charcoal, border: `1px solid rgba(26,26,28,0.28)`, textDecoration: 'none' }}>
+                전체 일정 보기
+              </a>
+            </div>
+          </FadeIn>
         </div>
       </section>
 
-      {/* ⑦ About — 다크 차콜 (대비 섹션) */}
+      {/* ⑧ About — 다크 차콜 (대비 섹션) */}
       <section id="about" style={{ background: C.charcoal, padding: '100px 0' }}>
         <div className="container mx-auto px-6">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-20 items-center">
             <FadeIn>
               <Eyebrow light>About ISKINZ</Eyebrow>
               <h2 style={{ fontFamily: SERIF, fontSize: 'clamp(1.8rem, 3vw, 2.6rem)', fontWeight: 300, lineHeight: 1.2, color: C.silverLight, marginBottom: '1.5rem' }}>
-                공식 공급원으로서의<br />
-                <em style={{ fontStyle: 'italic', color: C.goldLight }}>신뢰와 전문성</em>
+                두 브랜드를 잇는<br />
+                <em style={{ fontStyle: 'italic', color: C.goldLight }}>공식 공급원의 신뢰</em>
               </h2>
               <p style={{ fontSize: 14, fontWeight: 300, lineHeight: 1.9, color: 'rgba(200,205,212,0.65)', marginBottom: 16, maxWidth: 440 }}>
                 아이스킨즈(ISKINZ)는 인천 소재 B2B 의료기기·화장품 도매 업체로, 피부과·성형외과·의원급 의료기관에 스킨부스터, 더말필러, 의료기기, 더마코스메틱을 공급합니다.
               </p>
               <p style={{ fontSize: 14, fontWeight: 300, lineHeight: 1.9, color: 'rgba(200,205,212,0.65)', marginBottom: 40, maxWidth: 440 }}>
-                주력 품목은 프랑스 Fillmed社의 NCTF 135HA 스킨부스터이며, Art Filler 및 HYCOOX 등 프리미엄 의료기기를 함께 취급합니다.
+                프랑스 Fillmed의 NCTF 135HA 스킨부스터와 Vivacy의 Stylage 더말필러 전 라인을 국내 공식 공급원 자격으로 독점 취급합니다.
               </p>
               <div className="grid grid-cols-2 gap-4">
                 {[
-                  { title: '정품 보증',   text: '제조사 직계약 공식 공급 루트' },
-                  { title: '공식 파트너', text: 'Fillmed 공식 계약 공급원' },
-                  { title: '인허가 완비', text: '의료기기·통신판매·화장품 판매 신고' },
-                  { title: '교육 지원',   text: '임상 프로토콜·Academy 프로그램 운영' },
+                  { title: '정품 보증',        text: '제조사 직계약 공식 공급 루트' },
+                  { title: 'Fillmed 파트너',   text: 'Fillmed 공식 계약 공급원' },
+                  { title: 'Vivacy 파트너',    text: 'Vivacy Stylage 공식 공급원' },
+                  { title: '교육 지원',         text: '임상 프로토콜·Academy 프로그램 운영' },
                 ].map(v => (
                   <div key={v.title} style={{ paddingLeft: 16, borderLeft: `1px solid ${C.gold}` }}>
                     <p style={{ fontFamily: CONDENSED, fontSize: 12, letterSpacing: '0.05em', color: C.silverLight, marginBottom: 4 }}>{v.title}</p>
@@ -447,7 +624,7 @@ function ApprovedPage() {
               <div style={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
                 {[
                   { num: '500+', label: '납품 병원·클리닉' },
-                  { num: '100%', label: 'Fillmed 정식 공급 정품' },
+                  { num: '2개',  label: '프랑스 브랜드 공식 공급' },
                   { num: '2시',  label: '오후 당일 배송 마감 기준' },
                 ].map(s => (
                   <div key={s.label} style={{ padding: '24px 32px', background: 'rgba(255,255,255,0.03)', border: `1px solid rgba(180,146,78,0.12)`, display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
@@ -461,7 +638,7 @@ function ApprovedPage() {
         </div>
       </section>
 
-      {/* ⑧ B2B CTA — 네이비 그라디언트 */}
+      {/* ⑨ B2B CTA — 네이비 그라디언트 */}
       <section style={{ background: `linear-gradient(135deg, ${C.navy} 0%, #0D1E3A 100%)`, padding: '96px 0', position: 'relative', overflow: 'hidden' }}>
         <div style={{ position: 'absolute', top: '-40%', right: '-15%', width: 600, height: 600, borderRadius: '50%', border: '1px solid rgba(180,146,78,0.08)', pointerEvents: 'none' }} />
         <div style={{ position: 'absolute', top: '-20%', right: '-5%',  width: 400, height: 400, borderRadius: '50%', border: '1px solid rgba(180,146,78,0.06)', pointerEvents: 'none' }} />
@@ -490,7 +667,7 @@ function ApprovedPage() {
         </FadeIn>
       </section>
 
-      {/* ⑨ Contact */}
+      {/* ⑩ Contact */}
       <ContactSection />
     </>
   )
