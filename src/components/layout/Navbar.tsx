@@ -70,7 +70,7 @@ export function Navbar({ isApproved = false }: NavbarProps) {
             { href: '/academy?tab=nanosoft', label: '나노소프트' },
           ],
         },
-        { href: '/academy',  label: 'STYLAGE' },
+        { href: '/academy?tab=stylage', label: 'STYLAGE' },
         { href: '/#contact', label: 'CONTACT' },
       ]
     : [
