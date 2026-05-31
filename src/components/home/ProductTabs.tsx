@@ -24,7 +24,7 @@ const PRODUCTS = [
   {
     id: 'nctf', brand: 'fillmed', type: 'booster', featured: true,
     brandLabel: 'Fillmed', tag: '⭐ FLAGSHIP', sub: 'Skin Booster',
-    name: 'NCTF 135HA', ha: '135가지 활성 성분',
+    name: 'NCTF 135HA Boost', ha: '10 × 3ml 바이알',
     desc: 'Fillmed 대표 스킨부스터. 비타민·미네랄·아미노산 135가지 성분이 피부 세포 재생과 보습을 동시에 촉진합니다.',
     specs: ['3단계 프로토콜 (집중기·강화기·유지기)', '전안면·목·데콜테', '당일 배송 가능'],
   },
@@ -39,9 +39,9 @@ const PRODUCTS = [
   {
     id: 'stylage', brand: 'vivacy', type: 'filler', featured: false,
     brandLabel: 'Vivacy', tag: 'IPN-LIKE', sub: 'Dermal Filler',
-    name: 'Stylage', ha: 'S · M · XL · XXL',
+    name: 'Stylage', ha: 'S · M · X · XL',
     desc: 'IPN-LIKE 기술 + Mannitol 항산화. 잔주름부터 심층 볼륨 복원까지 적응증별 4가지 라인.',
-    specs: ['Stylage S — 잔주름 14mg/ml', 'Stylage M — 팔자주름 20mg/ml', 'Stylage XL/XXL — 볼륨 복원'],
+    specs: ['Stylage S — 잔주름 14mg/ml', 'Stylage M — 팔자주름 20mg/ml', 'Stylage X — 볼륨 복원 20mg/ml', 'Stylage XL — 심층 볼륨 복원 20mg/ml'],
   },
 ]
 
