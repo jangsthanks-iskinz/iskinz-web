@@ -142,9 +142,9 @@ export default function ProductsPage() {
                   <div style={{ fontFamily: CONDENSED, fontSize: 9, letterSpacing: '0.3em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.5)', marginBottom: 8 }}>
                     {p.type}
                   </div>
-                  <div style={{ fontFamily: SERIF, fontSize: 38, fontWeight: 300, color: '#fff', lineHeight: 1, marginBottom: 8 }}>
-                    {p.name}
-                  </div>
+                  <div style={{ fontFamily: SERIF, fontSize: 38, fontWeight: 300, color: '#fff', lineHeight: 1, marginBottom: 8 }}
+                    dangerouslySetInnerHTML={{ __html: p.name.replace(/®/g, '<sup style="font-size:0.55em;vertical-align:super;">®</sup>') }}
+                  />
                   <div style={{ fontFamily: CONDENSED, fontSize: 12, letterSpacing: '0.15em', color: 'rgba(255,255,255,0.65)' }}>
                     {p.sub}
                   </div>
