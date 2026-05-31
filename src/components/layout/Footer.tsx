@@ -64,8 +64,6 @@ export function Footer() {
             <p className="mb-4 text-white" style={{ fontFamily: CONDENSED, fontSize: 10, letterSpacing: '0.2em', textTransform: 'uppercase' }}>인허가</p>
             <ul className="flex flex-col gap-1.5 text-[10px]" style={{ color: 'rgba(200,205,212,0.38)' }}>
               <li>✓ {SITE.businessLicense}</li>
-              <li>✓ {SITE.mailOrderLicense}</li>
-              <li>✓ {SITE.cosmeticLicense}</li>
               <li>✓ Fillmed 정식 공급원</li>
             </ul>
           </div>
