@@ -99,7 +99,7 @@ export function Navbar({ isApproved = false }: NavbarProps) {
               ISKINZ
             </span>
             <span className="block mt-0.5" style={{ fontFamily: CONDENSED, fontSize: 8, letterSpacing: '0.32em', textTransform: 'uppercase', color: 'rgba(200,205,212,0.35)' }}>
-              Medical Aesthetic Supply
+              French Medical Aesthetic Supply
             </span>
           </Link>
 
