@@ -581,6 +581,31 @@ function ApprovedPage() {
               </div>
             </FadeIn>
 
+            {/* 오른쪽: NCTF 동영상 */}
+            <FadeIn delay={0.15}>
+              <div style={{ position: 'relative' }}>
+                {/* 16:9 비율 컨테이너 */}
+                <div style={{ position: 'relative', paddingBottom: '56.25%', background: '#0a0a0a', border: `1px solid rgba(180,146,78,0.15)` }}>
+                  <video
+                    autoPlay
+                    loop
+                    muted
+                    playsInline
+                    style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover' }}
+                  >
+                    <source src="https://dnojlowuopqekueoqqow.supabase.co/storage/v1/object/public/media/hero.mp4" type="video/mp4" />
+                  </video>
+                </div>
+                {/* 하단 캡션 */}
+                <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginTop: 14 }}>
+                  <div style={{ width: 18, height: 1, background: C.gold, flexShrink: 0 }} />
+                  <span style={{ fontFamily: CONDENSED, fontSize: 9, letterSpacing: '0.3em', textTransform: 'uppercase', color: 'rgba(200,205,212,0.35)' }}>
+                    FILLMED · NCTF 135HA — POWER OF A DROP
+                  </span>
+                </div>
+              </div>
+            </FadeIn>
+
           </div>
         </div>
       </section>
