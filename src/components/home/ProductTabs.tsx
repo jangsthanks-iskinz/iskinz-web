@@ -32,9 +32,9 @@ const PRODUCTS = [
   {
     id: 'stylage', brand: 'vivacy', type: 'filler', featured: true,
     brandLabel: 'Vivacy', tag: 'IPN-LIKE', sub: 'Dermal Filler',
-    name: 'Stylage', ha: 'S · M · X · XL',
+    name: 'Stylage', ha: 'S · M · L · XL',
     desc: 'IPN-LIKE 기술 + Mannitol 항산화. 잔주름부터 심층 볼륨 복원까지 적응증별 4가지 라인.',
-    specs: ['Stylage S — 잔주름 16 mg/ml', 'Stylage M — 팔자주름 20 mg/ml', 'Stylage X — 볼륨 복원 24 mg/ml', 'Stylage XL — 심층 볼륨 26 mg/ml'],
+    specs: ['Stylage S — 잔주름 16 mg/ml', 'Stylage M — 팔자주름 20 mg/ml', 'Stylage L — 볼륨 복원 24 mg/ml', 'Stylage XL — 심층 볼륨 26 mg/ml'],
   },
 ]
 
