@@ -2,7 +2,7 @@ export const SITE = {
   name: 'ISKINZ',
   tagline: 'B2B 병원 전용 프리미엄 메디컬 에스테틱 공급 플랫폼',
   taglineKo: '정품 보증 · 임상 근거 · 교육 지원 · 당일 배송',
-  description: '아이스킨즈는 피부과·성형외과 전문 B2B 의료기기·화장품 공급 업체입니다. Fillmed · Vivacy 정식 공급원으로 NCTF 135HA, Stylage, HYCOOX 등 프리미엄 메디컬 제품을 공급합니다.',
+  description: '아이스킨즈는 피부과·성형외과 전문 B2B 의료기기·화장품 공급 업체입니다. Fillmed · Vivacy 정식 공급원으로 NCTF 135HA Boost, Stylage S·M·X·XL 등 프리미엄 메디컬 에스테틱 제품을 공급합니다.',
   url: process.env.NEXT_PUBLIC_SITE_URL ?? 'https://iskinz.com',
   email: 'ceo@iskinz.com',
   phone: '010-2580-4489',

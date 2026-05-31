@@ -405,9 +405,9 @@ function ApprovedPage() {
 
                 <div style={{ display: 'flex', flexDirection: 'column', gap: 10, marginBottom: 28 }}>
                   {[
-                    { label: '대표 제품', value: 'Stylage S · M · XL · XXL · HydroMax' },
+                    { label: '대표 제품', value: 'Stylage S · M · X · XL' },
                     { label: '핵심 기술', value: 'IPN-LIKE Tech · Mannitol · Bi-Soft®' },
-                    { label: '적응증',   value: '잔주름 · 중등도 주름 · 볼륨 복원 · 부스터' },
+                    { label: '적응증',   value: '잔주름 · 중등도 주름 · 볼륨 복원 · 심층 볼륨' },
                   ].map(row => (
                     <div key={row.label} style={{ display: 'flex', gap: 12, fontSize: 12 }}>
                       <span style={{ fontFamily: CONDENSED, fontSize: 9, letterSpacing: '0.15em', textTransform: 'uppercase', color: 'rgba(200,205,212,0.35)', flexShrink: 0, width: 56, paddingTop: 2 }}>{row.label}</span>
