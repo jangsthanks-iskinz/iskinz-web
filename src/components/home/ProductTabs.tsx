@@ -28,13 +28,6 @@ const PRODUCTS = [
     desc: 'Fillmed 대표 스킨부스터. 비타민·미네랄·아미노산 135가지 성분이 피부 세포 재생과 보습을 동시에 촉진합니다.',
     specs: ['3단계 프로토콜 (집중기·강화기·유지기)', '전안면·목·데콜테', '당일 배송 가능'],
   },
-  {
-    id: 'hycoox', brand: 'fillmed', type: 'device', featured: false,
-    brandLabel: 'Fillmed', tag: 'NEW', sub: 'Auto Injector',
-    name: 'HYCOOX', ha: '자동 주입',
-    desc: 'NCTF 시술용 자동 멀티포인트 인젝터. 시술 시간 단축 및 균일한 주입량 보장.',
-    specs: ['자동 주입 깊이 조절', 'NCTF와 최적 호환', '시술 효율 극대화'],
-  },
   /* ── Vivacy ── */
   {
     id: 'hydromax', brand: 'vivacy', type: 'booster', featured: true,
@@ -44,39 +37,11 @@ const PRODUCTS = [
     specs: ['진피 메조테라피', '전안면·목·데콜테', 'NCTF와 병행 시술 가능'],
   },
   {
-    id: 'sty-s', brand: 'vivacy', type: 'filler', featured: false,
-    brandLabel: 'Vivacy', tag: '', sub: 'Fine Lines',
-    name: 'Stylage S', ha: '14 mg/ml HA',
-    desc: '눈가·이마·구순 주변 표재성 잔주름 교정 전용. IPN-LIKE 기술·Mannitol 함유.',
-    specs: ['눈가·이마 잔주름', 'Crow\'s Feet', '표피~중간 진피'],
-  },
-  {
-    id: 'sty-m', brand: 'vivacy', type: 'filler', featured: false,
-    brandLabel: 'Vivacy', tag: 'POPULAR', sub: 'Moderate Wrinkles',
-    name: 'Stylage M', ha: '20 mg/ml HA',
-    desc: '팔자주름·마리오네트 라인 교정. Lidocaine 함유로 시술 편의성 향상.',
-    specs: ['팔자주름·마리오네트', 'Lidocaine 함유', '중간~심층 진피'],
-  },
-  {
-    id: 'sty-xl', brand: 'vivacy', type: 'volume', featured: false,
-    brandLabel: 'Vivacy', tag: '', sub: 'Volume Restore',
-    name: 'Stylage XL', ha: '20 mg/ml HA',
-    desc: '광대·뺨·V라인 대용량 볼륨 복원. 안면 윤곽 리모델링에 이상적입니다.',
-    specs: ['광대·뺨·턱라인', '안면 윤곽 리모델링', '피하조직 이상 주입'],
-  },
-  {
-    id: 'sty-xxl', brand: 'vivacy', type: 'volume', featured: false,
-    brandLabel: 'Vivacy', tag: '', sub: 'Maximum Volume',
-    name: 'Stylage XXL', ha: '20 mg/ml HA',
-    desc: '심층 안면 함몰 최고 교정력. 대용량 볼륨 손실 복원 및 12개월 이상 지속.',
-    specs: ['심층 안면 함몰 교정', '12개월 이상 지속', '심층 진피·피하조직'],
-  },
-  {
-    id: 'skinperf', brand: 'fillmed', type: 'dermo', featured: false,
-    brandLabel: 'Fillmed', tag: '', sub: '더마코스메틱',
-    name: 'Skin Perfusion', ha: '홈케어',
-    desc: 'Fillmed 병원 전용 홈케어 라인. 시술 후 회복·유지를 위한 전문 스킨케어.',
-    specs: ['시술 후 케어 최적화', '병원 처방 전용', '다양한 기능성 라인'],
+    id: 'stylage', brand: 'vivacy', type: 'filler', featured: false,
+    brandLabel: 'Vivacy', tag: 'IPN-LIKE', sub: 'Dermal Filler',
+    name: 'Stylage', ha: 'S · M · XL · XXL',
+    desc: 'IPN-LIKE 기술 + Mannitol 항산화. 잔주름부터 심층 볼륨 복원까지 적응증별 4가지 라인.',
+    specs: ['Stylage S — 잔주름 14mg/ml', 'Stylage M — 팔자주름 20mg/ml', 'Stylage XL/XXL — 볼륨 복원'],
   },
 ]
 
@@ -86,7 +51,6 @@ const TABS = [
   { id: 'vivacy',  label: 'Vivacy' },
   { id: 'booster', label: '스킨부스터' },
   { id: 'filler',  label: '필러' },
-  { id: 'volume',  label: '볼류마이저' },
 ]
 
 export function ProductTabs() {

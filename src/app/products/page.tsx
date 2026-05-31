@@ -20,11 +20,9 @@ const C = {
 const SERIF     = 'Cormorant Garamond, Georgia, serif'
 const CONDENSED = 'Barlow Condensed, sans-serif'
 
-/* ─── 제품 데이터 ─── */
 const PRODUCTS = [
-  /* NCTF */
   {
-    id: 'nctf-1x1',
+    id: 'nctf',
     category: 'nctf',
     brand: 'Fillmed',
     brandColor: C.navy,
@@ -34,22 +32,10 @@ const PRODUCTS = [
     desc: '135가지 활성 성분 + Free HA 5mg/ml. 피부 세포 재생·수분·탄력 동시 개선.',
     specs: ['HA 5 mg/ml + 60 active ingredients', '1×1ml prefilled syringe', 'CE Marked · Fillmed 정품'],
     bg: 'linear-gradient(145deg, #1B3868 0%, #0D1E3A 100%)',
+    type: 'Skin Booster',
   },
   {
-    id: 'nctf-5x1',
-    category: 'nctf',
-    brand: 'Fillmed',
-    brandColor: C.navy,
-    name: 'NCTF® 135 HA',
-    sub: '5 × 1ml',
-    tag: 'PACK',
-    desc: '집중 프로토콜용 5본 팩. 3단계 시술 (집중기·강화기·유지기) 에 최적화.',
-    specs: ['5×1ml 멀티 팩', '집중기 4주 프로토콜 대응', 'CE Marked · Fillmed 정품'],
-    bg: 'linear-gradient(145deg, #243E70 0%, #1B3868 100%)',
-  },
-  /* 나노소프트 */
-  {
-    id: 'nanosoft-30',
+    id: 'nanosoft',
     category: 'nanosoft',
     brand: 'Fillmed',
     brandColor: C.navy,
@@ -59,55 +45,20 @@ const PRODUCTS = [
     desc: '0.6mm 3핀 마이크로니들. 눈가·입가·목·데콜테 표재성 시술 전용 의료기기.',
     specs: ['0.6mm 3-pin microneedle', '30ea 멸균 1회용', 'CE + KFDA 이중 인증'],
     bg: 'linear-gradient(145deg, #2A4F8A 0%, #1B3868 100%)',
+    type: 'Microneedle Device',
   },
-  /* Stylage */
   {
-    id: 'stylage-s',
+    id: 'stylage',
     category: 'stylage',
     brand: 'Vivacy',
     brandColor: C.gold,
-    name: 'Stylage® S',
-    sub: '14 mg/ml HA',
-    tag: '잔주름',
-    desc: '눈가·이마·구순 주변 표재성 잔주름. IPN-LIKE + Mannitol 항산화.',
-    specs: ['14 mg/ml HA', '32G 표재성 주입', 'CE Marked · Vivacy 정품'],
+    name: 'Stylage®',
+    sub: 'S · M · XL · XXL',
+    tag: 'IPN-LIKE',
+    desc: 'IPN-LIKE 기술 + Mannitol 항산화. 잔주름부터 심층 볼륨 복원까지 적응증별 4가지 라인.',
+    specs: ['Stylage S — 잔주름 (14 mg/ml)', 'Stylage M — 팔자·마리오네트 (20 mg/ml)', 'Stylage XL/XXL — 볼륨 복원 (20 mg/ml)'],
     bg: 'linear-gradient(145deg, #8A6830 0%, #B4924E 100%)',
-  },
-  {
-    id: 'stylage-m',
-    category: 'stylage',
-    brand: 'Vivacy',
-    brandColor: C.gold,
-    name: 'Stylage® M',
-    sub: '20 mg/ml HA',
-    tag: 'POPULAR',
-    desc: '팔자주름·마리오네트 라인. Lidocaine 함유로 통증 최소화.',
-    specs: ['20 mg/ml HA + Lidocaine', '27G 중간~심층 진피', 'CE Marked · Vivacy 정품'],
-    bg: 'linear-gradient(145deg, #9A7838 0%, #C4A256 100%)',
-  },
-  {
-    id: 'stylage-xl',
-    category: 'stylage',
-    brand: 'Vivacy',
-    brandColor: C.gold,
-    name: 'Stylage® XL',
-    sub: '20 mg/ml HA',
-    tag: '볼륨 복원',
-    desc: '광대·뺨·V라인 볼륨 복원. Lidocaine 함유. 캐뉼라 시술 권장.',
-    specs: ['20 mg/ml HA + Lidocaine', '25G 심층 진피~피하', '12~15개월 지속'],
-    bg: 'linear-gradient(145deg, #AA8840 0%, #D4A866 100%)',
-  },
-  {
-    id: 'stylage-xxl',
-    category: 'stylage',
-    brand: 'Vivacy',
-    brandColor: C.gold,
-    name: 'Stylage® XXL',
-    sub: '20 mg/ml HA',
-    tag: 'MAX 볼륨',
-    desc: '심층 안면 함몰 최대 교정. 대용량 볼륨 손실 복원. 12개월 이상 지속.',
-    specs: ['20 mg/ml HA', '23G 피하조직 이상', '12개월 이상 지속'],
-    bg: 'linear-gradient(145deg, #B89848 0%, #E4B870 100%)',
+    type: 'Dermal Filler',
   },
 ]
 
@@ -171,20 +122,14 @@ export default function ProductsPage() {
         </div>
 
         {/* 제품 그리드 */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
           {list.map(p => (
             <div
               key={p.id}
-              style={{
-                background: C.warmWhite,
-                border: `1px solid ${C.border}`,
-                display: 'flex',
-                flexDirection: 'column',
-                overflow: 'hidden',
-              }}
+              style={{ background: C.warmWhite, border: `1px solid ${C.border}`, display: 'flex', flexDirection: 'column', overflow: 'hidden' }}
             >
-              {/* 제품 이미지 영역 */}
-              <div style={{ background: p.bg, padding: '48px 32px', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', minHeight: 200, position: 'relative' }}>
+              {/* 이미지 영역 */}
+              <div style={{ background: p.bg, padding: '56px 32px', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', minHeight: 220, position: 'relative' }}>
                 <div style={{ position: 'absolute', top: 14, left: 14, display: 'flex', gap: 6 }}>
                   <span style={{ fontFamily: CONDENSED, fontSize: 8, letterSpacing: '0.22em', textTransform: 'uppercase', padding: '3px 7px', background: 'rgba(255,255,255,0.12)', color: 'rgba(255,255,255,0.75)', border: '1px solid rgba(255,255,255,0.2)' }}>
                     {p.brand}
@@ -195,25 +140,25 @@ export default function ProductsPage() {
                 </div>
                 <div style={{ textAlign: 'center' }}>
                   <div style={{ fontFamily: CONDENSED, fontSize: 9, letterSpacing: '0.3em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.5)', marginBottom: 8 }}>
-                    {p.category === 'nanosoft' ? 'Microneedle Device' : p.category === 'nctf' ? 'Skin Booster' : 'Dermal Filler'}
+                    {p.type}
                   </div>
-                  <div style={{ fontFamily: SERIF, fontSize: 32, fontWeight: 300, color: '#fff', lineHeight: 1, marginBottom: 6 }}>
+                  <div style={{ fontFamily: SERIF, fontSize: 38, fontWeight: 300, color: '#fff', lineHeight: 1, marginBottom: 8 }}>
                     {p.name}
                   </div>
-                  <div style={{ fontFamily: CONDENSED, fontSize: 11, letterSpacing: '0.12em', color: 'rgba(255,255,255,0.65)' }}>
+                  <div style={{ fontFamily: CONDENSED, fontSize: 12, letterSpacing: '0.15em', color: 'rgba(255,255,255,0.65)' }}>
                     {p.sub}
                   </div>
                 </div>
               </div>
 
-              {/* 카드 본문 */}
-              <div style={{ padding: '20px 20px 0', flex: 1 }}>
-                <p style={{ fontSize: 12.5, fontWeight: 300, lineHeight: 1.75, color: C.mid, marginBottom: 14 }}>
+              {/* 본문 */}
+              <div style={{ padding: '24px 24px 0', flex: 1 }}>
+                <p style={{ fontSize: 13, fontWeight: 300, lineHeight: 1.8, color: C.mid, marginBottom: 16 }}>
                   {p.desc}
                 </p>
-                <ul style={{ listStyle: 'none', display: 'flex', flexDirection: 'column', gap: 6, marginBottom: 20 }}>
+                <ul style={{ listStyle: 'none', display: 'flex', flexDirection: 'column', gap: 7, marginBottom: 24 }}>
                   {p.specs.map(s => (
-                    <li key={s} style={{ display: 'flex', alignItems: 'flex-start', gap: 8, fontSize: 11.5, color: C.muted }}>
+                    <li key={s} style={{ display: 'flex', alignItems: 'flex-start', gap: 8, fontSize: 12, color: C.muted }}>
                       <span style={{ width: 3, height: 3, borderRadius: '50%', background: p.brandColor, flexShrink: 0, marginTop: 5 }} />
                       {s}
                     </li>
@@ -222,7 +167,7 @@ export default function ProductsPage() {
               </div>
 
               {/* 구매하기 버튼 */}
-              <div style={{ padding: '0 20px 20px', display: 'flex', flexDirection: 'column', gap: 8 }}>
+              <div style={{ padding: '0 24px 24px', display: 'flex', flexDirection: 'column', gap: 8 }}>
                 <div style={{ height: 1, background: C.border, marginBottom: 4 }} />
                 <p style={{ fontFamily: CONDENSED, fontSize: 9, letterSpacing: '0.2em', textTransform: 'uppercase', color: C.muted }}>
                   가격 · 병원 회원 승인 후 개별 안내
@@ -230,20 +175,11 @@ export default function ProductsPage() {
                 <Link
                   href={`/contact?productName=${encodeURIComponent(p.name + ' ' + p.sub)}`}
                   style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    gap: 8,
-                    padding: '12px 16px',
-                    background: p.brandColor === C.gold
-                      ? `linear-gradient(135deg, ${C.gold}, ${C.goldLight})`
-                      : C.navy,
+                    display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8,
+                    padding: '13px 16px',
+                    background: p.brandColor === C.gold ? `linear-gradient(135deg, ${C.gold}, ${C.goldLight})` : C.navy,
                     color: '#fff',
-                    fontFamily: CONDENSED,
-                    fontSize: 11,
-                    fontWeight: 500,
-                    letterSpacing: '0.2em',
-                    textTransform: 'uppercase',
+                    fontFamily: CONDENSED, fontSize: 11, fontWeight: 500, letterSpacing: '0.2em', textTransform: 'uppercase',
                     textDecoration: 'none',
                   }}
                 >
