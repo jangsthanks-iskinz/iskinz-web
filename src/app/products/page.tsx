@@ -56,7 +56,7 @@ const PRODUCTS = [
     sub: 'S · M · X · XL',
     tag: 'IPN-LIKE',
     desc: 'IPN-LIKE 기술 + Mannitol 항산화. 잔주름부터 심층 볼륨 복원까지 적응증별 4가지 라인.',
-    specs: ['Stylage S — 잔주름 (14 mg/ml)', 'Stylage M — 팔자·마리오네트 (20 mg/ml)', 'Stylage X — 볼륨 복원 (20 mg/ml)', 'Stylage XL — 심층 볼륨 복원 (20 mg/ml)'],
+    specs: ['Stylage S — 잔주름 (16 mg/ml)', 'Stylage M — 팔자·마리오네트 (20 mg/ml)', 'Stylage X — 볼륨 복원 (24 mg/ml)', 'Stylage XL — 심층 볼륨 복원 (26 mg/ml)'],
     bg: 'linear-gradient(145deg, #8A6830 0%, #B4924E 100%)',
     type: 'Dermal Filler',
   },

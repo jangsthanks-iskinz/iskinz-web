@@ -30,18 +30,11 @@ const PRODUCTS = [
   },
   /* ── Vivacy ── */
   {
-    id: 'hydromax', brand: 'vivacy', type: 'booster', featured: true,
-    brandLabel: 'Vivacy', tag: '⭐ HERO', sub: 'Skin Booster',
-    name: 'HydroMax', ha: 'Skin3 Complex',
-    desc: 'Vivacy 시그니처 스킨 부스터. Skin3 Complex가 피부 세 개 층에서 동시에 수분·탄력·재생을 촉진합니다.',
-    specs: ['진피 메조테라피', '전안면·목·데콜테', 'NCTF와 병행 시술 가능'],
-  },
-  {
-    id: 'stylage', brand: 'vivacy', type: 'filler', featured: false,
+    id: 'stylage', brand: 'vivacy', type: 'filler', featured: true,
     brandLabel: 'Vivacy', tag: 'IPN-LIKE', sub: 'Dermal Filler',
     name: 'Stylage', ha: 'S · M · X · XL',
     desc: 'IPN-LIKE 기술 + Mannitol 항산화. 잔주름부터 심층 볼륨 복원까지 적응증별 4가지 라인.',
-    specs: ['Stylage S — 잔주름 14mg/ml', 'Stylage M — 팔자주름 20mg/ml', 'Stylage X — 볼륨 복원 20mg/ml', 'Stylage XL — 심층 볼륨 복원 20mg/ml'],
+    specs: ['Stylage S — 잔주름 16 mg/ml', 'Stylage M — 팔자주름 20 mg/ml', 'Stylage X — 볼륨 복원 24 mg/ml', 'Stylage XL — 심층 볼륨 26 mg/ml'],
   },
 ]
 
@@ -49,7 +42,6 @@ const TABS = [
   { id: 'all',     label: '전체' },
   { id: 'fillmed', label: 'Fillmed' },
   { id: 'vivacy',  label: 'Vivacy' },
-  { id: 'booster', label: '스킨부스터' },
   { id: 'filler',  label: '필러' },
 ]
 
