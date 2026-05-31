@@ -2,6 +2,7 @@ import { FadeIn } from '@/components/ui/FadeIn'
 import { ContactSection } from '@/components/home/ContactSection'
 import { HomeLoginForm } from '@/components/home/HomeLoginForm'
 import { ProductTabs } from '@/components/home/ProductTabs'
+import { HeroPromo } from '@/components/home/HeroPromo'
 import { createClient } from '@/lib/supabase/server'
 import { SITE } from '@/constants/site'
 
@@ -215,29 +216,9 @@ function ApprovedPage() {
           </div>
         </div>
 
-        {/* ── 오른쪽: 히어로 동영상 패널 ── */}
-        <div
-          className="hidden lg:block"
-          style={{ position: 'relative', overflow: 'hidden', background: '#0D1E3A' }}
-        >
-          {/* 배경 동영상 */}
-          <video
-            autoPlay
-            loop
-            muted
-            playsInline
-            style={{
-              position: 'absolute',
-              inset: 0,
-              width: '100%',
-              height: '100%',
-              objectFit: 'cover',
-            }}
-          >
-            <source src="https://dnojlowuopqekueoqqow.supabase.co/storage/v1/object/public/media/hero.mp4" type="video/mp4" />
-          </video>
-          {/* 미묘한 다크 오버레이 */}
-          <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to bottom, rgba(13,30,58,0.25) 0%, rgba(13,30,58,0.1) 50%, rgba(13,30,58,0.35) 100%)' }} />
+        {/* ── 오른쪽: 브랜드 프로모 애니메이션 패널 ── */}
+        <div className="hidden lg:block" style={{ position: 'relative', overflow: 'hidden' }}>
+          <HeroPromo />
         </div>
       </section>
 
