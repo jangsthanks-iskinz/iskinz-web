@@ -28,6 +28,14 @@ const PRODUCTS = [
     desc: 'Fillmed 대표 스킨부스터. 비타민·미네랄·아미노산 135가지 성분이 피부 세포 재생과 보습을 동시에 촉진합니다.',
     specs: ['3단계 프로토콜 (집중기·강화기·유지기)', '전안면·목·데콜테', '당일 배송 가능'],
   },
+  /* ── Fillmed ── */
+  {
+    id: 'nanosoft', brand: 'fillmed', type: 'device', featured: true,
+    brandLabel: 'Fillmed', tag: 'CE & KFDA', sub: 'Microneedle Device',
+    name: 'Nanosoft™', ha: '30ea / Box',
+    desc: '0.6mm 3핀 마이크로니들. 눈가·입가·목·데콜테 표재성 시술 전용 의료기기. 통증 최소·정확한 진피층 전달.',
+    specs: ['0.6mm 3-pin microneedle', '멸균 1회용 30ea', 'CE + KFDA 이중 인증'],
+  },
   /* ── Vivacy ── */
   {
     id: 'stylage', brand: 'vivacy', type: 'filler', featured: true,
