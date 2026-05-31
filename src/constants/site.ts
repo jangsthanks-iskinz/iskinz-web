@@ -13,8 +13,6 @@ export const SITE = {
   companyNameKo: '아이스킨즈',
   companyNameEn: 'ISKINZ',
   businessLicense: '의료기기판매업 신고번호 제 2026-3560021-00038호',
-  mailOrderLicense: '통신판매업 신고번호 제 인천서구-0000-0000호',
-  cosmeticLicense: '화장품책임판매업 등록번호 제 경인-가-000호',
   sns: {
     instagram: 'https://instagram.com/iskinz_official',
     kakao: 'https://pf.kakao.com/iskinz',
