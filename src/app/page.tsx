@@ -234,7 +234,7 @@ function ApprovedPage() {
               objectFit: 'cover',
             }}
           >
-            <source src="/videos/hero.mp4" type="video/mp4" />
+            <source src="https://dnojlowuopqekueoqqow.supabase.co/storage/v1/object/public/media/hero.mp4" type="video/mp4" />
           </video>
           {/* 미묘한 다크 오버레이 */}
           <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to bottom, rgba(13,30,58,0.25) 0%, rgba(13,30,58,0.1) 50%, rgba(13,30,58,0.35) 100%)' }} />
