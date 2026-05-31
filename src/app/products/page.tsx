@@ -26,7 +26,7 @@ const PRODUCTS = [
     category: 'nctf',
     brand: 'Fillmed',
     brandColor: C.navy,
-    name: 'NCTF® 135 HA Boost',
+    name: 'NCTF 135 HA Boost',
     sub: '10 × 3ml',
     tag: 'FLAGSHIP',
     desc: '135가지 활성 성분 복합체. 피부 세포 재생·수분·탄력 동시 개선.',

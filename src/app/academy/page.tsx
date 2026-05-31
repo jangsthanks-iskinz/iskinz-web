@@ -28,7 +28,7 @@ function NctfContent() {
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-end pb-16">
               <div>
                 <h2 style={{ fontFamily: NSF.serif, fontSize: 'clamp(3rem, 6vw, 5rem)', fontWeight: 300, color: '#fff', lineHeight: 0.95, letterSpacing: '-0.01em', marginBottom: '0.5rem' }}>
-                  NCTF<sup style={{ fontSize: '0.55em', verticalAlign: 'super' }}>®</sup> 135 HA
+                  NCTF 135 HA
                 </h2>
                 <p style={{ fontFamily: NSF.condensed, fontSize: 11, letterSpacing: '0.35em', textTransform: 'uppercase', color: NS.silverDark, marginBottom: '2.5rem' }}>
                   CELLULAR ACTIVATOR — BY FILLMED
@@ -113,7 +113,7 @@ function NctfContent() {
               60가지 성분<br /><em style={{ fontStyle: 'italic', color: NS.warm }}>임상 입증 효과</em>
             </h3>
             <p style={{ fontSize: 13, fontWeight: 300, color: NS.silverDark, maxWidth: 480, lineHeight: 1.7, marginBottom: '3rem' }}>
-              무작위 대조 연구와 다기관 임상시험을 통해 검증된 NCTF® 135 HA의 효능. Free HA 5mg/ml 포함 60가지 필수 성분 독자적 복합 포뮬러.
+              무작위 대조 연구와 다기관 임상시험을 통해 검증된 NCTF 135 HA의 효능. Free HA 5mg/ml 포함 60가지 필수 성분 독자적 복합 포뮬러.
             </p>
           </FadeIn>
           <div className="grid grid-cols-2 md:grid-cols-4" style={{ gap: 1, background: 'rgba(200,205,212,0.1)', marginBottom: 1 }}>
@@ -197,7 +197,7 @@ function NctfContent() {
                 모든 시술과<br /><em style={{ fontStyle: 'italic', color: NS.warm }}>컴바인 가능</em>
               </h3>
               <p style={{ fontSize: 13, fontWeight: 300, color: NS.silverDark, lineHeight: 1.7, marginBottom: '2rem' }}>
-                NCTF® 135 HA 사용자의 <strong style={{ color: NS.charcoal }}>80%</strong>가 이미 복합 시술 적용 중
+                NCTF 135 HA 사용자의 <strong style={{ color: NS.charcoal }}>80%</strong>가 이미 복합 시술 적용 중
               </p>
               <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8 }}>
                 {['NCTF + 보톡스·톡신', 'NCTF + Stylage 필러', 'NCTF + 콜라겐 유도제', 'NCTF + 레이저·RF', 'NCTF + 화학적 필링', 'NCTF + 마이크로니들링', 'NCTF + 수술'].map(c => (
@@ -250,7 +250,7 @@ function NctfContent() {
       </div>
 
       {/* CTA */}
-      <CtaSection title="NCTF® 135 HA 도입 상담" />
+      <CtaSection title="NCTF 135 HA 도입 상담" />
     </div>
   )
 }
@@ -342,7 +342,7 @@ function NanosoftContent() {
                 세상에서 가장 작은<br /><em style={{ fontStyle: 'italic', color: NS.warm }}>니들의 혁신</em>
               </h3>
               <div style={{ fontSize: 14, fontWeight: 300, lineHeight: 1.85, color: '#3a3d44' }}>
-                <p>나노소프트™는 눈가, 입가, 목, 데콜테 등 가장 예민한 부위를 위해 특별히 설계된 FILLMED의 독점 마이크로니들 의료기기입니다. 0.6mm 길이의 3핀 구성으로 상부 진피층까지 NCTF® 솔루션을 정확하게 전달합니다.</p>
+                <p>나노소프트™는 눈가, 입가, 목, 데콜테 등 가장 예민한 부위를 위해 특별히 설계된 FILLMED의 독점 마이크로니들 의료기기입니다. 0.6mm 길이의 3핀 구성으로 상부 진피층까지 NCTF 솔루션을 정확하게 전달합니다.</p>
                 <p style={{ marginTop: 14 }}>백신 주사 기술에서 영감을 받아 개발된 나노소프트™는 기존 메조테라피의 통증과 불편함을 획기적으로 줄이면서도 최적의 약물 전달 효율을 실현합니다.</p>
                 <p style={{ marginTop: 14 }}>CE 및 KFDA 인증을 모두 획득한 검증된 의료기기로, 1회용 멸균 제품으로 안전성이 보장됩니다.</p>
               </div>
@@ -374,12 +374,12 @@ function NanosoftContent() {
         <div style={{ position: 'absolute', right: -20, top: '50%', transform: 'translateY(-50%)', fontFamily: NSF.serif, fontSize: 220, fontWeight: 300, color: 'rgba(200,205,212,0.04)', lineHeight: 1, whiteSpace: 'nowrap', pointerEvents: 'none', userSelect: 'none' }}>NCTF</div>
         <div className="container mx-auto px-6 lg:px-14 relative">
           <FadeIn>
-            <NSLabel dark>NCTF® 135HA CLINICAL DATA</NSLabel>
+            <NSLabel dark>NCTF 135HA CLINICAL DATA</NSLabel>
             <h3 style={{ fontFamily: NSF.serif, fontSize: 'clamp(1.8rem, 3vw, 2.8rem)', fontWeight: 300, color: '#fff', lineHeight: 1.1, marginBottom: '1rem' }}>
-              NCTF® 135HA<br /><em style={{ fontStyle: 'italic', color: NS.warm }}>임상 효과 데이터</em>
+              NCTF 135HA<br /><em style={{ fontStyle: 'italic', color: NS.warm }}>임상 효과 데이터</em>
             </h3>
             <p style={{ fontSize: 13, fontWeight: 300, color: NS.silverDark, maxWidth: 480, lineHeight: 1.7, marginBottom: '3rem' }}>
-              40년 이상의 피부과학 역사를 가진 NCTF® 135HA와 나노소프트™의 완벽한 조합. 검증된 임상 데이터로 확인된 효과.
+              40년 이상의 피부과학 역사를 가진 NCTF 135HA와 나노소프트™의 완벽한 조합. 검증된 임상 데이터로 확인된 효과.
             </p>
           </FadeIn>
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5" style={{ gap: 1, background: 'rgba(200,205,212,0.1)' }}>
@@ -446,7 +446,7 @@ function NanosoftContent() {
                   { num: '1', title: '방향 확인', desc: '파란색 선이 항상 사용자(시술자) 방향을 향하도록 합니다. 주사기가 옆으로 기울거나 회전되지 않도록 유지합니다.' },
                   { num: '2', title: '피부 신축 후 45° 삽입', desc: '시술 부위의 피부를 팽팽하게 늘린 후 45도 각도로 삽입합니다. 정확한 각도가 최적의 진피층 전달을 보장합니다.' },
                   { num: '3', title: '천천히 주입 → 파퓰 형성', desc: '파퓰이 형성될 때까지 서서히 압력을 가해 주입합니다. 1cm 간격으로 시술 부위 전체에 균일하게 시술합니다.' },
-                  { num: '4', title: '24시간 내 자연 흡수', desc: '형성된 파퓰은 NCTF® 솔루션의 저장소 역할을 하며, 진피층으로 서서히 확산됩니다. 24시간 이내에 완전히 흡수됩니다.' },
+                  { num: '4', title: '24시간 내 자연 흡수', desc: '형성된 파퓰은 NCTF 솔루션의 저장소 역할을 하며, 진피층으로 서서히 확산됩니다. 24시간 이내에 완전히 흡수됩니다.' },
                 ].map((s, i) => (
                   <div key={s.num} style={{ display: 'grid', gridTemplateColumns: '48px 1fr', gap: 20, padding: '24px 0', borderBottom: `1px solid ${NS.silverLight}`, borderTop: i === 0 ? `1px solid ${NS.silverLight}` : undefined }}>
                     <div style={{ fontFamily: NSF.serif, fontSize: 38, fontWeight: 300, color: NS.silver, lineHeight: 1 }}>{s.num}</div>
@@ -480,7 +480,7 @@ function NanosoftContent() {
                     <div key={b} style={{ fontFamily: NSF.condensed, fontSize: 10, letterSpacing: '0.2em', textTransform: 'uppercase', color: NS.accent, background: 'rgba(74,111,165,0.12)', border: '1px solid rgba(74,111,165,0.3)', padding: '7px 12px' }}>{b}</div>
                   ))}
                 </div>
-                <p style={{ fontSize: 11, color: NS.silverDark, marginTop: 16, lineHeight: 1.7, fontWeight: 300 }}>1회용 멸균 제품 · 모든 주사기 호환<br />NCTF® 135HA와 최적 호환</p>
+                <p style={{ fontSize: 11, color: NS.silverDark, marginTop: 16, lineHeight: 1.7, fontWeight: 300 }}>1회용 멸균 제품 · 모든 주사기 호환<br />NCTF 135HA와 최적 호환</p>
               </div>
             </FadeIn>
           </div>
