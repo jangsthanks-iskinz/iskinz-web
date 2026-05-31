@@ -8,10 +8,12 @@ export const metadata = {
   description: 'ISKINZ 아카데미 — 의료진을 위한 임상 교육 자료',
 }
 
-/* ─── 탭 정의 ─── */
-const TABS = [
+/* ─── 탭 정의 (그룹별 분리) ─── */
+const FILLMED_TABS = [
   { id: 'nctf',     label: 'NCTF 135 HA' },
   { id: 'nanosoft', label: '나노소프트' },
+]
+const VIVACY_TABS = [
   { id: 'stylage',  label: 'Stylage®' },
 ]
 
@@ -929,6 +931,12 @@ export default async function AcademyPage({
 
   const tab = searchParams.tab ?? 'nctf'
 
+  /* 탭 그룹: stylage는 Vivacy 단독, 나머지는 Fillmed 그룹 */
+  const isVivacy = tab === 'stylage'
+  const activeTabs = isVivacy ? VIVACY_TABS : FILLMED_TABS
+  const accentColor = isVivacy ? '#B4924E' : NS.accent
+  const sectionLabel = isVivacy ? 'VIVACY · STYLAGE' : 'FILLMED · NCTF 135HA'
+
   return (
     <main style={{ background: NS.offWhite, paddingTop: 80 }}>
 
@@ -937,7 +945,7 @@ export default async function AcademyPage({
         <div className="container mx-auto px-6 lg:px-14">
           <div style={{ display: 'flex', alignItems: 'center', gap: 14, marginBottom: 16 }}>
             <div style={{ width: 24, height: 1, background: 'rgba(200,205,212,0.4)', flexShrink: 0 }} />
-            <span style={{ fontFamily: NSF.condensed, fontSize: 10, letterSpacing: '0.4em', textTransform: 'uppercase', color: NS.silverDark }}>ISKINZ ACADEMY</span>
+            <span style={{ fontFamily: NSF.condensed, fontSize: 10, letterSpacing: '0.4em', textTransform: 'uppercase', color: NS.silverDark }}>{sectionLabel}</span>
           </div>
           <h1 style={{ fontFamily: NSF.serif, fontSize: 'clamp(2rem, 4vw, 3rem)', fontWeight: 300, color: '#fff', lineHeight: 1.1, marginBottom: '0.75rem' }}>임상 교육 자료</h1>
           <p style={{ fontFamily: NSF.condensed, fontSize: 11, letterSpacing: '0.2em', textTransform: 'uppercase', color: NS.silverDark }}>
@@ -946,11 +954,11 @@ export default async function AcademyPage({
         </div>
       </section>
 
-      {/* 탭 */}
+      {/* 탭 — 현재 브랜드 그룹 탭만 표시 */}
       <div className="sticky top-[72px] z-30" style={{ background: NS.charcoalMid, borderBottom: '1px solid rgba(200,205,212,0.1)' }}>
         <div className="container mx-auto px-6 lg:px-14">
           <div className="flex gap-0 overflow-x-auto">
-            {TABS.map(t => {
+            {activeTabs.map(t => {
               const isActive = tab === t.id
               return (
                 <Link
@@ -963,7 +971,7 @@ export default async function AcademyPage({
                     fontSize: 11,
                     letterSpacing: '0.25em',
                     textTransform: 'uppercase',
-                    borderBottom: isActive ? `2px solid ${t.id === 'stylage' ? '#B4924E' : NS.accent}` : '2px solid transparent',
+                    borderBottom: isActive ? `2px solid ${accentColor}` : '2px solid transparent',
                     color: isActive ? NS.silverLight : NS.silverDark,
                   }}
                 >
