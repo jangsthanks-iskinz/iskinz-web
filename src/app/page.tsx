@@ -600,10 +600,10 @@ function ApprovedPage() {
                 <em style={{ fontStyle: 'italic', color: C.goldLight }}>공식 공급원의 신뢰</em>
               </h2>
               <p style={{ fontSize: 14, fontWeight: 300, lineHeight: 1.9, color: 'rgba(200,205,212,0.65)', marginBottom: 16, maxWidth: 440 }}>
-                아이스킨즈(ISKINZ)는 인천 소재 B2B 의료기기·화장품 도매 업체로, 피부과·성형외과·의원급 의료기관에 스킨부스터, 더말필러, 의료기기, 더마코스메틱을 공급합니다.
+                아이스킨즈(ISKINZ)는 프랑스 프리미엄 메디컬 에스테틱 브랜드 Fillmed · Vivacy의 국내 공식 공급업체입니다. 피부과·성형외과·의원급 의료기관에 스킨부스터, 더말필러, 의료기기를 직공급합니다.
               </p>
               <p style={{ fontSize: 14, fontWeight: 300, lineHeight: 1.9, color: 'rgba(200,205,212,0.65)', marginBottom: 40, maxWidth: 440 }}>
-                프랑스 Fillmed의 NCTF 135HA 스킨부스터와 Vivacy의 Stylage 더말필러 전 라인을 국내 공식 공급원 자격으로 독점 취급합니다.
+                프랑스 Fillmed의 NCTF 135HA와 Vivacy의 Stylage 전 라인을 제조사 직계약 공식 루트로만 공급합니다. 100% 정품 보증, 당일 배송, 임상 교육까지 함께합니다.
               </p>
               <div className="grid grid-cols-2 gap-4">
                 {[
