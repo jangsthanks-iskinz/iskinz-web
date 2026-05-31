@@ -215,45 +215,29 @@ function ApprovedPage() {
           </div>
         </div>
 
-        {/* ── 오른쪽: 다크 비주얼 패널 ── */}
+        {/* ── 오른쪽: 히어로 동영상 패널 ── */}
         <div
-          className="hidden lg:flex flex-col items-center justify-center"
-          style={{ background: `linear-gradient(150deg, ${C.navy} 0%, #0D1E3A 45%, ${C.charcoalDeep} 100%)`, padding: '60px 50px', position: 'relative', overflow: 'hidden' }}
+          className="hidden lg:block"
+          style={{ position: 'relative', overflow: 'hidden', background: '#0D1E3A' }}
         >
-          {/* 도트 패턴 */}
-          <div style={{ position: 'absolute', inset: 0, backgroundImage: `url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23B4924E' fill-opacity='0.04'%3E%3Cpath d='M20 20.5V18h-1v2.5H16.5v1H19v2.5h1V21h2.5v-1H20z'/%3E%3C/g%3E%3C/svg%3E")` }} />
-          <div style={{ position: 'absolute', inset: 0, background: 'radial-gradient(ellipse 60% 40% at 30% 60%, rgba(180,146,78,0.07) 0%, transparent 70%)' }} />
-
-          <div style={{ position: 'relative', zIndex: 1, textAlign: 'center' }}>
-            {/* 장식 오브 */}
-            <div style={{ width: 200, height: 200, borderRadius: '50%', border: '1px solid rgba(180,146,78,0.25)', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 32px', position: 'relative' }}>
-              <div style={{ position: 'absolute', inset: 14, borderRadius: '50%', border: '1px solid rgba(180,146,78,0.12)' }} />
-              <div style={{ position: 'absolute', inset: -20, borderRadius: '50%', border: '1px solid rgba(180,146,78,0.06)' }} />
-              <div style={{ width: 130, height: 130, borderRadius: '50%', background: 'linear-gradient(145deg, rgba(180,146,78,0.18), rgba(180,146,78,0.04))', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: 6 }}>
-                <span style={{ fontFamily: CONDENSED, fontSize: 10, letterSpacing: '0.22em', color: 'rgba(255,255,255,0.45)', textTransform: 'uppercase' }}>iSkinz</span>
-                <span style={{ fontFamily: SERIF, fontSize: 26, fontWeight: 300, color: C.goldLight, lineHeight: 1 }}>ISKINZ</span>
-              </div>
-            </div>
-
-            <p style={{ fontFamily: SERIF, fontSize: 18, fontWeight: 300, fontStyle: 'italic', color: 'rgba(255,255,255,0.65)', marginBottom: 32, letterSpacing: '0.03em' }}>
-              Medical Aesthetic Supply
-            </p>
-
-            <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
-              {[
-                'Fillmed 정식 공급원 (France)',
-                'Vivacy 정식 공급원 (France)',
-                'CE Marked · 정품 인증',
-                '당일 배송 · 냉장 보관',
-                '임상 교육 · 프로토콜 지원',
-              ].map(spec => (
-                <div key={spec} style={{ display: 'flex', alignItems: 'center', gap: 10, fontFamily: CONDENSED, fontSize: 10, fontWeight: 300, letterSpacing: '0.14em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.42)' }}>
-                  <div style={{ width: 18, height: 1, background: C.gold, flexShrink: 0 }} />
-                  {spec}
-                </div>
-              ))}
-            </div>
-          </div>
+          {/* 배경 동영상 */}
+          <video
+            autoPlay
+            loop
+            muted
+            playsInline
+            style={{
+              position: 'absolute',
+              inset: 0,
+              width: '100%',
+              height: '100%',
+              objectFit: 'cover',
+            }}
+          >
+            <source src="/videos/hero.mp4" type="video/mp4" />
+          </video>
+          {/* 미묘한 다크 오버레이 */}
+          <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to bottom, rgba(13,30,58,0.25) 0%, rgba(13,30,58,0.1) 50%, rgba(13,30,58,0.35) 100%)' }} />
         </div>
       </section>
 
