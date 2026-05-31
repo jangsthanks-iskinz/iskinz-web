@@ -12,7 +12,6 @@ export const metadata = {
 const TABS = [
   { id: 'nctf',     label: 'NCTF 135 HA' },
   { id: 'nanosoft', label: '나노소프트' },
-  { id: 'stylage',  label: 'Stylage' },
 ]
 
 /* ══════════════════════════════════════════════
@@ -922,7 +921,7 @@ export default async function AcademyPage({
     redirect('/')
   }
 
-  const tab = searchParams.tab ?? 'stylage'
+  const tab = searchParams.tab ?? 'nctf'
 
   return (
     <main style={{ background: NS.offWhite, paddingTop: 80 }}>
