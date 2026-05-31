@@ -12,6 +12,12 @@ interface NavbarProps {
 const CONDENSED = 'Barlow Condensed, sans-serif'
 const SERIF     = 'Cormorant Garamond, Georgia, serif'
 
+interface NavLink {
+  href: string
+  label: string
+  submenu?: { href: string; label: string }[]
+}
+
 export function Navbar({ isApproved = false }: NavbarProps) {
   const [scrolled, setScrolled] = useState(false)
   const [menuOpen, setMenuOpen] = useState(false)
@@ -19,6 +25,7 @@ export function Navbar({ isApproved = false }: NavbarProps) {
   const [cartOpen, setCartOpen] = useState(false)
   const [cartCount, setCartCount] = useState(0)
   const [cartItems, setCartItems] = useState<any[]>([])
+  const [openDropdown, setOpenDropdown] = useState<string | null>(null)
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 60)
@@ -51,13 +58,20 @@ export function Navbar({ isApproved = false }: NavbarProps) {
     else setCartCount(0)
   }, [user])
 
-  const navLinks = isApproved
+  const navLinks: NavLink[] = isApproved
     ? [
-        { href: '/#about',    label: 'ABOUT' },
-        { href: '/products',  label: 'PRODUCTS' },
-        { href: '/#nctf',     label: 'NCTF 135HA' },
-        { href: '/academy',   label: 'ACADEMY' },
-        { href: '/#contact',  label: 'CONTACT' },
+        { href: '/#about',   label: 'ABOUT' },
+        { href: '/products', label: 'PRODUCTS' },
+        {
+          href: '/academy?tab=nctf',
+          label: 'NCTF 135HA',
+          submenu: [
+            { href: '/academy?tab=nctf',     label: 'NCTF 135 HA' },
+            { href: '/academy?tab=nanosoft', label: '나노소프트' },
+          ],
+        },
+        { href: '/academy',  label: 'STYLAGE' },
+        { href: '/#contact', label: 'CONTACT' },
       ]
     : [
         { href: '/#contact', label: 'CONTACT' },
@@ -92,14 +106,67 @@ export function Navbar({ isApproved = false }: NavbarProps) {
           {/* Desktop Nav */}
           <ul className="hidden lg:flex items-center gap-8 list-none">
             {navLinks.map(link => (
-              <li key={link.href}>
+              <li
+                key={link.href}
+                style={{ position: 'relative' }}
+                onMouseEnter={() => link.submenu && setOpenDropdown(link.label)}
+                onMouseLeave={() => setOpenDropdown(null)}
+              >
                 <Link
                   href={link.href}
                   className="text-[11px] no-underline transition-opacity hover:opacity-100"
-                  style={{ fontFamily: CONDENSED, letterSpacing: '0.2em', textTransform: 'uppercase', color: 'rgba(200,205,212,0.6)' }}
+                  style={{ fontFamily: CONDENSED, letterSpacing: '0.2em', textTransform: 'uppercase', color: 'rgba(200,205,212,0.6)', display: 'flex', alignItems: 'center', gap: 4 }}
                 >
                   {link.label}
+                  {link.submenu && (
+                    <span style={{ fontSize: 8, opacity: 0.5 }}>▾</span>
+                  )}
                 </Link>
+
+                {/* Dropdown */}
+                {link.submenu && openDropdown === link.label && (
+                  <div
+                    style={{
+                      position: 'absolute',
+                      top: '100%',
+                      left: '50%',
+                      transform: 'translateX(-50%)',
+                      paddingTop: 12,
+                      zIndex: 100,
+                    }}
+                  >
+                    <div style={{
+                      background: 'rgba(26,29,34,0.98)',
+                      border: '1px solid rgba(200,205,212,0.1)',
+                      backdropFilter: 'blur(20px)',
+                      minWidth: 160,
+                      display: 'flex',
+                      flexDirection: 'column',
+                    }}>
+                      {link.submenu.map(sub => (
+                        <Link
+                          key={sub.href}
+                          href={sub.href}
+                          className="no-underline transition-all hover:opacity-100"
+                          style={{
+                            padding: '12px 20px',
+                            fontFamily: CONDENSED,
+                            fontSize: 10,
+                            letterSpacing: '0.2em',
+                            textTransform: 'uppercase',
+                            color: 'rgba(200,205,212,0.6)',
+                            borderBottom: '1px solid rgba(200,205,212,0.06)',
+                            whiteSpace: 'nowrap',
+                          }}
+                          onMouseEnter={e => (e.currentTarget.style.color = '#e8ebee')}
+                          onMouseLeave={e => (e.currentTarget.style.color = 'rgba(200,205,212,0.6)')}
+                        >
+                          {sub.label}
+                        </Link>
+                      ))}
+                    </div>
+                  </div>
+                )}
               </li>
             ))}
           </ul>
@@ -157,17 +224,30 @@ export function Navbar({ isApproved = false }: NavbarProps) {
         {/* Mobile Dropdown */}
         {menuOpen && (
           <div className="lg:hidden border-t" style={{ background: 'rgba(26,29,34,0.99)', borderColor: 'rgba(200,205,212,0.08)' }}>
-            <div className="container mx-auto px-6 py-5 flex flex-col gap-4">
+            <div className="container mx-auto px-6 py-5 flex flex-col gap-0">
               {navLinks.map(link => (
-                <Link key={link.href} href={link.href} onClick={() => setMenuOpen(false)}
-                  className="text-[11px] no-underline transition-opacity hover:opacity-60"
-                  style={{ fontFamily: CONDENSED, letterSpacing: '0.2em', textTransform: 'uppercase', color: 'rgba(200,205,212,0.65)' }}>
-                  {link.label}
-                </Link>
+                <div key={link.href}>
+                  <Link href={link.href} onClick={() => setMenuOpen(false)}
+                    className="text-[11px] no-underline transition-opacity hover:opacity-60 block py-3"
+                    style={{ fontFamily: CONDENSED, letterSpacing: '0.2em', textTransform: 'uppercase', color: 'rgba(200,205,212,0.65)' }}>
+                    {link.label}
+                  </Link>
+                  {link.submenu && (
+                    <div style={{ paddingLeft: 16, borderLeft: '1px solid rgba(200,205,212,0.1)', marginBottom: 8 }}>
+                      {link.submenu.map(sub => (
+                        <Link key={sub.href} href={sub.href} onClick={() => setMenuOpen(false)}
+                          className="text-[10px] no-underline block py-2"
+                          style={{ fontFamily: CONDENSED, letterSpacing: '0.18em', textTransform: 'uppercase', color: 'rgba(200,205,212,0.45)' }}>
+                          {sub.label}
+                        </Link>
+                      ))}
+                    </div>
+                  )}
+                </div>
               ))}
               {user
-                ? <Link href="/my" onClick={() => setMenuOpen(false)} className="text-[11px] no-underline" style={{ fontFamily: CONDENSED, letterSpacing: '0.2em', textTransform: 'uppercase', color: 'rgba(200,205,212,0.65)' }}>MY PAGE</Link>
-                : <Link href="/login" onClick={() => setMenuOpen(false)} className="text-[11px] no-underline" style={{ fontFamily: CONDENSED, letterSpacing: '0.2em', textTransform: 'uppercase', color: 'rgba(200,205,212,0.65)' }}>LOGIN</Link>
+                ? <Link href="/my" onClick={() => setMenuOpen(false)} className="text-[11px] no-underline py-3 block" style={{ fontFamily: CONDENSED, letterSpacing: '0.2em', textTransform: 'uppercase', color: 'rgba(200,205,212,0.65)' }}>MY PAGE</Link>
+                : <Link href="/login" onClick={() => setMenuOpen(false)} className="text-[11px] no-underline py-3 block" style={{ fontFamily: CONDENSED, letterSpacing: '0.2em', textTransform: 'uppercase', color: 'rgba(200,205,212,0.65)' }}>LOGIN</Link>
               }
             </div>
           </div>

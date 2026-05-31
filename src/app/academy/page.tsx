@@ -675,7 +675,7 @@ function StyleageContent() {
                 technique: '레트로그레이드 스레딩 · 팬 기법',
               },
               {
-                name: 'Stylage X',
+                name: 'Stylage L',
                 ha: '24 mg/ml HA',
                 tag: '볼륨 복원',
                 color: gold,
@@ -765,7 +765,7 @@ function StyleageContent() {
           <div className="grid grid-cols-2 md:grid-cols-4 gap-px" style={{ background: `rgba(200,205,212,0.3)` }}>
             {[
               { pct: '3×',   name: 'HA 분해 억제',    sub: 'vs 표준 HA 겔, in vitro' },
-              { pct: '12+',  name: '개월 효과 지속',  sub: 'Stylage X·XL 기준' },
+              { pct: '12+',  name: '개월 효과 지속',  sub: 'Stylage L·XL 기준' },
               { pct: '92%',  name: '환자 만족도',      sub: '임상 설문, 6개월 후' },
               { pct: '100%', name: 'CE 인증 제품',     sub: '전 라인 유럽 인증' },
             ].map((e, i) => (
@@ -803,7 +803,7 @@ function StyleageContent() {
                 {[
                   { prod: 'S',   zone: '눈가 · 이마 · 구순', depth: '표재성', note: '가장 섬세한 부위 전용' },
                   { prod: 'M',   zone: '팔자주름 · 마리오네트', depth: '중등도', note: 'Lidocaine 함유 · 가장 인기' },
-                  { prod: 'X',  zone: '광대 · 뺨 · V라인',  depth: '볼륨층',  note: 'Lidocaine 함유 · 캐뉼라 권장' },
+                  { prod: 'L',  zone: '광대 · 뺨 · V라인',  depth: '볼륨층',  note: 'Lidocaine 함유 · 캐뉼라 권장' },
                   { prod: 'XL', zone: '심층 함몰 교정',      depth: '피하',   note: '최대 교정력 · 심층 전용' },
                 ].map((row, i) => (
                   <div key={row.prod} style={{ display: 'grid', gridTemplateColumns: '52px 1fr', gap: 20, padding: '20px 0', borderBottom: `1px solid ${NS.silverLight}`, borderTop: i === 0 ? `1px solid ${NS.silverLight}` : undefined }}>
@@ -829,7 +829,7 @@ function StyleageContent() {
                   {[
                     { step: '01', name: '초기 교정', period: '1~2회 시술',  desc: 'Stylage 적응증 평가 후 목표 볼륨·깊이에 맞는 제품 선택. 1차 시술로 충분한 교정 효과 확인.' },
                     { step: '02', name: '보정 단계', period: '2~4주 후',    desc: '필요 시 Touch-up 시술. Mannitol로 겔이 안정화된 시점에서 최종 결과 평가 및 미세 조정.' },
-                    { step: '03', name: '유지 단계', period: '6~12개월 후', desc: '효과 지속 기간 후 유지 시술. Stylage X·XL은 12개월 이상, S·M은 6~12개월 주기 권장.' },
+                    { step: '03', name: '유지 단계', period: '6~12개월 후', desc: '효과 지속 기간 후 유지 시술. Stylage L·XL은 12개월 이상, S·M은 6~12개월 주기 권장.' },
                   ].map((p, i) => (
                     <div key={p.step} style={{ display: 'grid', gridTemplateColumns: '52px 1fr', gap: 20, padding: '24px 0', borderBottom: i < 2 ? `1px solid rgba(200,205,212,0.1)` : 'none', borderTop: i === 0 ? `1px solid rgba(200,205,212,0.1)` : undefined }}>
                       <div style={{ fontFamily: NSF.serif, fontSize: 34, fontWeight: 300, color: NS.silver, lineHeight: 1, paddingTop: 2 }}>{p.step}</div>
@@ -922,7 +922,7 @@ export default async function AcademyPage({
     redirect('/')
   }
 
-  const tab = searchParams.tab ?? 'nctf'
+  const tab = searchParams.tab ?? 'stylage'
 
   return (
     <main style={{ background: NS.offWhite, paddingTop: 80 }}>

@@ -405,7 +405,7 @@ function ApprovedPage() {
 
                 <div style={{ display: 'flex', flexDirection: 'column', gap: 10, marginBottom: 28 }}>
                   {[
-                    { label: '대표 제품', value: 'Stylage S · M · X · XL' },
+                    { label: '대표 제품', value: 'Stylage S · M · L · XL' },
                     { label: '핵심 기술', value: 'IPN-LIKE Tech · Mannitol · Bi-Soft®' },
                     { label: '적응증',   value: '잔주름 · 중등도 주름 · 볼륨 복원 · 심층 볼륨' },
                   ].map(row => (
@@ -500,7 +500,7 @@ function ApprovedPage() {
                 accentBorder: C.gold,
                 name: 'Stylage S',
                 sub: '잔주름 교정',
-                tag: '14 mg/ml HA',
+                tag: '16 mg/ml HA',
                 desc: '눈가 Crow\'s Feet · 이마 · 구순 주변 표재성 잔주름 교정. IPN-LIKE 기술 + Mannitol 항산화 복합체.',
                 points: ['눈가·이마 표재성 주름', '32G 니들 표피~중간 진피', 'Mannitol 항산화 지속'],
               },
@@ -520,9 +520,9 @@ function ApprovedPage() {
                 brandColor: C.gold,
                 brandPale: C.goldPale,
                 accentBorder: C.gold,
-                name: 'Stylage XL',
+                name: 'Stylage L',
                 sub: '볼륨 복원',
-                tag: '20 mg/ml HA',
+                tag: '24 mg/ml HA',
                 desc: '광대 · 뺨 · V라인 대용량 볼륨 복원. 안면 윤곽 리모델링 프로토콜. 피하조직 이상 주입.',
                 points: ['광대·뺨·V라인 볼륨 복원', '안면 윤곽 리모델링', '피하조직~심층 진피'],
               },
@@ -531,9 +531,9 @@ function ApprovedPage() {
                 brandColor: C.gold,
                 brandPale: C.goldPale,
                 accentBorder: C.gold,
-                name: 'Stylage XXL',
+                name: 'Stylage XL',
                 sub: '최대 볼륨 교정',
-                tag: '20 mg/ml HA · MAX',
+                tag: '26 mg/ml HA · MAX',
                 desc: '심층 안면 함몰 최고 교정력. 대용량 볼륨 손실 복원 및 12개월 이상 지속 효과 프로토콜.',
                 points: ['심층 안면 함몰 교정', '12개월 이상 지속', '심층 진피·피하조직'],
               },
@@ -620,20 +620,6 @@ function ApprovedPage() {
               </div>
             </FadeIn>
 
-            <FadeIn delay={0.2}>
-              <div style={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
-                {[
-                  { num: '500+', label: '납품 병원·클리닉' },
-                  { num: '2개',  label: '프랑스 브랜드 공식 공급' },
-                  { num: '2시',  label: '오후 당일 배송 마감 기준' },
-                ].map(s => (
-                  <div key={s.label} style={{ padding: '24px 32px', background: 'rgba(255,255,255,0.03)', border: `1px solid rgba(180,146,78,0.12)`, display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                    <div style={{ fontFamily: SERIF, fontSize: 'clamp(2.2rem, 6vw, 3.5rem)', fontWeight: 300, color: C.gold, lineHeight: 1 }}>{s.num}</div>
-                    <div style={{ fontSize: 13, fontWeight: 300, textAlign: 'right', color: 'rgba(200,205,212,0.55)' }}>{s.label}</div>
-                  </div>
-                ))}
-              </div>
-            </FadeIn>
           </div>
         </div>
       </section>
