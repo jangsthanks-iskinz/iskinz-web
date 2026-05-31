@@ -4,7 +4,6 @@ import { HomeLoginForm } from '@/components/home/HomeLoginForm'
 import { ProductTabs } from '@/components/home/ProductTabs'
 import { createClient } from '@/lib/supabase/server'
 import { SITE } from '@/constants/site'
-import { NewsFeed } from '@/components/NewsFeed'
 
 /* ─── Design Tokens — Ivory · Gold · Navy ─── */
 const C = {
@@ -258,10 +257,7 @@ function ApprovedPage() {
         </div>
       </section>
 
-      {/* ② 뉴스 피드 */}
-      <NewsFeed />
-
-      {/* ③ 신뢰 바 */}
+      {/* ② 신뢰 바 */}
       <section style={{ padding: '14px 0', borderBottom: `1px solid ${C.borderLight}`, background: C.warmWhite }}>
         <div className="container mx-auto px-6">
           <div className="flex flex-wrap justify-center items-center" style={{ gap: '8px 40px' }}>
