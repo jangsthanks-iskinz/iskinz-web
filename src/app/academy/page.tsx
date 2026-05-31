@@ -29,7 +29,7 @@ function NctfContent() {
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-end pb-16">
               <div>
                 <h2 style={{ fontFamily: NSF.serif, fontSize: 'clamp(3rem, 6vw, 5rem)', fontWeight: 300, color: '#fff', lineHeight: 0.95, letterSpacing: '-0.01em', marginBottom: '0.5rem' }}>
-                  NCTF<em style={{ fontStyle: 'normal', color: NS.silver }}>®</em> 135 HA
+                  NCTF<sup style={{ fontSize: '0.55em', verticalAlign: 'super' }}>®</sup> 135 HA
                 </h2>
                 <p style={{ fontFamily: NSF.condensed, fontSize: 11, letterSpacing: '0.35em', textTransform: 'uppercase', color: NS.silverDark, marginBottom: '2.5rem' }}>
                   CELLULAR ACTIVATOR — BY FILLMED
@@ -534,7 +534,7 @@ function StyleageContent() {
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-end pb-16">
               <div>
                 <h2 style={{ fontFamily: NSF.serif, fontSize: 'clamp(3rem, 6vw, 5rem)', fontWeight: 300, color: '#fff', lineHeight: 0.95, letterSpacing: '-0.01em', marginBottom: '0.5rem' }}>
-                  STYLAGE<em style={{ fontStyle: 'italic', color: goldLt }}>®</em>
+                  STYLAGE<sup style={{ fontSize: '0.55em', verticalAlign: 'super' }}>®</sup>
                 </h2>
                 <p style={{ fontFamily: NSF.condensed, fontSize: 11, letterSpacing: '0.35em', textTransform: 'uppercase', color: NS.silverDark, marginBottom: '2.5rem' }}>
                   IPN-LIKE TECHNOLOGY — BY VIVACY

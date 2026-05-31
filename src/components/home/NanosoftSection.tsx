@@ -138,9 +138,9 @@ export function NanosoftSection() {
         </div>
         <div className="container mx-auto px-6 lg:px-14 relative">
           <FadeIn>
-            <Label dark>NCTF® 135HA CLINICAL DATA</Label>
+            <Label dark>NCTF<sup style={{fontSize:'0.55em',verticalAlign:'super'}}>®</sup> 135HA CLINICAL DATA</Label>
             <h3 style={{ fontFamily: SERIF, fontSize: 'clamp(2rem, 3.5vw, 3rem)', fontWeight: 300, color: '#fff', lineHeight: 1.1, marginBottom: '1rem' }}>
-              NCTF® 135HA<br /><em style={{ fontStyle: 'italic', color: C.warm }}>임상 효과 데이터</em>
+              NCTF<sup style={{fontSize:'0.55em',verticalAlign:'super'}}>®</sup> 135HA<br /><em style={{ fontStyle: 'italic', color: C.warm }}>임상 효과 데이터</em>
             </h3>
             <p style={{ fontSize: 13, fontWeight: 300, color: C.silverDark, maxWidth: 480, lineHeight: 1.7, marginBottom: '3.5rem' }}>
               40년 이상의 피부과학 역사를 가진 NCTF® 135HA와 나노소프트™의 완벽한 조합. 검증된 임상 데이터로 확인된 효과.

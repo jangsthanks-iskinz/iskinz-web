@@ -107,7 +107,9 @@ export function ProductTabs() {
               </div>
 
               <div style={{ fontFamily: CONDENSED, fontSize: 9, letterSpacing: '0.22em', textTransform: 'uppercase', color: subColor, marginBottom: 8 }}>{p.sub}</div>
-              <div style={{ fontFamily: SERIF, fontSize: p.featured ? 36 : 30, fontWeight: 300, color: textColor, lineHeight: 1, marginBottom: 8 }}>{p.name}</div>
+              <div style={{ fontFamily: SERIF, fontSize: p.featured ? 36 : 30, fontWeight: 300, color: textColor, lineHeight: 1, marginBottom: 8 }}
+                dangerouslySetInnerHTML={{ __html: p.name.replace(/®/g, '<sup style="font-size:0.55em;vertical-align:super;">®</sup>') }}
+              />
               <div style={{ fontFamily: CONDENSED, fontSize: 12, letterSpacing: '0.1em', color: p.featured ? C.goldLight : C.gold, marginBottom: 16 }}>{p.ha}</div>
               <div style={{ height: 1, background: divColor, marginBottom: 16 }} />
               <p style={{ fontSize: 12.5, fontWeight: 300, lineHeight: 1.8, color: descColor, marginBottom: 16 }}>{p.desc}</p>
