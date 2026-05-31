@@ -12,6 +12,7 @@ export const metadata = {
 const TABS = [
   { id: 'nctf',     label: 'NCTF 135 HA' },
   { id: 'nanosoft', label: '나노소프트' },
+  { id: 'stylage',  label: 'Stylage®' },
 ]
 
 /* ══════════════════════════════════════════════
@@ -548,9 +549,9 @@ function StyleageContent() {
               {/* 스탯 그리드 */}
               <div className="grid grid-cols-2 gap-px" style={{ background: 'rgba(200,205,212,0.1)' }}>
                 {[
-                  { num: '4종',    unit: '',      label: 'Stylage 라인업' },
-                  { num: '14–20', unit: 'mg/ml', label: 'HA 농도 범위' },
-                  { num: '12+',   unit: '개월',  label: '효과 지속 기간' },
+                  { num: '4종',   unit: '',      label: 'Stylage 라인업' },
+                  { num: '16–26', unit: 'mg/ml', label: 'HA 농도 범위' },
+                  { num: '18+',   unit: '개월',  label: 'XL 효과 지속' },
                   { num: '2007',  unit: 'yr',    label: 'Vivacy 설립' },
                 ].map(s => (
                   <div key={s.label} style={{ background: NS.charcoalMid, padding: '32px 28px' }}>
@@ -568,10 +569,10 @@ function StyleageContent() {
         <div style={{ background: NS.silverLight, borderTop: `1px solid ${NS.silver}`, padding: '16px 20px', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 20, overflowX: 'auto', flexWrap: 'wrap' }}>
           {[
             'IPN-LIKE Technology · 균일한 겔 구조',
-            'Mannitol · 항산화 보호',
+            'Mannitol · 항산화 · HA 분해 억제',
             'Bi-Soft® Syringe · 시술 편의성',
-            'CE Marked · 정품 인증',
-            'Lidocaine 함유 · 통증 최소화',
+            'CE Marked · Vivacy 정품',
+            'XL 최대 18개월 지속',
           ].map(t => (
             <div key={t} style={{ display: 'flex', alignItems: 'center', gap: 10, whiteSpace: 'nowrap' }}>
               <div style={{ width: 5, height: 5, borderRadius: '50%', background: gold, flexShrink: 0 }} />
@@ -652,25 +653,27 @@ function StyleageContent() {
                 ha: '16 mg/ml HA',
                 tag: '잔주름·표재성',
                 color: gold,
-                indication: '눈가 Crow\'s Feet · 이마 잔주름 · 구순 주변 바코드 주름',
+                indication: '구순 주변 바코드 주름 · 눈가 Crow\'s Feet · 미간',
                 depth: '표피 ~ 중간 진피',
-                needle: '32G',
-                duration: '6~9개월',
+                needle: '30G',
+                packaging: '2 × 0.8 mL',
+                duration: '최대 12개월',
                 lidocaine: false,
-                desc: '가장 표재성 적응증 전용. 눈가와 이마의 고운 잔주름, 구순 주변 미세 주름에 사용. IPN-LIKE 겔의 낮은 점도로 표피층에 자연스럽게 퍼집니다.',
+                desc: '가장 표재성 적응증 전용. 눈가·입가·미간의 고운 잔주름에 최적화. IPN-LIKE 저점도 겔이 표피층에 균일하게 퍼지며, 12개월 후에도 85%의 교정 효과를 유지합니다.',
                 technique: '선형 레트로그레이드 · 파퓰 기법',
               },
               {
                 name: 'Stylage M',
                 ha: '20 mg/ml HA',
-                tag: '중등도 주름 · 인기',
+                tag: '중등도 주름 · 베스트셀러',
                 color: gold,
-                indication: '팔자주름(NLF) · 마리오네트 라인 · 구각',
+                indication: '팔자주름(NLF) · 마리오네트 라인 · 입술',
                 depth: '중간 ~ 심층 진피',
-                needle: '27G',
-                duration: '9~12개월',
+                needle: '30G',
+                packaging: '2 × 1 mL',
+                duration: '최대 12개월',
                 lidocaine: true,
-                desc: '가장 많이 사용되는 중등도 주름 교정 제품. Lidocaine 함유로 시술 시 통증이 적고, Mannitol이 겔을 산화로부터 보호해 효과가 오래 지속됩니다.',
+                desc: 'Vivacy 글로벌 베스트셀러. 팔자주름 12개월 후 86.4~93.2% 교정 효과 임상 입증. Lidocaine 함유로 통증이 적고, Mannitol이 HA를 산화로부터 보호해 효과가 오래 유지됩니다.',
                 technique: '레트로그레이드 스레딩 · 팬 기법',
               },
               {
@@ -678,25 +681,27 @@ function StyleageContent() {
                 ha: '24 mg/ml HA',
                 tag: '볼륨 복원',
                 color: gold,
-                indication: '광대·뺨 볼륨 복원 · V라인 · 턱',
+                indication: '앞볼(Cheeks) · 광대 · 관자놀이',
                 depth: '심층 진피 ~ 피하조직',
-                needle: '25G',
-                duration: '12~15개월',
+                needle: '27G',
+                packaging: '2 × 1 mL',
+                duration: '최대 12개월',
                 lidocaine: true,
-                desc: '안면 볼륨 복원 및 윤곽 리모델링 전용. 광대와 뺨의 지방 손실을 보완하고 V라인을 만드는 데 최적화된 높은 점도의 겔.',
+                desc: '안면 볼륨 복원 및 윤곽 리모델링 전용. 독립 임상에서 Juvederm·Restylane 대비 우위 확인. 광대와 뺨의 지방 손실 보완, V라인 형성에 최적화된 고점도 겔.',
                 technique: '볼러스 기법 · 캐뉼라 권장',
               },
               {
                 name: 'Stylage XL',
                 ha: '26 mg/ml HA',
-                tag: '최대 볼륨',
+                tag: '심층 볼륨 · 18개월+',
                 color: gold,
-                indication: '심층 안면 함몰 · 광범위 볼륨 손실',
+                indication: '앞볼·앞광대·관자놀이 심층 볼루마이징',
                 depth: '피하조직 이상',
-                needle: '23G',
-                duration: '12개월 이상',
+                needle: '27G / 23G',
+                packaging: '2 × 1 mL',
+                duration: '최대 18개월',
                 lidocaine: false,
-                desc: '가장 높은 교정력이 필요한 심층 안면 함몰에 사용. 대용량 볼륨 손실 복원 및 안면 구조적 지지에 적합. 반드시 깊은 층에만 주입.',
+                desc: '가장 높은 교정력의 심층 볼루마이징 제품. Published study에서 18개월 이상 지속 효과 입증. 대용량 볼륨 손실 복원과 안면 구조 지지에 적합. 반드시 깊은 층에만 주입.',
                 technique: '볼러스 기법 · 심층 캐뉼라 전용',
               },
             ].map((prod, i) => (
@@ -727,6 +732,7 @@ function StyleageContent() {
                       {[
                         { label: '적응증',  value: prod.indication },
                         { label: '주입층',  value: prod.depth },
+                        { label: '패키징',  value: prod.packaging },
                         { label: '권장 니들', value: prod.needle + ' needle' },
                         { label: '지속 기간', value: prod.duration },
                       ].map(row => (
@@ -758,15 +764,15 @@ function StyleageContent() {
               <span style={{ fontFamily: NSF.condensed, fontSize: 10, letterSpacing: '0.4em', textTransform: 'uppercase' as const, color: gold }}>CLINICAL EVIDENCE</span>
             </div>
             <h3 style={{ fontFamily: NSF.serif, fontSize: 'clamp(1.8rem, 3vw, 2.8rem)', fontWeight: 300, color: NS.charcoal, lineHeight: 1.1, marginBottom: '3rem' }}>
-              Mannitol이 입증하는<br /><em style={{ fontStyle: 'italic', color: NS.warm }}>지속적 효과</em>
+              임상으로 입증된<br /><em style={{ fontStyle: 'italic', color: NS.warm }}>지속적 효과</em>
             </h3>
           </FadeIn>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-px" style={{ background: `rgba(200,205,212,0.3)` }}>
             {[
-              { pct: '3×',   name: 'HA 분해 억제',    sub: 'vs 표준 HA 겔, in vitro' },
-              { pct: '12+',  name: '개월 효과 지속',  sub: 'Stylage L·XL 기준' },
-              { pct: '92%',  name: '환자 만족도',      sub: '임상 설문, 6개월 후' },
-              { pct: '100%', name: 'CE 인증 제품',     sub: '전 라인 유럽 인증' },
+              { pct: '85%',  name: 'S 구순 주름 교정',    sub: '12개월 후 효과 유지율' },
+              { pct: '93%',  name: 'M NLF 교정 유지',     sub: '12개월 86.4~93.2%' },
+              { pct: '18+',  name: '개월 XL 지속',        sub: 'Published study 입증' },
+              { pct: '3×',   name: 'HA 분해 억제',        sub: 'Mannitol · vs 표준 HA' },
             ].map((e, i) => (
               <FadeIn key={e.name} delay={i * 0.07}>
                 <div style={{ background: '#fff', padding: '36px 24px' }}>
@@ -850,10 +856,10 @@ function StyleageContent() {
       {/* ⑥ Results Banner */}
       <div className="grid grid-cols-2 lg:grid-cols-4" style={{ background: NS.charcoalMid }}>
         {[
-          { pct: '3×',  label: 'HA 분해 억제 효과' },
-          { pct: '92',  label: '% 환자 만족도' },
-          { pct: '12+', label: '개월 효과 지속 (X·XL)' },
-          { pct: '4',   label: '가지 라인 최적 선택' },
+          { pct: '85',  label: '% S 구순 주름 12개월 유지' },
+          { pct: '93',  label: '% M NLF 12개월 교정' },
+          { pct: '18+', label: '개월 XL 지속 효과' },
+          { pct: '3×',  label: 'Mannitol HA 분해 억제' },
         ].map((r, i) => (
           <div key={r.label} style={{ padding: '36px 20px', borderRight: i % 2 === 0 ? '1px solid rgba(200,205,212,0.1)' : 'none', borderBottom: i < 2 ? '1px solid rgba(200,205,212,0.1)' : 'none', textAlign: 'center' }}>
             <div style={{ fontFamily: NSF.serif, fontSize: 'clamp(2.5rem, 4vw, 3.5rem)', fontWeight: 300, color: '#fff', lineHeight: 1 }}>
@@ -957,7 +963,7 @@ export default async function AcademyPage({
                     fontSize: 11,
                     letterSpacing: '0.25em',
                     textTransform: 'uppercase',
-                    borderBottom: isActive ? `2px solid ${NS.accent}` : '2px solid transparent',
+                    borderBottom: isActive ? `2px solid ${t.id === 'stylage' ? '#B4924E' : NS.accent}` : '2px solid transparent',
                     color: isActive ? NS.silverLight : NS.silverDark,
                   }}
                 >
