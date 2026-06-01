@@ -28,7 +28,7 @@ const SLIDES = [
     headline: '+256%',
     headlineSub: '',
     title: '콜라겐 생성\n임상 입증',
-    desc: '135가지 활성 성분 + Free HA 5mg/ml.\n피부 세포 재생·수분·탄력을 동시에 촉진.',
+    desc: '60가지 활성 성분 + Free HA 5mg/ml.\n피부 세포 재생·수분·탄력을 동시에 촉진.',
     accent: '#4a6fa5',
     accentLight: 'rgba(74,111,165,0.15)',
     tags: ['콜라겐 +256%', '섬유아세포 +148%', '탄력 +69%'],
