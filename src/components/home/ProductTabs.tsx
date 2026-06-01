@@ -25,7 +25,7 @@ const PRODUCTS = [
     id: 'nctf', brand: 'fillmed', type: 'booster', featured: true,
     brandLabel: 'Fillmed', tag: '⭐ FLAGSHIP', sub: 'Skin Booster',
     name: 'NCTF 135HA Boost', ha: '10 × 3ml 바이알',
-    desc: 'Fillmed 대표 스킨부스터. 비타민·미네랄·아미노산 135가지 성분이 피부 세포 재생과 보습을 동시에 촉진합니다.',
+    desc: 'Fillmed 대표 스킨부스터. 비타민·미네랄·아미노산 60가지 성분이 피부 세포 재생과 보습을 동시에 촉진합니다.',
     specs: ['3단계 프로토콜 (집중기·강화기·유지기)', '전안면·목·데콜테', '당일 배송 가능'],
   },
   /* ── Fillmed ── */

@@ -324,7 +324,7 @@ function ApprovedPage() {
                 </div>
 
                 <p style={{ fontSize: 13, fontWeight: 300, lineHeight: 1.85, color: 'rgba(200,205,212,0.6)', marginBottom: 28 }}>
-                  Science &amp; Art of Skin. 135가지 활성 성분을 담은 NCTF 135HA로 전 세계 스킨부스터 시장을 선도하는 프랑스 메디컬 에스테틱 브랜드.
+                  Science &amp; Art of Skin. 60가지 활성 성분을 담은 NCTF 135HA로 전 세계 스킨부스터 시장을 선도하는 프랑스 메디컬 에스테틱 브랜드.
                 </p>
 
                 <div style={{ display: 'flex', flexDirection: 'column', gap: 10, marginBottom: 28 }}>
@@ -440,7 +440,7 @@ function ApprovedPage() {
                 name: 'NCTF 135HA',
                 sub: '스킨부스터',
                 tag: '⭐ FLAGSHIP',
-                desc: '3단계 집중 부스터 프로토콜 (집중기 → 강화기 → 유지기). 135가지 활성 성분의 최적 주입 기법 및 환자별 맞춤 스케줄링.',
+                desc: '3단계 집중 부스터 프로토콜 (집중기 → 강화기 → 유지기). 60가지 활성 성분의 최적 주입 기법 및 환자별 맞춤 스케줄링.',
                 points: ['전안면·목·데콜테 적용법', 'NCTF + 필러 병합 시술', '집중기 주 1회 × 4주'],
               },
               {
