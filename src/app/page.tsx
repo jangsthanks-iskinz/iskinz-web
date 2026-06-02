@@ -257,7 +257,7 @@ function ApprovedPage() {
               { icon: '🏆', title: '프랑스 직공급',    desc: 'Fillmed · Vivacy 제조사 직계약 공식 루트 단독 입고. NCTF 135HA, Stylage 전 라인 100% 정품 보증.' },
               { icon: '🚚', title: '오후 2시 당일 배송', desc: '오후 2시 이전 주문 시 전국 병원 당일 배송. 긴급 시술 준비도 문제없습니다.' },
               { icon: '💉', title: '임상 교육 지원',    desc: 'Fillmed Asia Masterclass, Vivacy 시술 프로토콜 교육. 시술 프로토콜·임상 가이드 무상 제공.' },
-              { icon: '📋', title: '인허가 완비',        desc: '의료기기판매업·통신판매업·화장품책임판매업 신고 완료. 안심하고 거래하세요.' },
+              { icon: '📋', title: '인허가 완비',        desc: '의료기기판매업 신고 완료 · Fillmed · Vivacy 정식 공급원. 안심하고 거래하세요.' },
             ].map((p, i) => (
               <FadeIn key={p.title} delay={i * 0.08}>
                 <div style={{ padding: 28, border: `1px solid ${C.borderLight}`, background: C.warmWhite, height: '100%', transition: 'border-color 0.25s' }}>
@@ -279,8 +279,6 @@ function ApprovedPage() {
               <div className="flex flex-wrap justify-center gap-8 sm:gap-16">
                 {[
                   { name: '의료기기판매업',     desc: '신고 완료' },
-                  { name: '통신판매업',          desc: '신고 완료' },
-                  { name: '화장품책임판매업',    desc: '등록 완료' },
                   { name: 'Fillmed 정식 공급원', desc: '공식 계약' },
                   { name: 'Vivacy 정식 공급원',  desc: '공식 계약' },
                 ].map(c => (
@@ -329,7 +327,7 @@ function ApprovedPage() {
 
                 <div style={{ display: 'flex', flexDirection: 'column', gap: 10, marginBottom: 28 }}>
                   {[
-                    { label: '대표 제품', value: 'NCTF 135HA · HYCOOX · Skin Perfusion' },
+                    { label: '대표 제품', value: 'NCTF 135HA · Nanosoft™ · Skin Perfusion' },
                     { label: '핵심 기술', value: '60 Active Ingredients Complex' },
                     { label: '적응증',   value: '스킨부스터 · 더말필러 · 자동 인젝터' },
                   ].map(row => (
