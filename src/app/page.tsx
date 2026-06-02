@@ -330,7 +330,7 @@ function ApprovedPage() {
                 <div style={{ display: 'flex', flexDirection: 'column', gap: 10, marginBottom: 28 }}>
                   {[
                     { label: '대표 제품', value: 'NCTF 135HA · HYCOOX · Skin Perfusion' },
-                    { label: '핵심 기술', value: '135 Active Ingredients Complex' },
+                    { label: '핵심 기술', value: '60 Active Ingredients Complex' },
                     { label: '적응증',   value: '스킨부스터 · 더말필러 · 자동 인젝터' },
                   ].map(row => (
                     <div key={row.label} style={{ display: 'flex', gap: 12, fontSize: 12 }}>

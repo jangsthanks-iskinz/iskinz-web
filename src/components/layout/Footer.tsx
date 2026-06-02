@@ -65,6 +65,7 @@ export function Footer() {
             <ul className="flex flex-col gap-1.5 text-[10px]" style={{ color: 'rgba(200,205,212,0.38)' }}>
               <li>✓ {SITE.businessLicense}</li>
               <li>✓ Fillmed 정식 공급원</li>
+              <li>✓ Vivacy 정식 공급원</li>
             </ul>
           </div>
 
