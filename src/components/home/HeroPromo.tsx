@@ -247,16 +247,6 @@ export function HeroPromo() {
         ))}
       </div>
 
-      {/* 사이드 레이블 */}
-      <div style={{
-        position: 'absolute', right: 24, top: '50%',
-        transform: 'translateY(-50%) rotate(90deg)',
-        fontFamily: CONDENSED, fontSize: 8, letterSpacing: '0.35em',
-        textTransform: 'uppercase', color: 'rgba(200,205,212,0.2)',
-        whiteSpace: 'nowrap',
-      }}>
-        ISKINZ · FRENCH MEDICAL AESTHETIC SUPPLY
-      </div>
     </div>
   )
 }
